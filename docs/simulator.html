@@ -20,12 +20,16 @@
     --accent-soft: #E8EDF3;
     --your: #1E3A5F;
     --your-soft: #E8EDF3;
-    --comp: #B5563A;
-    --comp-soft: #F5E8E2;
+    --comp1: #B5563A;
+    --comp2: #8E6D3F;
+    --comp3: #5F7A4F;
+    --comp4: #6B4F7A;
+    --comp5: #4F6B7A;
+    --comp6: #7A4F5F;
     --positive: #2D5F3F;
     --warn-soft: #F5EFE3;
     --warn-rule: #C9B584;
-    --max-w: 1180px;
+    --max-w: 1280px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -42,7 +46,7 @@
   .display { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
   a { color: inherit; text-decoration: none; }
 
-  /* ============ NAV (shared) ============ */
+  /* NAV */
   nav.top {
     border-bottom: 1px solid var(--rule);
     background: var(--bg);
@@ -72,42 +76,31 @@
     margin-right: 10px;
     vertical-align: 1px;
   }
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    font-size: 14px;
-    color: var(--ink-soft);
-  }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-soft); }
   .nav-links a:hover { color: var(--ink); }
   .nav-links a.current { color: var(--ink); font-weight: 500; }
 
-  /* ============ STICKY SHARE BAR ============ */
+  /* STICKY SHARE BAR */
   .sticky-share {
     background: var(--bg-elevated);
     border-bottom: 1px solid var(--rule);
-    padding: 16px 0;
+    padding: 14px 0;
     position: sticky;
     top: 60px;
     z-index: 40;
   }
-  .sticky-share-inner {
-    max-width: var(--max-w);
-    margin: 0 auto;
-    padding: 0 32px;
-    display: grid;
-    grid-template-columns: 200px 1fr 90px;
-    gap: 18px;
-    align-items: center;
-  }
-  @media (max-width: 700px) {
-    .sticky-share-inner { grid-template-columns: 1fr; gap: 10px; }
-  }
+  .sticky-share-inner { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
   .sticky-share-label {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--ink-muted);
     font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
   }
   .sticky-share-label .live-dot {
     display: inline-block;
@@ -115,9 +108,14 @@
     height: 6px;
     border-radius: 50%;
     background: var(--positive);
-    margin-right: 6px;
-    vertical-align: 1px;
     animation: pulse 2s ease-in-out infinite;
+  }
+  .sticky-share-label .auto {
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-size: 12px;
   }
   @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -125,53 +123,41 @@
   }
   .share-track {
     display: flex;
-    height: 32px;
+    height: 30px;
     background: var(--rule);
     overflow: hidden;
   }
   .share-seg {
     display: flex;
     align-items: center;
-    padding: 0 12px;
-    font-size: 13px;
+    padding: 0 10px;
+    font-size: 12px;
     font-weight: 500;
     color: white;
     white-space: nowrap;
     overflow: hidden;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .share-seg.your { background: var(--your); }
-  .share-seg.comp { background: var(--comp); }
-  .share-seg.outside { background: var(--ink-muted); }
-  .sticky-update {
+  .share-legend {
     display: flex;
-    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
   }
-  .btn-update {
-    background: var(--accent);
-    color: white;
-    border: 1px solid var(--accent);
-    padding: 8px 16px;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-update:hover { background: #15293f; }
-
-  /* ============ PAGE LAYOUT ============ */
-  .page {
-    max-width: var(--max-w);
-    margin: 0 auto;
-    padding: 0 32px;
+  .share-legend .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    vertical-align: 1px;
   }
 
-  /* ============ INTRO ============ */
-  .intro {
-    padding: 40px 0 32px;
-    border-bottom: 1px solid var(--rule);
-  }
+  /* LAYOUT */
+  .page { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
+  .intro { padding: 40px 0 32px; border-bottom: 1px solid var(--rule); }
   .intro-eyebrow {
     font-size: 12px;
     text-transform: uppercase;
@@ -193,15 +179,12 @@
     max-width: 60ch;
   }
   .intro-sub p { margin-bottom: 8px; }
-
-  /* ============ SECTIONS ============ */
   section.block {
     padding: 48px 0;
     border-bottom: 1px solid var(--rule);
-    scroll-margin-top: 120px;
+    scroll-margin-top: 160px;
   }
   section.block:last-of-type { border-bottom: none; }
-
   .section-number {
     font-family: 'Fraunces', serif;
     font-size: 13px;
@@ -224,48 +207,117 @@
     margin-bottom: 28px;
   }
 
-  /* ============ PROPERTY PANELS ============ */
-  .props-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 24px;
+  /* COMP STRIP (horizontal scroll) */
+  .comp-strip-wrap {
+    margin: 0 -32px 24px;
+    padding: 0 32px;
+    position: relative;
   }
-  @media (max-width: 800px) {
-    .props-grid { grid-template-columns: 1fr; }
+  .comp-strip {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 4px 4px 16px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule-strong) transparent;
   }
-  .prop-panel {
+  .comp-strip::-webkit-scrollbar { height: 8px; }
+  .comp-strip::-webkit-scrollbar-track { background: var(--rule); }
+  .comp-strip::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+
+  .prop-card {
+    flex: 0 0 320px;
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
-    padding: 22px 24px;
+    padding: 20px 22px;
+    scroll-snap-align: start;
+    position: relative;
   }
-  .prop-panel.your { border-left: 3px solid var(--your); }
-  .prop-panel.comp { border-left: 3px solid var(--comp); }
-  .prop-head {
+  .prop-card.anchored {
+    flex: 0 0 320px;
+    border-left: 3px solid var(--your);
+    position: sticky;
+    left: 32px;
+    z-index: 10;
+    box-shadow: 8px 0 16px -8px rgba(0,0,0,0.06);
+  }
+  .prop-card.comp { border-left: 3px solid var(--comp1); }
+  .prop-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 10px;
+  }
+  .prop-card-eyebrow {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 600;
-    margin-bottom: 14px;
   }
-  .prop-panel.your .prop-head { color: var(--your); }
-  .prop-panel.comp .prop-head { color: var(--comp); }
+  .prop-card.anchored .prop-card-eyebrow { color: var(--your); }
+  .prop-card.comp .prop-card-eyebrow { color: var(--comp1); }
+  .prop-card-remove {
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    color: var(--ink-muted);
+    padding: 3px 8px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .prop-card-remove:hover {
+    color: var(--ink);
+    border-color: var(--ink-soft);
+  }
+
+  .add-comp-card {
+    flex: 0 0 220px;
+    background: var(--bg);
+    border: 1.5px dashed var(--rule-strong);
+    padding: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--ink-soft);
+    transition: all 0.15s;
+    font: inherit;
+    font-size: 14px;
+    text-align: center;
+  }
+  .add-comp-card:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .add-comp-plus {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1;
+  }
+
   .field {
     display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 12px;
+    grid-template-columns: 100px 1fr;
+    gap: 8px;
     align-items: center;
-    margin-bottom: 8px;
-    font-size: 13px;
+    margin-bottom: 7px;
+    font-size: 12px;
   }
-  .field-label { color: var(--ink-muted); font-size: 12px; }
+  .field-label { color: var(--ink-muted); font-size: 11px; }
   input[type="text"], select {
     width: 100%;
-    padding: 7px 10px;
+    padding: 6px 8px;
     border: 1px solid var(--rule-strong);
     background: var(--bg-elevated);
     font: inherit;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--ink);
   }
   input[type="text"]:focus, select:focus {
@@ -274,7 +326,7 @@
   }
   input[type="range"] { width: 100%; }
 
-  /* ============ WEIGHTS PANEL ============ */
+  /* WEIGHTS */
   .weights-panel {
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
@@ -297,16 +349,17 @@
   }
   .weight-row {
     display: grid;
-    grid-template-columns: 240px 1fr 50px;
+    grid-template-columns: 280px 1fr 50px;
     gap: 14px;
     align-items: center;
     margin-bottom: 10px;
     font-size: 13px;
   }
-  .weight-label {
-    color: var(--ink);
-    font-weight: 500;
+  @media (max-width: 700px) {
+    .weight-row { grid-template-columns: 1fr 50px; }
+    .weight-row .weight-label { grid-column: 1 / -1; }
   }
+  .weight-label { color: var(--ink); font-weight: 500; font-size: 13px; }
   .weight-role {
     color: var(--ink-muted);
     font-size: 11px;
@@ -321,13 +374,9 @@
     text-align: right;
     font-size: 13px;
   }
-  .weight-foot {
-    font-size: 12px;
-    color: var(--ink-muted);
-    margin-top: 14px;
-  }
+  .weight-foot { font-size: 12px; color: var(--ink-muted); margin-top: 14px; }
 
-  /* ============ RESULTS ============ */
+  /* RESULTS */
   .results-panel {
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
@@ -339,7 +388,7 @@
     letter-spacing: 0.1em;
     font-weight: 600;
     color: var(--ink-muted);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   table.share-table {
     width: 100%;
@@ -360,62 +409,9 @@
     letter-spacing: 0.06em;
   }
   .num { font-variant-numeric: tabular-nums; text-align: right !important; }
-  .overall-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 10px;
-    font-size: 14px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .overall-row:last-child { border-bottom: none; }
-  #share-bars {
-    margin-top: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .bar-group-title {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .bar-row {
-    display: grid;
-    grid-template-columns: 160px 1fr 56px;
-    gap: 10px;
-    align-items: center;
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-  .bar-label {
-    color: var(--ink-soft);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .bar-track {
-    height: 8px;
-    background: var(--rule);
-    overflow: hidden;
-  }
-  .bar-fill { height: 100%; min-width: 2px; }
-  .bar-fill.your { background: var(--your); }
-  .bar-fill.comp { background: var(--comp); }
-  .bar-fill.weighted-your { background: #0d1c2f; }
-  .bar-fill.weighted-comp { background: #6b2e1c; }
-  .bar-val {
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-    color: var(--ink-soft);
-  }
-  #sim-hint {
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--ink-soft);
-  }
+  #sim-hint { margin-top: 14px; font-size: 13px; color: var(--ink-soft); }
 
-  /* ============ PERSONAS SECTION ============ */
+  /* PERSONAS */
   .persona-controls {
     margin-bottom: 24px;
     display: flex;
@@ -430,8 +426,10 @@
     letter-spacing: 0.06em;
   }
   .persona-controls select {
-    max-width: 360px;
-    min-width: 240px;
+    max-width: 380px;
+    min-width: 260px;
+    font-size: 14px;
+    padding: 8px 10px;
   }
   .persona-card {
     background: var(--bg-elevated);
@@ -461,14 +459,8 @@
     font-size: 13px;
     margin: 16px 0;
   }
-  .persona-dl dt {
-    color: var(--ink-muted);
-    margin: 0;
-  }
-  .persona-dl dd {
-    color: var(--ink);
-    margin: 0;
-  }
+  .persona-dl dt { color: var(--ink-muted); margin: 0; }
+  .persona-dl dd { color: var(--ink); margin: 0; }
   .persona-narrative {
     font-size: 14px;
     color: var(--ink-soft);
@@ -478,7 +470,7 @@
     margin-top: 14px;
   }
 
-  /* WTP bar charts in persona section */
+  /* WTP top/bottom 5 charts */
   .wtp-chart-block {
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
@@ -493,26 +485,18 @@
     margin-bottom: 14px;
   }
   .wtp-chart-head.top { color: var(--positive); }
-  .wtp-chart-head.bottom { color: var(--comp); }
+  .wtp-chart-head.bottom { color: var(--comp1); }
   .wtp-bar-row {
     display: grid;
-    grid-template-columns: 1fr 70px;
+    grid-template-columns: 1fr 80px;
     gap: 12px;
     align-items: center;
     margin-bottom: 10px;
     font-size: 13px;
   }
   .wtp-bar-row:last-child { margin-bottom: 0; }
-  .wtp-bar-content {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .wtp-bar-label {
-    color: var(--ink);
-    font-size: 13px;
-    line-height: 1.3;
-  }
+  .wtp-bar-content { display: flex; flex-direction: column; gap: 3px; }
+  .wtp-bar-label { color: var(--ink); font-size: 13px; line-height: 1.3; }
   .wtp-bar-track {
     height: 6px;
     background: var(--rule);
@@ -520,7 +504,7 @@
   }
   .wtp-bar-fill { height: 100%; }
   .wtp-bar-fill.positive { background: var(--positive); }
-  .wtp-bar-fill.negative { background: var(--comp); }
+  .wtp-bar-fill.negative { background: var(--comp1); }
   .wtp-amt {
     font-variant-numeric: tabular-nums;
     font-weight: 500;
@@ -528,9 +512,9 @@
     font-size: 14px;
   }
   .wtp-amt.positive { color: var(--positive); }
-  .wtp-amt.negative { color: var(--comp); }
+  .wtp-amt.negative { color: var(--comp1); }
 
-  /* ============ WTP SECTION ============ */
+  /* WTP per-segment side-by-side bars (bidirectional) */
   .wtp-panel {
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
@@ -541,7 +525,7 @@
     grid-template-columns: 1fr;
     gap: 10px;
     margin-bottom: 22px;
-    max-width: 540px;
+    max-width: 600px;
   }
   .wtp-field {
     display: grid;
@@ -559,56 +543,77 @@
     background: var(--accent-soft);
     border: 1px solid #C9D4E2;
     padding: 18px 22px;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
     font-size: 15px;
     color: var(--ink);
     line-height: 1.55;
   }
-  .wtp-headline strong {
-    font-weight: 600;
-    color: var(--accent);
+  .wtp-headline strong { font-weight: 600; color: var(--accent); }
+
+  .wtp-segment-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
   }
-  .wtp-persona-list {
-    list-style: none;
-    padding: 0;
-    margin: 8px 0 0;
-  }
-  .wtp-persona-list li {
+  .wtp-segment-row {
     display: grid;
-    grid-template-columns: 1fr 100px;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: 220px 1fr 90px;
+    gap: 16px;
     align-items: center;
-    font-size: 14px;
+    font-size: 13px;
   }
-  .wtp-persona-list li:last-child { border-bottom: none; }
-  .wtp-persona-name {
-    color: var(--ink);
+  @media (max-width: 700px) {
+    .wtp-segment-row { grid-template-columns: 1fr 90px; }
+    .wtp-segment-row .wtp-segment-label { grid-column: 1 / -1; }
   }
-  .wtp-persona-role {
+  .wtp-segment-label { line-height: 1.3; }
+  .wtp-segment-role {
     display: block;
     font-size: 11px;
     color: var(--ink-muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
-  .wtp-persona-amt {
+  .wtp-segment-name { color: var(--ink); font-weight: 500; }
+  .wtp-segment-track {
+    height: 10px;
+    background: var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .wtp-segment-track .center-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--rule-strong);
+  }
+  .wtp-segment-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+  .wtp-segment-fill.positive { background: var(--positive); left: 50%; }
+  .wtp-segment-fill.negative { background: var(--comp1); right: 50%; }
+  .wtp-segment-amt {
     font-variant-numeric: tabular-nums;
     font-weight: 500;
     text-align: right;
     font-size: 14px;
   }
-  .wtp-persona-amt.positive { color: var(--positive); }
-  .wtp-persona-amt.negative { color: var(--comp); }
+  .wtp-segment-amt.positive { color: var(--positive); }
+  .wtp-segment-amt.negative { color: var(--comp1); }
   .wtp-footnote {
     font-size: 12px;
     color: var(--ink-muted);
-    margin-top: 16px;
+    margin-top: 18px;
+    line-height: 1.5;
   }
 
-  /* ============ SCENARIOS ============ */
+  /* SCENARIOS */
   .scenario-panel {
     background: var(--bg-elevated);
     border: 1px solid var(--rule);
@@ -620,7 +625,7 @@
     gap: 12px;
     align-items: center;
     margin-bottom: 22px;
-    max-width: 720px;
+    max-width: 800px;
   }
   .scenario-controls label {
     font-size: 12px;
@@ -634,9 +639,7 @@
     gap: 18px;
     margin-bottom: 14px;
   }
-  @media (max-width: 700px) {
-    .scenario-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 700px) { .scenario-grid { grid-template-columns: 1fr; } }
   .scenario-card {
     background: var(--bg);
     border: 1px solid var(--rule);
@@ -658,41 +661,62 @@
     line-height: 1;
     margin-bottom: 4px;
   }
-  .scenario-big-sub {
-    font-size: 12px;
-    color: var(--ink-muted);
-  }
-  .scenario-delta {
-    font-size: 14px;
-    margin: 14px 0 8px;
-    color: var(--ink);
-  }
+  .scenario-big-sub { font-size: 12px; color: var(--ink-muted); }
+  .scenario-delta { font-size: 14px; margin: 14px 0 8px; color: var(--ink); }
   .scenario-delta strong { font-weight: 600; }
   .scenario-verdict {
     font-size: 13px;
     color: var(--ink-soft);
-    margin-bottom: 14px;
     padding: 10px 12px;
     background: var(--warn-soft);
     border-left: 3px solid var(--warn-rule);
+    margin-bottom: 14px;
   }
-  .bundle-list {
-    list-style: none;
-    padding: 0;
-    font-size: 13px;
-  }
+  .bundle-list { list-style: none; padding: 0; font-size: 13px; }
   .bundle-list li {
     padding: 6px 0;
     border-bottom: 1px solid var(--rule);
     color: var(--ink-soft);
   }
   .bundle-list li:last-child { border-bottom: none; }
-  .bundle-list strong {
-    color: var(--ink);
-    font-weight: 500;
-  }
+  .bundle-list strong { color: var(--ink); font-weight: 500; }
 
-  /* ============ FOOTER ============ */
+  /* CONTACT CTA */
+  .contact-cta {
+    background: var(--accent-soft);
+    border: 1px solid #C9D4E2;
+    padding: 28px 32px;
+    margin: 48px 0 32px;
+  }
+  .contact-cta-eyebrow {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .contact-cta-body {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    max-width: 62ch;
+  }
+  .contact-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .contact-cta-link::after { content: "→"; transition: transform 0.2s; }
+  .contact-cta-link:hover::after { transform: translateX(3px); }
+
+  /* FOOTER */
   footer.note {
     border-top: 1px solid var(--rule);
     background: var(--bg);
@@ -706,6 +730,14 @@
     margin: 0 auto;
     line-height: 1.6;
   }
+
+  .loading {
+    padding: 80px 32px;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 14px;
+  }
+  .loading-error { color: var(--comp1); }
 </style>
 </head>
 <body>
@@ -722,16 +754,12 @@
 
 <div class="sticky-share">
   <div class="sticky-share-inner">
-    <div>
-      <div class="sticky-share-label"><span class="live-dot"></span>Capture rate · weighted by target tenant mix</div>
+    <div class="sticky-share-label">
+      <span><span class="live-dot"></span>Capture rate, weighted across target tenant segments</span>
+      <span class="auto">Updates automatically as you change inputs</span>
     </div>
-    <div class="share-track" id="sticky-track">
-      <div class="share-seg your" id="sticky-your" style="width: 0%">0%</div>
-      <div class="share-seg comp" id="sticky-comp" style="width: 0%">0%</div>
-    </div>
-    <div class="sticky-update">
-      <button type="button" class="btn-update" id="btn-simulate">Update</button>
-    </div>
+    <div class="share-track" id="sticky-track"></div>
+    <div class="share-legend" id="sticky-legend"></div>
   </div>
 </div>
 
@@ -739,117 +767,112 @@
 
   <section class="intro">
     <div class="intro-eyebrow">Simulator</div>
-    <h1 class="display page-title">Configure your property and a comp, see how target tenants choose.</h1>
+    <h1 class="display page-title">Configure your property and comps, see how target tenants choose.</h1>
     <div class="intro-sub">
-      <p>Build your property and a comparable, set the mix of target tenant segments for your trade area, and see how each segment splits between the two. Adjust amenities, rent, or the segment mix to see how capture rate responds.</p>
+      <p>Set up your property and any number of comparables, define the mix of target tenant segments for your trade area, and see how each segment splits between properties. Adjust amenities, rent, or the segment mix to see how capture rate responds.</p>
       <p>Results are conditional on a tenant choosing to lease. Calibrate the tenant mix against real demographic data before relying on these numbers for a committee decision.</p>
     </div>
   </section>
 
-  <section class="block" id="simulate">
-    <div class="section-number">01</div>
-    <h2 class="section-title">Configure your comp set</h2>
-    <p class="section-lede">Set up your property and one comparable. Adjust any feature on either property; results update when you click Update.</p>
+  <div id="app-loading" class="loading">Loading model data...</div>
 
-    <div class="props-grid">
-      <div class="prop-panel your">
-        <div class="prop-head">Your property</div>
-        <div id="form-subject"></div>
+  <div id="app" style="display:none">
+
+    <section class="block" id="simulate">
+      <div class="section-number">01</div>
+      <h2 class="section-title">Configure your comp set</h2>
+      <p class="section-lede">Your property is anchored on the left. Add as many comps as you need; scroll the strip horizontally to see them all. Every input updates capture rate immediately.</p>
+
+      <div class="comp-strip-wrap">
+        <div class="comp-strip" id="comp-strip"></div>
       </div>
-      <div class="prop-panel comp">
-        <div class="prop-head">Comp</div>
-        <div id="form-comp"></div>
+
+      <div class="weights-panel">
+        <div class="weights-head">Target tenant segments</div>
+        <p class="weights-helper">Set the relative size of each segment in your target market. Raw values are normalized; they do not need to sum to one.</p>
+        <div id="weights-fields"></div>
+        <p class="weight-foot">Raw sum: <span id="weight-sum">0</span> (used for normalization)</p>
       </div>
-    </div>
 
-    <div class="weights-panel">
-      <div class="weights-head">Target tenant segments</div>
-      <p class="weights-helper">Set the relative size of each segment in your target market. Raw values are normalized; they do not need to sum to one.</p>
-      <div id="weights-fields"></div>
-      <p class="weight-foot">Raw sum: <span id="weight-sum">0</span> (used for normalization)</p>
-    </div>
-
-    <div class="results-panel">
-      <div class="results-head">Results</div>
-      <table class="share-table">
-        <thead>
-          <tr>
-            <th>Target tenant segment</th>
-            <th class="num">Weight</th>
-            <th class="num" id="th-subj">Your property</th>
-            <th class="num" id="th-comp">Comp</th>
-          </tr>
-        </thead>
-        <tbody id="share-table-body"></tbody>
-      </table>
-      <div style="margin-top:8px">
-        <div class="results-head" style="margin-bottom:6px">Weighted across all target segments</div>
-        <div id="overall-shares"></div>
+      <div class="results-panel">
+        <div class="results-head">Detailed shares by segment and property</div>
+        <table class="share-table">
+          <thead><tr id="share-table-head"></tr></thead>
+          <tbody id="share-table-body"></tbody>
+        </table>
+        <p id="sim-hint"></p>
       </div>
-      <div id="share-bars"></div>
-      <p id="sim-hint"></p>
-    </div>
-  </section>
+    </section>
 
-  <section class="block" id="personas">
-    <div class="section-number">02</div>
-    <h2 class="section-title">Discover your target tenant</h2>
-    <p class="section-lede">Review each tenant segment and what they value most. The bar charts show the amenities each segment is willing to pay the most for, and the features that lose them.</p>
+    <section class="block" id="personas">
+      <div class="section-number">02</div>
+      <h2 class="section-title">Discover your target tenant</h2>
+      <p class="section-lede">Review each target tenant segment and what they value most. Select a specific segment to see their profile and willingness to pay, or pick "All renters" for the pooled view.</p>
 
-    <div class="persona-controls">
-      <label for="persona-select">Segment</label>
-      <select id="persona-select"></select>
-    </div>
+      <div class="persona-controls">
+        <label for="persona-select">Segment</label>
+        <select id="persona-select"></select>
+      </div>
 
-    <div class="persona-card" id="persona-card"></div>
+      <div class="persona-card" id="persona-card"></div>
 
-    <div class="wtp-chart-block">
-      <div class="wtp-chart-head top">Most valued · top 5 amenities</div>
-      <div id="persona-wtp-top"></div>
-    </div>
-    <div class="wtp-chart-block">
-      <div class="wtp-chart-head bottom">Least valued · bottom 5 amenities</div>
-      <div id="persona-wtp-bottom"></div>
-    </div>
-  </section>
+      <div class="wtp-chart-block">
+        <div class="wtp-chart-head top">Most valued, top 5 features</div>
+        <div id="persona-wtp-top"></div>
+      </div>
+      <div class="wtp-chart-block">
+        <div class="wtp-chart-head bottom">Least valued, bottom 5 features</div>
+        <div id="persona-wtp-bottom"></div>
+      </div>
+    </section>
 
-  <section class="block" id="wtp">
-    <div class="section-number">03</div>
-    <h2 class="section-title">Willingness to pay for a feature</h2>
-    <p class="section-lede">Pick a feature and a baseline; the simulator tells you how much per month an average renter would pay to upgrade to the simulated change. Per-segment values appear below.</p>
+    <section class="block" id="wtp">
+      <div class="section-number">03</div>
+      <h2 class="section-title">Willingness to pay for a feature</h2>
+      <p class="section-lede">Pick a feature and a baseline; the simulator shows how much per month an average renter would pay to upgrade to the simulated change, plus per-segment values side by side.</p>
 
-    <div class="wtp-panel">
-      <div class="wtp-controls">
-        <div class="wtp-field">
-          <span class="wtp-field-label">Feature</span>
-          <select id="wtp-attr"></select>
+      <div class="wtp-panel">
+        <div class="wtp-controls">
+          <div class="wtp-field">
+            <span class="wtp-field-label">Feature</span>
+            <select id="wtp-attr"></select>
+          </div>
+          <div class="wtp-field">
+            <span class="wtp-field-label">Baseline offer</span>
+            <select id="wtp-from"></select>
+          </div>
+          <div class="wtp-field">
+            <span class="wtp-field-label">Simulated change</span>
+            <select id="wtp-to"></select>
+          </div>
         </div>
-        <div class="wtp-field">
-          <span class="wtp-field-label">Baseline offer</span>
-          <select id="wtp-from"></select>
-        </div>
-        <div class="wtp-field">
-          <span class="wtp-field-label">Simulated change</span>
-          <select id="wtp-to"></select>
-        </div>
+        <div id="wtp-out"></div>
       </div>
-      <div id="wtp-out"></div>
-    </div>
-  </section>
+    </section>
 
-  <section class="block" id="scenarios">
-    <div class="section-number">04</div>
-    <h2 class="section-title">Repositioning scenarios</h2>
-    <p class="section-lede">Apply a preset bundle to your property, bump rent to the nearest price step, and compare weighted capture rate before and after. The comp stays as configured above.</p>
+    <section class="block" id="scenarios">
+      <div class="section-number">04</div>
+      <h2 class="section-title">Repositioning scenarios</h2>
+      <p class="section-lede">Apply a preset bundle to your property, bump rent to the nearest price step, and compare weighted capture rate before and after. Comps stay as configured above.</p>
 
-    <div class="scenario-panel">
-      <div class="scenario-controls">
-        <label for="scenario-bundle">Bundle</label>
-        <select id="scenario-bundle"></select>
+      <div class="scenario-panel">
+        <div class="scenario-controls">
+          <label for="scenario-bundle">Bundle</label>
+          <select id="scenario-bundle"></select>
+        </div>
+        <div id="scenario-out"></div>
       </div>
-      <div id="scenario-out"></div>
-    </div>
-  </section>
+    </section>
+
+    <section class="contact-cta">
+      <div class="contact-cta-eyebrow">Tune this model to your market.</div>
+      <div class="contact-cta-body">
+        The simulator runs on synthetic tenants. For property-level decisions, we can tune the model to your submarket and target tenants using real-respondent survey data.
+      </div>
+      <a class="contact-cta-link" href="mailto:emunye3@gatech.edu?subject=Tenant%20Choice%20Simulator%20validation">Contact emunye3@gatech.edu</a>
+    </section>
+
+  </div>
 
 </div>
 
@@ -859,51 +882,67 @@
   </div>
 </footer>
 
-<script type="application/json" id="sim-data">
-{"ATTRIBUTES":{"Size":{"750 SF (compact 1BR)":750,"1,000 SF (large 1BR / compact 2BR)":1000,"1,250 SF (standard 2BR)":1250},"Price":{"$1,650/mo":1650,"$1,950/mo":1950,"$2,250/mo":2250,"$2,550/mo":2550},"MoveInSpecial":{"None":null,"1 month free (12-mo lease)":null,"2 months free (13-mo lease)":null},"Location":{"North Druid Hills / Briarcliff":null,"Virginia-Highland / Morningside":null,"Decatur / Emory Village":null,"Buckhead / Lenox":null},"CommuteToWork":{"Quick (under 15 min by car)":null,"Average (15-30 min by car)":null,"Long (over 30 min by car)":null},"Walkability":{"Car-Required (drive for groceries, dining, errands from this building)":null,"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)":null,"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)":null},"Finishes":{"Builder-grade (laminate counters, basic appliances, no smart features)":null,"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)":null,"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)":null},"Parking":{"Surface lot, unassigned parking, no gate":null,"Gated surface lot + reserved space option":null,"Dedicated garage with assigned space + EV charging":null},"Security":{"Tier 1: Open access, no controlled entry":null,"Tier 2: Perimeter gate + controlled-access lobby + camera coverage":null,"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout":null},"Rooftop":{"No rooftop space":null,"Rooftop lounge with skyline views & outdoor seating":null},"Coworking":{"No dedicated coworking space":null,"Resident co-working lounge with private call rooms & wifi":null},"PetAmenities":{"No pet amenities":null,"Standard dog park only":null,"Dog park + pet spa with grooming station":null},"PackageHandling":{"Standard mailroom (sign for packages during office hours)":null,"24/7 Amazon Hub lockers + refrigerated grocery locker":null}},"PERSONA_COEFS_RAW":{"emory_grad":[{"feature":"Size_num","coef":0.0044087262796988205,"p_value":2.7578441003234548e-14},{"feature":"Price_num","coef":-0.01099365080530812,"p_value":1.791842226575211e-76},{"feature":"ASC_B","coef":1.5144038137129534,"p_value":8.304802294216904e-30},{"feature":"ASC_C","coef":0.6091692640657297,"p_value":3.3188542323637795e-07},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.07397420846132749,"p_value":0.7706286380241767},{"feature":"MoveInSpecial__None","coef":-1.3139580840410232,"p_value":4.191392764686795e-07},{"feature":"Location__Decatur / Emory Village","coef":2.7148445256949687,"p_value":5.903547223626618e-31},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.7120418416144216,"p_value":2.1027708969215908e-16},{"feature":"Location__Virginia-Highland / Morningside","coef":0.5194718329997556,"p_value":0.02106606279851785},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.9748169918280682,"p_value":5.268373464358789e-36},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.9108982031962736,"p_value":3.4601824523729477e-33},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":3.487902405913773,"p_value":2.3395332877300885e-38},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.6724869249007237,"p_value":3.2906257581507424e-36},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":0.5516076977127152,"p_value":0.05097351272625015},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.061533538691623736,"p_value":0.7267540945193975},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.2711829776660128,"p_value":0.32046373921574434},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-0.613397479352974,"p_value":0.0015554575296557605},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":0.14423146639876505,"p_value":0.6382152961116344},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.1605825807210883,"p_value":0.0009492483657663201},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.7132784924142631,"p_value":0.005416753898635346},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":1.1745454863323326,"p_value":9.367857166425234e-11},{"feature":"PetAmenities__No pet amenities","coef":-0.8259802194372546,"p_value":0.00024814980649298413},{"feature":"PetAmenities__Standard dog park only","coef":0.3527482737102093,"p_value":0.09905155721826263},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.04696707165092817,"p_value":0.7866312238328304}],"vahi_professional":[{"feature":"Size_num","coef":0.00668239273281586,"p_value":6.515538732119451e-11},{"feature":"Price_num","coef":-0.023288232176751203,"p_value":3.798138165682818e-28},{"feature":"ASC_B","coef":1.6619798002251867,"p_value":6.963348020671094e-33},{"feature":"ASC_C","coef":0.30437598863294185,"p_value":0.009379151725953437},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.3502150554900642,"p_value":0.5207270944825815},{"feature":"MoveInSpecial__None","coef":-3.836983355944028,"p_value":6.513451207191389e-10},{"feature":"Location__Decatur / Emory Village","coef":0.12617188240827149,"p_value":0.6791271659850731},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.1681769904531683,"p_value":0.008535574915475217},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8787851941321283,"p_value":3.1163846132320166e-06},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-11.125331835373524,"p_value":4.90138976558609e-31},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":6.790021733737407,"p_value":4.740682070995557e-28},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":11.205456357986387,"p_value":1.5219652628048027e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":7.365256102926551,"p_value":6.327048557533629e-32},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":5.450671619680357,"p_value":4.7179852175030415e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":3.2582074674371055,"p_value":9.871762763591544e-12},{"feature":"Parking__Gated surface lot + reserved space option","coef":-3.7549971762037044,"p_value":2.803792375623368e-09},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-5.072738158806931,"p_value":9.250335120507572e-19},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.9129525047264286,"p_value":0.0026558870884424747},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":4.394587730862353,"p_value":3.120335586877179e-08},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-3.8142233033456896,"p_value":8.059202223803024e-12},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":2.953959844273161,"p_value":3.019539656460903e-09},{"feature":"PetAmenities__No pet amenities","coef":-3.276665661568949,"p_value":4.3598067646459105e-09},{"feature":"PetAmenities__Standard dog park only","coef":-1.0414058182959014,"p_value":0.023506803985644104},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0618367046088673,"p_value":8.425936093055616e-05}],"empty_nester":[{"feature":"Size_num","coef":0.008933524461392662,"p_value":2.4404823800450205e-31},{"feature":"Price_num","coef":-0.007771220979671398,"p_value":4.863277732343123e-41},{"feature":"ASC_B","coef":2.524493861273771,"p_value":2.2772049061393112e-51},{"feature":"ASC_C","coef":1.4590599822739199,"p_value":2.081682942010081e-24},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.5702935070873918,"p_value":6.960463114017216e-07},{"feature":"MoveInSpecial__None","coef":0.7072619102045222,"p_value":0.04053629916621559},{"feature":"Location__Decatur / Emory Village","coef":2.528018874899581,"p_value":8.186289897061854e-20},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.4442695591258314,"p_value":8.199203894992095e-07},{"feature":"Location__Virginia-Highland / Morningside","coef":1.6854158537473605,"p_value":7.144053108676289e-13},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-4.5425328025176785,"p_value":1.6977438956556256e-49},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":3.5412748299275987,"p_value":1.8337115796274938e-39},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":6.617759891260585,"p_value":1.899436082148443e-47},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":4.733690521049247,"p_value":1.7904059712391737e-56},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":2.264310387822625,"p_value":1.0697223470976356e-13},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5575778773798614,"p_value":2.1010468047362427e-10},{"feature":"Parking__Gated surface lot + reserved space option","coef":-1.7114518322856571,"p_value":1.9740535498940354e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-2.4622836751388872,"p_value":1.1691272220083425e-26},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.3892553844568574,"p_value":8.165535388344116e-11},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.634060141560855,"p_value":0.00019846124649328052},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":0.2859641767265717,"p_value":0.33476102279695197},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.1013495016802317,"p_value":0.614357691561741},{"feature":"PetAmenities__No pet amenities","coef":-0.9387057427640875,"p_value":0.0015934333847013333},{"feature":"PetAmenities__Standard dog park only","coef":-0.7504160741346676,"p_value":0.0013166506231717535},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.22583118787686624,"p_value":0.21032177607034477}],"skeptical_renter_control":[{"feature":"Size_num","coef":0.0067499605636801895,"p_value":2.7010891109266934e-17},{"feature":"Price_num","coef":-0.018940678142477334,"p_value":6.003293935248889e-26},{"feature":"ASC_B","coef":1.701749043859175,"p_value":1.6859010808127987e-37},{"feature":"ASC_C","coef":0.4132470595316151,"p_value":0.00026561733782893513},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.8047366781778569,"p_value":3.145275055411097e-05},{"feature":"MoveInSpecial__None","coef":-1.4105443891465932,"p_value":0.0019094881944904719},{"feature":"Location__Decatur / Emory Village","coef":2.0977582229679825,"p_value":4.808358430060341e-12},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.0720756968218024,"p_value":0.0012559445280446622},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8635923677246864,"p_value":3.1200544792018374e-10},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-8.26609397938111,"p_value":3.403558118125102e-23},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":5.494230985176725,"p_value":5.707734966392941e-27},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":9.974267696713246,"p_value":7.931073466993862e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":5.277110920056427,"p_value":7.866089368120505e-34},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":4.101375187277176,"p_value":1.2578859975278871e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5262871288163593,"p_value":1.0194539594910001e-06},{"feature":"Parking__Gated surface lot + reserved space option","coef":-2.976859467340312,"p_value":6.884833403461805e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-3.6854314378482638,"p_value":2.586016478970211e-14},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.656183136916843,"p_value":1.3863400478180867e-07},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":3.6541521910341275,"p_value":2.9635320215156425e-09},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-2.9967452851481586,"p_value":2.0961372537333665e-09},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.7514735215904741,"p_value":0.0017299082840013752},{"feature":"PetAmenities__No pet amenities","coef":-2.4834067732227143,"p_value":9.134965739415869e-09},{"feature":"PetAmenities__Standard dog park only","coef":0.07548188952891148,"p_value":0.8209240048811319},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0737156341413514,"p_value":0.00012475066334039655}]},"POOLED_ROWS":[{"feature":"Size_num","coef":0.0052308088779324064},{"feature":"Price_num","coef":-0.008567759750243611},{"feature":"ASC_B","coef":1.3401112812725542},{"feature":"ASC_C","coef":0.4741932165152219},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.48691414693580537},{"feature":"MoveInSpecial__None","coef":-0.6169147786986914},{"feature":"Location__Decatur / Emory Village","coef":1.8271523064873916},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.2090979010866834},{"feature":"Location__Virginia-Highland / Morningside","coef":0.9764901663770694},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.768127809288743},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.8360599362586405},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":4.384270296907701},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.8574252019163855},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":1.8950605743561664},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.47626307208193347},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.43947288316842315},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-1.5294239202048143},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.6636285248400635},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":2.060215155893587},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.8789917926366181},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.6654520016136928},{"feature":"PetAmenities__No pet amenities","coef":-1.2644323178157355},{"feature":"PetAmenities__Standard dog park only","coef":-0.3269871203492233},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.10302272153461585}],"PERSONA_DESCRIPTIONS":{"emory_grad":{"name":"Maya (Emory PhD Candidate)","age":28,"income":"$52,000/year (stipend + RA funding)","savings":"$4,200 liquid","debt":"$580/mo federal student loans","work_destination":"Emory main campus","lease_horizon":"18+ months (through dissertation)","segment":"Budget-constrained academic professional","narrative":"Maya is a third-year PhD candidate in epidemiology. Her monthly take-home is roughly $3,200, and she's loan-burdened. She's price-sensitive and values stability through her dissertation timeline. She doesn't have wealth buffers . she lives close to her budget every month."},"young_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters . he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"vahi_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters . he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"empty_nester":{"name":"Patricia (Recent Retiree)","age":67,"income":"$180K household (Tom still works as CPA)","savings":"~$1.4M retirement + $815K home-sale proceeds","debt":"None","work_destination":"Sandy Springs (Tom's office)","lease_horizon":"2-4 years (then condo TBD)","segment":"Wealthy empty-nester downsizer","narrative":"Patricia and Tom sold their suburban house and are renting for the first time in 30 years. They have substantial home-sale proceeds and retirement assets. Price is not a major constraint . they value quality, security, and the right neighborhood. Tom still commutes, so commute time matters for him."},"skeptical_renter_control":{"name":"Alex (Software Engineer)","age":31,"income":"$115K","savings":"$35K HYSA + $95K 401(k)","debt":"None","work_destination":"Unspecified","lease_horizon":"1-2 years","segment":"Analytical comparison shopper","narrative":"Alex is an experienced renter in Atlanta . has lived in Midtown, West Midtown, and Decatur. Reads reviews carefully and would walk away from a bad deal. Serves as a control persona to anchor the analytical end of the renter spectrum."}},"HIGHLAND":{"Name":"Highland Square (current)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$1,950/mo","MoveInSpecial":"1 month free (12-mo lease)","Location":"North Druid Hills / Briarcliff","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Parking":"Gated surface lot + reserved space option","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","Rooftop":"No rooftop space","Coworking":"No dedicated coworking space","PetAmenities":"Standard dog park only","PackageHandling":"Standard mailroom (sign for packages during office hours)"},"MODERA":{"Name":"Modera Morningside (key comp)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$2,250/mo","MoveInSpecial":"None","Location":"Virginia-Highland / Morningside","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Parking":"Dedicated garage with assigned space + EV charging","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker"},"DEFAULT_WEIGHTS":{"emory_grad":0.2,"young_professional":0.4,"vahi_professional":0.4,"empty_nester":0.2,"skeptical_renter_control":0.2},"BUNDLES":{"Light renovation (mid-tier finishes + Tier 2 security)":{"Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","price_bump":100},"Premium repositioning (premium finishes + Tier 3 security + rooftop)":{"Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","price_bump":300},"Lifestyle pack (coworking + pet spa + smart package)":{"Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker","price_bump":150},"Parking upgrade only (gated garage + EV)":{"Parking":"Dedicated garage with assigned space + EV charging","price_bump":75},"Aggressive concession (no other change)":{"MoveInSpecial":"2 months free (13-mo lease)","price_bump":0}}}
-</script>
-
 <script>
 (function () {
-  const DATA = JSON.parse(document.getElementById('sim-data').textContent);
-  const ATTRIBUTES = DATA.ATTRIBUTES;
-  const PERSONA_DESCRIPTIONS = DATA.PERSONA_DESCRIPTIONS;
-  const BUNDLES = DATA.BUNDLES;
-  const attrNames = Object.keys(ATTRIBUTES);
+  'use strict';
 
-  // Build coef maps per persona and pooled
-  const personaCoefMaps = {};
-  for (const [p, rows] of Object.entries(DATA.PERSONA_COEFS_RAW)) {
+  const COMP_COLORS = [
+    'var(--comp1)', 'var(--comp2)', 'var(--comp3)',
+    'var(--comp4)', 'var(--comp5)', 'var(--comp6)'
+  ];
+
+  let DATA = null;
+  let ATTRIBUTES = null;
+  let PERSONA_DESCRIPTIONS = null;
+  let BUNDLES = null;
+  let attrNames = null;
+  let personaCoefMaps = null;
+  let pooledCoefMap = null;
+
+  let properties = [];
+  let nextCompId = 1;
+
+  function loadData() {
+    fetch('simulator-data.json')
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        DATA = data;
+        ATTRIBUTES = data.ATTRIBUTES;
+        PERSONA_DESCRIPTIONS = data.PERSONA_DESCRIPTIONS;
+        BUNDLES = data.BUNDLES;
+        attrNames = Object.keys(ATTRIBUTES);
+        personaCoefMaps = {};
+        for (const [k, rows] of Object.entries(data.PERSONA_COEFS_RAW)) {
+          personaCoefMaps[k] = coefMapFromRows(rows);
+        }
+        pooledCoefMap = coefMapFromRows(data.POOLED_ROWS);
+        initApp();
+      })
+      .catch(function (err) {
+        const el = document.getElementById('app-loading');
+        el.className = 'loading loading-error';
+        el.innerHTML = 'Could not load simulator-data.json. ' +
+          'If you are viewing this file locally, the simulator needs to be served over HTTP. ' +
+          'Try <code>python3 -m http.server</code> from the docs/ folder. ' +
+          '<br><br>Error: ' + escapeHtml(String(err.message || err));
+      });
+  }
+
+  function coefMapFromRows(rows) {
     const m = new Map();
     for (const r of rows) m.set(r.feature, r.coef);
-    personaCoefMaps[p] = m;
-  }
-  const pooledCoefMap = new Map();
-  for (const r of DATA.POOLED_ROWS) pooledCoefMap.set(r.feature, r.coef);
-
-  // Helper to derive role from persona name (e.g. "Maya (Emory PhD Candidate)" -> "Emory PhD Candidate")
-  function personaRole(p) {
-    const d = PERSONA_DESCRIPTIONS[p];
-    if (!d) return p;
-    const m = /\(([^)]+)\)/.exec(d.name);
-    return m ? m[1] : d.segment || '';
-  }
-  function personaFirstName(p) {
-    const d = PERSONA_DESCRIPTIONS[p];
-    if (!d) return p;
-    return d.name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+    return m;
   }
 
-  function priceBeta(coefMap) {
-    return coefMap.get('Price_num') || 0;
-  }
+  function priceBeta(coefMap) { return coefMap.get('Price_num'); }
 
   function propertyUtility(profile, coefMap) {
     let util = 0;
-    const size = ATTRIBUTES.Size[profile.Size];
-    util += (coefMap.get('Size_num') || 0) * (size || 0);
-    const price = ATTRIBUTES.Price[profile.Price];
-    util += (coefMap.get('Price_num') || 0) * (price || 0);
+    util += (coefMap.get('Size_num') || 0) * (ATTRIBUTES.Size[profile.Size] || 0);
+    util += (coefMap.get('Price_num') || 0) * (ATTRIBUTES.Price[profile.Price] || 0);
     for (const attr of attrNames) {
       if (attr === 'Size' || attr === 'Price') continue;
       const level = profile[attr];
@@ -917,11 +956,11 @@
   }
 
   function marketShare(profiles, coefMap) {
-    const utils = profiles.map((p) => propertyUtility(p, coefMap));
-    const maxU = Math.max(...utils);
-    const expU = utils.map((u) => Math.exp(u - maxU));
-    const s = expU.reduce((a, b) => a + b, 0);
-    return expU.map((e) => e / s);
+    const utils = profiles.map(function (p) { return propertyUtility(p, coefMap); });
+    const maxU = Math.max.apply(null, utils);
+    const expU = utils.map(function (u) { return Math.exp(u - maxU); });
+    const s = expU.reduce(function (a, b) { return a + b; }, 0);
+    return expU.map(function (e) { return e / s; });
   }
 
   function wtpForChange(attribute, fromLevel, toLevel, coefMap) {
@@ -948,241 +987,164 @@
     let bestDiff = Infinity;
     for (const [label, num] of Object.entries(ATTRIBUTES.Price)) {
       const d = Math.abs(num - targetNum);
-      if (d < bestDiff) {
-        best = label;
-        bestDiff = d;
-      }
+      if (d < bestDiff) { best = label; bestDiff = d; }
     }
     return best;
   }
 
-  function readProfile(prefix) {
-    const p = {};
-    for (const attr of ['Name', ...attrNames]) {
-      const el = document.querySelector('[data-profile="' + prefix + '"][data-attr="' + attr + '"]');
-      if (!el) continue;
-      p[attr] = el.value;
-    }
-    return p;
+  function personaRole(p) {
+    const d = PERSONA_DESCRIPTIONS[p];
+    if (!d) return p;
+    const m = /\(([^)]+)\)/.exec(d.name);
+    return m ? m[1] : (d.segment || '');
   }
-
-  function getRawWeights() {
-    const w = {};
-    let sum = 0;
-    for (const persona of Object.keys(personaCoefMaps)) {
-      const el = document.querySelector('[data-weight="' + persona + '"]');
-      const v = el ? parseFloat(el.value) : 0;
-      w[persona] = v;
-      sum += v;
-    }
-    return { w, sum };
-  }
-
-  function normalizedWeights() {
-    const { w, sum } = getRawWeights();
-    if (sum <= 0) return null;
-    const n = {};
-    for (const k of Object.keys(w)) n[k] = w[k] / sum;
-    return n;
-  }
-
-  function runSimulation() {
-    const prop1 = readProfile('subject');
-    const prop2 = readProfile('comp');
-    const competing = [prop1, prop2];
-    const names = [prop1.Name, prop2.Name];
-    const normW = normalizedWeights();
-
-    const personaShares = {};
-    for (const [persona, cmap] of Object.entries(personaCoefMaps)) {
-      if (!(priceBeta(cmap) < 0)) continue;
-      personaShares[persona] = marketShare(competing, cmap);
-    }
-
-    const tableBody = document.getElementById('share-table-body');
-    const overallEl = document.getElementById('overall-shares');
-    const hintEl = document.getElementById('sim-hint');
-    const barsEl = document.getElementById('share-bars');
-
-    tableBody.innerHTML = '';
-    barsEl.innerHTML = '';
-    document.getElementById('th-subj').textContent = truncate(names[0], 24);
-    document.getElementById('th-comp').textContent = truncate(names[1], 24);
-
-    if (!normW) {
-      hintEl.textContent = 'Set at least one target tenant segment weight above zero.';
-      overallEl.innerHTML = '';
-      updateStickyBar(0, 0);
-      return;
-    }
-
-    const keys = Object.keys(personaShares);
-    const weighted = [0, 0];
-    for (const persona of keys) {
-      const sh = personaShares[persona];
-      weighted[0] += normW[persona] * sh[0];
-      weighted[1] += normW[persona] * sh[1];
-    }
-
-    updateStickyBar(weighted[0] * 100, weighted[1] * 100);
-
-    for (const persona of keys) {
-      const sh = personaShares[persona];
-      const role = personaRole(persona);
-      const name = personaFirstName(persona);
-      const tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td><span class="wtp-persona-role">' + escapeHtml(role) + '</span>' + escapeHtml(name) + '</td>' +
-        '<td class="num">' + (normW[persona] * 100).toFixed(0) + '%</td>' +
-        '<td class="num">' + (sh[0] * 100).toFixed(1) + '%</td>' +
-        '<td class="num">' + (sh[1] * 100).toFixed(1) + '%</td>';
-      tableBody.appendChild(tr);
-    }
-
-    overallEl.innerHTML =
-      '<div class="overall-row"><span>' + escapeHtml(truncate(names[0], 42)) +
-      '</span><strong>' + (weighted[0] * 100).toFixed(1) + '%</strong></div>' +
-      '<div class="overall-row"><span>' + escapeHtml(truncate(names[1], 42)) +
-      '</span><strong>' + (weighted[1] * 100).toFixed(1) + '%</strong></div>';
-
-    const maxPct = Math.max(
-      ...keys.flatMap((p) => [personaShares[p][0] * 100, personaShares[p][1] * 100]),
-      weighted[0] * 100,
-      weighted[1] * 100,
-      1
-    );
-
-    keys.forEach((persona) => {
-      const sh = personaShares[persona];
-      const role = personaRole(persona);
-      barsEl.appendChild(barGroup(role, sh, names, maxPct, false));
-    });
-    barsEl.appendChild(barGroup('Weighted across all segments', weighted, names, maxPct, true));
-
-    const s0 = weighted[0] * 100;
-    const s1 = weighted[1] * 100;
-    if (s0 > s1) {
-      hintEl.textContent =
-        'Your property leads on weighted capture rate. Pair with a tenant-pool estimate for lease-up counts.';
-    } else {
-      hintEl.textContent =
-        'The comp leads on weighted capture rate. Try repositioning or rent scenarios below to close the gap.';
-    }
-  }
-
-  function updateStickyBar(yourPct, compPct) {
-    const yEl = document.getElementById('sticky-your');
-    const cEl = document.getElementById('sticky-comp');
-    const yFill = Math.max(0, yourPct);
-    const cFill = Math.max(0, compPct);
-    const total = yFill + cFill;
-    if (total > 100) {
-      yEl.style.width = ((yFill / total) * 100).toFixed(1) + '%';
-      cEl.style.width = ((cFill / total) * 100).toFixed(1) + '%';
-    } else {
-      yEl.style.width = yFill.toFixed(1) + '%';
-      cEl.style.width = cFill.toFixed(1) + '%';
-    }
-    yEl.textContent = yFill.toFixed(1) + '%';
-    cEl.textContent = cFill.toFixed(1) + '%';
-  }
-
-  function barGroup(title, shares, names, maxPct, weighted) {
-    const wrap = document.createElement('div');
-    wrap.className = 'bar-group';
-    const h = document.createElement('div');
-    h.className = 'bar-group-title';
-    h.textContent = title;
-    wrap.appendChild(h);
-    for (let i = 0; i < 2; i++) {
-      const row = document.createElement('div');
-      row.className = 'bar-row';
-      const lab = document.createElement('span');
-      lab.className = 'bar-label';
-      lab.textContent = truncate(names[i], 30);
-      const track = document.createElement('div');
-      track.className = 'bar-track';
-      const fill = document.createElement('div');
-      const colorClass = i === 0
-        ? (weighted ? 'weighted-your' : 'your')
-        : (weighted ? 'weighted-comp' : 'comp');
-      fill.className = 'bar-fill ' + colorClass;
-      const pct = shares[i] * 100;
-      fill.style.width = Math.min(100, (pct / maxPct) * 100) + '%';
-      const val = document.createElement('span');
-      val.className = 'bar-val';
-      val.textContent = pct.toFixed(1) + '%';
-      track.appendChild(fill);
-      row.appendChild(lab);
-      row.appendChild(track);
-      row.appendChild(val);
-      wrap.appendChild(row);
-    }
-    return wrap;
-  }
-
-  function truncate(s, n) {
-    if (!s) return '';
-    return s.length <= n ? s : s.slice(0, n - 1) + '\u2026';
+  function personaFirstName(p) {
+    const d = PERSONA_DESCRIPTIONS[p];
+    if (!d) return p;
+    return d.name.replace(/\s*\([^)]*\)\s*$/, '').trim();
   }
 
   function escapeHtml(s) {
     const d = document.createElement('div');
-    d.textContent = s;
+    d.textContent = s == null ? '' : String(s);
     return d.innerHTML;
   }
-
-  function buildForms() {
-    const subj = document.getElementById('form-subject');
-    const comp = document.getElementById('form-comp');
-    subj.appendChild(field('Name', 'subject', 'Name', 'text', DATA.HIGHLAND.Name));
-    comp.appendChild(field('Name', 'comp', 'Name', 'text', DATA.MODERA.Name));
-    for (const attr of attrNames) {
-      subj.appendChild(selectField(attr, 'subject', DATA.HIGHLAND[attr]));
-      comp.appendChild(selectField(attr, 'comp', DATA.MODERA[attr]));
-    }
+  function truncate(s, n) {
+    if (!s) return '';
+    return s.length <= n ? s : s.slice(0, n - 1) + '\u2026';
   }
-
   function labelizeAttr(a) {
-    return a.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).trim();
+    return a.replace(/([A-Z])/g, ' $1').replace(/^./, function (c) { return c.toUpperCase(); }).trim();
   }
 
-  function field(label, profile, attr, type, value) {
+  // -------------------- Property cards --------------------
+
+  function initProperties() {
+    properties = [
+      Object.assign({ _id: 'p0' }, DATA.HIGHLAND),
+      Object.assign({ _id: 'p1' }, DATA.MODERA),
+    ];
+    nextCompId = 2;
+  }
+
+  function renderPropertyCards() {
+    const strip = document.getElementById('comp-strip');
+    strip.innerHTML = '';
+
+    properties.forEach(function (prop, idx) {
+      const card = document.createElement('div');
+      card.className = 'prop-card ' + (idx === 0 ? 'anchored' : 'comp');
+      card.dataset.propId = prop._id;
+      if (idx > 0) {
+        const c = COMP_COLORS[(idx - 1) % COMP_COLORS.length];
+        card.style.borderLeftColor = c;
+      }
+
+      const head = document.createElement('div');
+      head.className = 'prop-card-head';
+
+      const eyebrow = document.createElement('div');
+      eyebrow.className = 'prop-card-eyebrow';
+      eyebrow.textContent = idx === 0 ? 'Your property' : ('Comp ' + idx);
+      if (idx > 0) {
+        eyebrow.style.color = COMP_COLORS[(idx - 1) % COMP_COLORS.length];
+      }
+      head.appendChild(eyebrow);
+
+      if (idx > 0) {
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'prop-card-remove';
+        rm.textContent = 'Remove';
+        rm.addEventListener('click', function () { removeProperty(prop._id); });
+        head.appendChild(rm);
+      }
+
+      card.appendChild(head);
+      card.appendChild(makeTextField(prop, 'Name'));
+      for (const attr of attrNames) {
+        card.appendChild(makeSelectField(prop, attr));
+      }
+      strip.appendChild(card);
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-comp-card';
+    addBtn.innerHTML = '<span class="add-comp-plus">+</span><span>Add comp</span>';
+    addBtn.addEventListener('click', addComp);
+    strip.appendChild(addBtn);
+  }
+
+  function makeTextField(prop, attr) {
     const w = document.createElement('label');
     w.className = 'field';
     const span = document.createElement('span');
     span.className = 'field-label';
-    span.textContent = label;
+    span.textContent = attr;
     const input = document.createElement('input');
-    input.type = type;
-    input.dataset.profile = profile;
-    input.dataset.attr = attr;
-    input.value = value;
+    input.type = 'text';
+    input.value = prop[attr] || '';
+    input.addEventListener('input', function () {
+      prop[attr] = input.value;
+      runSimulation();
+    });
     w.appendChild(span);
     w.appendChild(input);
     return w;
   }
 
-  function selectField(attr, profile, current) {
+  function makeSelectField(prop, attr) {
     const w = document.createElement('label');
     w.className = 'field';
     const span = document.createElement('span');
     span.className = 'field-label';
     span.textContent = labelizeAttr(attr);
     const sel = document.createElement('select');
-    sel.dataset.profile = profile;
-    sel.dataset.attr = attr;
     for (const level of Object.keys(ATTRIBUTES[attr])) {
       const o = document.createElement('option');
       o.value = level;
-      o.textContent = truncate(level, 72);
-      if (level === current) o.selected = true;
+      o.textContent = truncate(level, 56);
+      o.title = level;
+      if (level === prop[attr]) o.selected = true;
       sel.appendChild(o);
     }
+    sel.addEventListener('change', function () {
+      prop[attr] = sel.value;
+      runSimulation();
+    });
     w.appendChild(span);
     w.appendChild(sel);
     return w;
   }
+
+  function addComp() {
+    const yours = properties[0];
+    const newComp = {};
+    for (const k of Object.keys(yours)) {
+      if (k.startsWith('_')) continue;
+      newComp[k] = yours[k];
+    }
+    newComp._id = 'p' + nextCompId;
+    newComp.Name = 'Comp ' + properties.length + ' (configure)';
+    nextCompId += 1;
+    properties.push(newComp);
+    renderPropertyCards();
+    runSimulation();
+    setTimeout(function () {
+      const strip = document.getElementById('comp-strip');
+      strip.scrollLeft = strip.scrollWidth;
+    }, 50);
+  }
+
+  function removeProperty(propId) {
+    if (propId === 'p0') return;
+    properties = properties.filter(function (p) { return p._id !== propId; });
+    renderPropertyCards();
+    runSimulation();
+  }
+
+  // -------------------- Weights --------------------
 
   function buildWeights() {
     const box = document.getElementById('weights-fields');
@@ -1194,9 +1156,7 @@
       lab.className = 'weight-row';
       const labelBox = document.createElement('span');
       labelBox.className = 'weight-label';
-      const role = personaRole(p);
-      const name = personaFirstName(p);
-      labelBox.innerHTML = '<span class="weight-role">' + escapeHtml(role) + '</span>' + escapeHtml(name);
+      labelBox.innerHTML = '<span class="weight-role">' + escapeHtml(personaRole(p)) + '</span>' + escapeHtml(personaFirstName(p));
       const input = document.createElement('input');
       input.type = 'range';
       input.min = '0';
@@ -1207,9 +1167,10 @@
       const val = document.createElement('span');
       val.className = 'weight-val';
       val.textContent = (parseFloat(input.value) * 100).toFixed(0) + '%';
-      input.addEventListener('input', () => {
+      input.addEventListener('input', function () {
         val.textContent = (parseFloat(input.value) * 100).toFixed(0) + '%';
         updateWeightSum();
+        runSimulation();
       });
       lab.appendChild(labelBox);
       lab.appendChild(input);
@@ -1219,20 +1180,139 @@
     updateWeightSum();
   }
 
-  function updateWeightSum() {
-    const { sum } = getRawWeights();
-    const el = document.getElementById('weight-sum');
-    el.textContent = sum.toFixed(2);
+  function getRawWeights() {
+    const w = {};
+    let sum = 0;
+    for (const persona of Object.keys(personaCoefMaps)) {
+      const el = document.querySelector('[data-weight="' + persona + '"]');
+      const v = el ? parseFloat(el.value) : 0;
+      w[persona] = v;
+      sum += v;
+    }
+    return { w: w, sum: sum };
   }
+
+  function normalizedWeights() {
+    const got = getRawWeights();
+    if (got.sum <= 0) return null;
+    const n = {};
+    for (const k of Object.keys(got.w)) n[k] = got.w[k] / got.sum;
+    return n;
+  }
+
+  function updateWeightSum() {
+    document.getElementById('weight-sum').textContent = getRawWeights().sum.toFixed(2);
+  }
+
+  // -------------------- Simulation --------------------
+
+  function runSimulation() {
+    if (!DATA) return;
+    const profiles = properties;
+    const normW = normalizedWeights();
+
+    const personaShares = {};
+    for (const [persona, cmap] of Object.entries(personaCoefMaps)) {
+      if (!(priceBeta(cmap) < 0)) continue;
+      personaShares[persona] = marketShare(profiles, cmap);
+    }
+
+    const stickyTrack = document.getElementById('sticky-track');
+    const stickyLegend = document.getElementById('sticky-legend');
+    const tableHead = document.getElementById('share-table-head');
+    const tableBody = document.getElementById('share-table-body');
+    const hintEl = document.getElementById('sim-hint');
+
+    tableHead.innerHTML = '';
+    tableBody.innerHTML = '';
+    stickyTrack.innerHTML = '';
+    stickyLegend.innerHTML = '';
+
+    if (!normW) {
+      hintEl.textContent = 'Set at least one target tenant segment weight above zero.';
+      return;
+    }
+
+    const personaKeys = Object.keys(personaShares);
+    const weighted = profiles.map(function () { return 0; });
+    for (const persona of personaKeys) {
+      const sh = personaShares[persona];
+      for (let i = 0; i < profiles.length; i++) {
+        weighted[i] += normW[persona] * sh[i];
+      }
+    }
+
+    profiles.forEach(function (prop, idx) {
+      const pct = weighted[idx] * 100;
+      const seg = document.createElement('div');
+      seg.className = 'share-seg' + (idx === 0 ? ' your' : '');
+      if (idx > 0) {
+        seg.style.background = COMP_COLORS[(idx - 1) % COMP_COLORS.length];
+      }
+      seg.style.width = pct.toFixed(2) + '%';
+      seg.textContent = pct >= 5 ? pct.toFixed(1) + '%' : '';
+      seg.title = prop.Name + ': ' + pct.toFixed(1) + '%';
+      stickyTrack.appendChild(seg);
+    });
+
+    profiles.forEach(function (prop, idx) {
+      const color = idx === 0 ? 'var(--your)' : COMP_COLORS[(idx - 1) % COMP_COLORS.length];
+      const item = document.createElement('div');
+      item.innerHTML = '<span class="dot" style="background:' + color + '"></span>' +
+        escapeHtml(truncate(prop.Name, 28)) + ' &middot; ' + (weighted[idx] * 100).toFixed(1) + '%';
+      stickyLegend.appendChild(item);
+    });
+
+    let headHtml = '<th>Target tenant segment</th><th class="num">Weight</th>';
+    profiles.forEach(function (prop) {
+      headHtml += '<th class="num">' + escapeHtml(truncate(prop.Name, 24)) + '</th>';
+    });
+    tableHead.innerHTML = headHtml;
+
+    for (const persona of personaKeys) {
+      const sh = personaShares[persona];
+      let row = '<td><span class="weight-role">' + escapeHtml(personaRole(persona)) + '</span>' + escapeHtml(personaFirstName(persona)) + '</td>' +
+        '<td class="num">' + (normW[persona] * 100).toFixed(0) + '%</td>';
+      sh.forEach(function (s) { row += '<td class="num">' + (s * 100).toFixed(1) + '%</td>'; });
+      const tr = document.createElement('tr');
+      tr.innerHTML = row;
+      tableBody.appendChild(tr);
+    }
+
+    let totRow = '<td><strong>Weighted total</strong></td><td class="num">100%</td>';
+    weighted.forEach(function (w) { totRow += '<td class="num"><strong>' + (w * 100).toFixed(1) + '%</strong></td>'; });
+    const totTr = document.createElement('tr');
+    totTr.innerHTML = totRow;
+    totTr.style.borderTop = '2px solid var(--rule-strong)';
+    tableBody.appendChild(totTr);
+
+    const yourPct = weighted[0] * 100;
+    const compPcts = weighted.slice(1).map(function (w) { return w * 100; });
+    const maxCompPct = compPcts.length > 0 ? Math.max.apply(null, compPcts) : 0;
+    if (compPcts.length === 0) {
+      hintEl.textContent = 'Add at least one comp to compare capture rates.';
+    } else if (yourPct >= maxCompPct) {
+      hintEl.textContent = 'Your property leads on weighted capture rate. Pair with a tenant-pool estimate for lease-up counts.';
+    } else {
+      const gap = (maxCompPct - yourPct).toFixed(1);
+      hintEl.textContent = 'A comp leads by ' + gap + ' pp on weighted capture rate. Try repositioning scenarios below to close the gap.';
+    }
+
+    runScenario();
+  }
+
+  // -------------------- Personas --------------------
 
   function buildPersonaSelect() {
     const sel = document.getElementById('persona-select');
+    const allOpt = document.createElement('option');
+    allOpt.value = '__pooled__';
+    allOpt.textContent = 'All renters (pooled)';
+    sel.appendChild(allOpt);
     for (const p of Object.keys(personaCoefMaps)) {
       const o = document.createElement('option');
       o.value = p;
-      const role = personaRole(p);
-      const name = personaFirstName(p);
-      o.textContent = role + ' · ' + name;
+      o.textContent = personaRole(p) + ' \u00B7 ' + personaFirstName(p);
       sel.appendChild(o);
     }
     sel.addEventListener('change', renderPersona);
@@ -1244,50 +1324,62 @@
     const card = document.getElementById('persona-card');
     const top = document.getElementById('persona-wtp-top');
     const bot = document.getElementById('persona-wtp-bottom');
-    const d = PERSONA_DESCRIPTIONS[k];
-    const cmap = personaCoefMaps[k];
-    const bp = priceBeta(cmap);
-    if (!d) {
-      card.innerHTML = '<p class="muted">No narrative for this segment.</p>';
-      top.innerHTML = bot.innerHTML = '';
-      return;
-    }
-    const role = personaRole(k);
-    const name = personaFirstName(k);
-    const sens = Math.abs(bp) > 0.01 ? 'high' : Math.abs(bp) > 0.005 ? 'moderate' : 'low';
-    card.innerHTML =
-      '<div class="persona-role">' + escapeHtml(role) + '</div>' +
-      '<div class="persona-name">' + escapeHtml(name) + '</div>' +
-      '<dl class="persona-dl">' +
-      rowDl('Age', d.age) +
-      rowDl('Income', d.income) +
-      rowDl('Savings', d.savings) +
-      rowDl('Debt', d.debt) +
-      rowDl('Daily destination', d.work_destination) +
-      rowDl('Lease horizon', d.lease_horizon) +
-      rowDl('Price sensitivity', sens + ' (β=' + bp.toFixed(4) + ')') +
-      '</dl>' +
-      '<p class="persona-narrative">' + escapeHtml(d.narrative) + '</p>';
 
-    const wtpRows = [];
-    for (const [feat, c] of cmap.entries()) {
-      if (['Size_num', 'Price_num', 'ASC_B', 'ASC_C'].includes(feat)) continue;
-      if (!feat.includes('__')) continue;
-      if (!(bp < 0)) continue;
-      wtpRows.push({ feat, wtp: (-c) / bp });
+    let cmap;
+    let descHtml;
+
+    if (k === '__pooled__') {
+      cmap = pooledCoefMap;
+      descHtml =
+        '<div class="persona-role">All renters</div>' +
+        '<div class="persona-name">Pooled view</div>' +
+        '<p class="persona-narrative">Willingness to pay shown below is the population-weighted average across all target tenant segments. ' +
+        'For decisions that hinge on a specific segment, pick that segment from the dropdown above.</p>';
+    } else {
+      cmap = personaCoefMaps[k];
+      const d = PERSONA_DESCRIPTIONS[k];
+      const bp = priceBeta(cmap);
+      const sens = Math.abs(bp) > 0.01 ? 'High' : Math.abs(bp) > 0.005 ? 'Moderate' : 'Low';
+      descHtml =
+        '<div class="persona-role">' + escapeHtml(personaRole(k)) + '</div>' +
+        '<div class="persona-name">' + escapeHtml(personaFirstName(k)) + '</div>' +
+        '<dl class="persona-dl">' +
+        dlRow('Age', d.age) +
+        dlRow('Income', d.income) +
+        dlRow('Savings', d.savings) +
+        dlRow('Debt', d.debt) +
+        dlRow('Daily destination', d.work_destination) +
+        dlRow('Lease horizon', d.lease_horizon) +
+        dlRow('Price sensitivity', sens + ' (\u03B2=' + bp.toFixed(4) + ')') +
+        '</dl>' +
+        '<p class="persona-narrative">' + escapeHtml(d.narrative) + '</p>';
     }
-    wtpRows.sort((a, b) => b.wtp - a.wtp);
+
+    card.innerHTML = descHtml;
+
+    const bp = priceBeta(cmap);
+    const wtpRows = [];
+    if (bp < 0) {
+      for (const [feat, c] of cmap.entries()) {
+        if (['Size_num', 'Price_num', 'ASC_B', 'ASC_C'].indexOf(feat) !== -1) continue;
+        if (feat.indexOf('__') < 0) continue;
+        wtpRows.push({ feat: feat, wtp: (-c) / bp });
+      }
+    }
+    wtpRows.sort(function (a, b) { return b.wtp - a.wtp; });
     const topFive = wtpRows.slice(0, 5);
     const bottomFive = wtpRows.slice(-5).reverse();
 
-    const maxAbs = Math.max(
-      ...topFive.map(r => Math.abs(r.wtp)),
-      ...bottomFive.map(r => Math.abs(r.wtp)),
-      1
-    );
+    const maxAbs = Math.max.apply(null, topFive.map(function (r) { return Math.abs(r.wtp); })
+      .concat(bottomFive.map(function (r) { return Math.abs(r.wtp); }))
+      .concat([1]));
 
-    top.innerHTML = topFive.map(r => wtpBarRow(r, maxAbs)).join('');
-    bot.innerHTML = bottomFive.map(r => wtpBarRow(r, maxAbs)).join('');
+    top.innerHTML = topFive.map(function (r) { return wtpBarRow(r, maxAbs); }).join('');
+    bot.innerHTML = bottomFive.map(function (r) { return wtpBarRow(r, maxAbs); }).join('');
+  }
+
+  function dlRow(k, v) {
+    return '<dt>' + escapeHtml(k) + '</dt><dd>' + escapeHtml(String(v)) + '</dd>';
   }
 
   function wtpBarRow(r, maxAbs) {
@@ -1307,20 +1399,16 @@
   }
 
   function prettyFeature(feat) {
-    // "Finishes__Mid-tier (granite/quartz counters...)" -> "Finishes: Mid-tier"
     const parts = feat.split('__');
     if (parts.length !== 2) return feat;
     const attr = labelizeAttr(parts[0]);
     let level = parts[1];
-    // Strip parenthetical context for brevity in chart
     const parenIdx = level.indexOf('(');
     if (parenIdx > 0) level = level.slice(0, parenIdx).trim();
     return attr + ': ' + level;
   }
 
-  function rowDl(k, v) {
-    return '<dt>' + escapeHtml(k) + '</dt><dd>' + escapeHtml(String(v)) + '</dd>';
-  }
+  // -------------------- WTP section --------------------
 
   function buildWtpControls() {
     const attrSel = document.getElementById('wtp-attr');
@@ -1338,16 +1426,13 @@
       const levels = Object.keys(ATTRIBUTES[a]);
       fromSel.innerHTML = '';
       toSel.innerHTML = '';
-      levels.forEach((lv) => {
-        fromSel.appendChild(new Option(truncate(lv, 64), lv));
-        toSel.appendChild(new Option(truncate(lv, 64), lv));
+      levels.forEach(function (lv) {
+        fromSel.appendChild(new Option(truncate(lv, 56), lv));
+        toSel.appendChild(new Option(truncate(lv, 56), lv));
       });
       if (levels.length > 1) toSel.selectedIndex = 1;
     }
-    attrSel.addEventListener('change', () => {
-      refillLevels();
-      runWtp();
-    });
+    attrSel.addEventListener('change', function () { refillLevels(); runWtp(); });
     fromSel.addEventListener('change', runWtp);
     toSel.addEventListener('change', runWtp);
     refillLevels();
@@ -1363,6 +1448,7 @@
       out.innerHTML = '<p class="wtp-footnote">Pick two different levels to see the willingness-to-pay delta.</p>';
       return;
     }
+
     let pooled;
     if (attr === 'Size') {
       pooled = wtpForChange(attr, ATTRIBUTES.Size[fromLv], ATTRIBUTES.Size[toLv], pooledCoefMap);
@@ -1371,15 +1457,21 @@
     }
 
     const pooledFmt = formatMoney(pooled);
-    const direction = pooled >= 0 ? 'pay <strong>' + pooledFmt + '/mo more</strong>' : 'need <strong>' + pooledFmt.replace('-', '') + '/mo less</strong>';
+    let direction;
+    if (pooled >= 0) {
+      direction = 'pay <strong>' + pooledFmt + '/mo more</strong>';
+    } else {
+      direction = 'need <strong>' + pooledFmt.replace('-', '') + '/mo less</strong>';
+    }
 
     let html = '<div class="wtp-headline">';
     html += 'The average renter is willing to ' + direction;
-    html += ' to upgrade <strong>' + escapeHtml(labelizeAttr(attr)) + '</strong> from <em>' + escapeHtml(truncate(fromLv, 48)) + '</em> to <em>' + escapeHtml(truncate(toLv, 48)) + '</em>.';
+    html += ' to upgrade <strong>' + escapeHtml(labelizeAttr(attr)) + '</strong> from <em>' + escapeHtml(truncate(fromLv, 56)) + '</em> to <em>' + escapeHtml(truncate(toLv, 56)) + '</em>.';
     html += '</div>';
 
-    html += '<div class="results-head" style="margin-bottom: 4px">By target tenant segment</div>';
-    html += '<ul class="wtp-persona-list">';
+    html += '<div class="results-head" style="margin-bottom: 12px">By target tenant segment, side by side</div>';
+
+    const rows = [];
     for (const [persona, cmap] of Object.entries(personaCoefMaps)) {
       if (!(priceBeta(cmap) < 0)) continue;
       let w;
@@ -1388,24 +1480,47 @@
       } else {
         w = wtpForChange(attr, fromLv, toLv, cmap);
       }
-      const role = personaRole(persona);
-      const name = personaFirstName(persona);
-      const sign = w >= 0 ? 'positive' : 'negative';
-      html += '<li>' +
-        '<div><span class="wtp-persona-role">' + escapeHtml(role) + '</span><span class="wtp-persona-name">' + escapeHtml(name) + '</span></div>' +
-        '<div class="wtp-persona-amt ' + sign + '">' + formatMoney(w) + '/mo</div>' +
-        '</li>';
+      rows.push({
+        persona: persona,
+        role: personaRole(persona),
+        name: personaFirstName(persona),
+        wtp: w,
+      });
     }
-    html += '</ul>';
-    html += '<p class="wtp-footnote">Positive values: renters in that segment would pay more for the simulated change. Negative values: the baseline is preferred.</p>';
+    const maxAbs = Math.max.apply(null, rows.map(function (r) { return Math.abs(r.wtp); }).concat([1]));
+
+    html += '<div class="wtp-segment-bars">';
+    rows.forEach(function (r) {
+      const fillPct = (Math.abs(r.wtp) / maxAbs) * 50;
+      const sign = r.wtp >= 0 ? 'positive' : 'negative';
+      const amtPrefix = r.wtp >= 0 ? '+' : '-';
+      html += '<div class="wtp-segment-row">' +
+        '<div class="wtp-segment-label">' +
+          '<span class="wtp-segment-role">' + escapeHtml(r.role) + '</span>' +
+          '<span class="wtp-segment-name">' + escapeHtml(r.name) + '</span>' +
+        '</div>' +
+        '<div class="wtp-segment-track">' +
+          '<span class="center-line"></span>' +
+          '<div class="wtp-segment-fill ' + sign + '" style="width:' + fillPct.toFixed(2) + '%"></div>' +
+        '</div>' +
+        '<div class="wtp-segment-amt ' + sign + '">' + amtPrefix + '$' + Math.abs(Math.round(r.wtp)) + '/mo</div>' +
+        '</div>';
+    });
+    html += '</div>';
+
+    html += '<p class="wtp-footnote">Positive values: that segment would pay more for the simulated change. Negative values: the baseline offer is preferred. ' +
+      'Bars share a common scale, so visual length is directly comparable across segments.</p>';
+
     out.innerHTML = html;
   }
 
   function formatMoney(x) {
-    if (x == null || Number.isNaN(x)) return '$0';
+    if (x == null || isNaN(x)) return '$0';
     const n = Math.round(x);
     return (n >= 0 ? '+$' : '-$') + Math.abs(n);
   }
+
+  // -------------------- Scenarios --------------------
 
   function buildScenario() {
     const sel = document.getElementById('scenario-bundle');
@@ -1417,12 +1532,15 @@
   }
 
   function runScenario() {
+    const sel = document.getElementById('scenario-bundle');
+    if (!sel || sel.options.length === 0) return;
     const out = document.getElementById('scenario-out');
-    const bundleName = document.getElementById('scenario-bundle').value;
+    const bundleName = sel.value;
     const bundle = BUNDLES[bundleName];
-    const before = readProfile('subject');
-    before.Name = 'Before repositioning';
-    const after = { ...before, Name: 'After repositioning' };
+    if (!bundle) return;
+
+    const before = properties[0];
+    const after = Object.assign({}, before, { Name: 'After repositioning' });
     for (const [k, v] of Object.entries(bundle)) {
       if (k === 'price_bump') continue;
       after[k] = v;
@@ -1430,7 +1548,8 @@
     const currentPrice = ATTRIBUTES.Price[before.Price];
     const target = currentPrice + bundle.price_bump;
     after.Price = closestPriceLabel(target);
-    const comp = readProfile('comp');
+
+    const otherProps = properties.slice(1);
     const normW = normalizedWeights();
     if (!normW) {
       out.innerHTML = '<p class="wtp-footnote">Set tenant segment weights above first.</p>';
@@ -1439,9 +1558,10 @@
 
     function weightedShare(subject) {
       let s0 = 0;
+      const profileSet = [subject].concat(otherProps);
       for (const [persona, cmap] of Object.entries(personaCoefMaps)) {
         if (!(priceBeta(cmap) < 0)) continue;
-        const sh = marketShare([subject, comp], cmap);
+        const sh = marketShare(profileSet, cmap);
         s0 += normW[persona] * sh[0];
       }
       return s0;
@@ -1459,8 +1579,10 @@
     else verdict = 'Capture rate fell without a rent change. Review the bundle.';
 
     const changes = Object.keys(bundle)
-      .filter((k) => k !== 'price_bump')
-      .map((k) => '<li><strong>' + escapeHtml(labelizeAttr(k)) + ':</strong> ' + escapeHtml(truncate(bundle[k], 60)) + '</li>')
+      .filter(function (k) { return k !== 'price_bump'; })
+      .map(function (k) {
+        return '<li><strong>' + escapeHtml(labelizeAttr(k)) + ':</strong> ' + escapeHtml(truncate(bundle[k], 60)) + '</li>';
+      })
       .join('');
 
     out.innerHTML =
@@ -1473,21 +1595,28 @@
           '<div class="scenario-big-sub">Your property, weighted capture rate</div></div>' +
       '</div>' +
       '<p class="scenario-delta">Capture rate change: <strong>' +
-        (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pp</strong> · Rent change: <strong>$' +
+        (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pp</strong> &middot; Rent change: <strong>$' +
         (rentDelta >= 0 ? '+' : '') + rentDelta + '/mo</strong></p>' +
       '<div class="scenario-verdict">' + escapeHtml(verdict) + '</div>' +
       '<div class="results-head" style="margin-top:18px;margin-bottom:6px">Bundle changes applied</div>' +
       '<ul class="bundle-list">' + changes + '</ul>';
   }
 
-  buildForms();
-  buildWeights();
-  buildPersonaSelect();
-  buildWtpControls();
-  buildScenario();
+  // -------------------- Init --------------------
 
-  document.getElementById('btn-simulate').addEventListener('click', runSimulation);
-  runSimulation();
+  function initApp() {
+    document.getElementById('app-loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initProperties();
+    renderPropertyCards();
+    buildWeights();
+    buildPersonaSelect();
+    buildWtpControls();
+    buildScenario();
+    runSimulation();
+  }
+
+  loadData();
 })();
 </script>
 

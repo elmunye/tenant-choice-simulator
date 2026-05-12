@@ -343,6 +343,44 @@
     font-style: italic;
   }
 
+  /* Contact block at end of content */
+  .contact-block {
+    margin-top: 48px;
+    background: var(--accent-soft);
+    border: 1px solid #C9D4E2;
+    padding: 28px 32px;
+  }
+  .contact-block .contact-eyebrow {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .contact-block .contact-body {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    max-width: 62ch;
+  }
+  .contact-block .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .contact-block .contact-link::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+  .contact-block .contact-link:hover::after { transform: translateX(3px); }
+
   /* ============ FOOTER ============ */
   footer {
     border-top: 1px solid var(--rule);
@@ -503,6 +541,14 @@
         <div class="next-step-title">Recommended next step</div>
         <p>For any decision where the dollar stakes warrant it, plan a real-respondent validation survey before relying on the simulator's outputs in a committee setting. The synthetic estimates are useful for narrowing the question; the validation survey is what makes the answer defensible.</p>
       </div>
+    </section>
+
+    <section class="contact-block">
+      <div class="contact-eyebrow">Tune this model to your market</div>
+      <div class="contact-body">
+        The simulator runs on synthetic tenants. For property-level decisions, we can tune the model to your submarket and target tenants using real-respondent survey data.
+      </div>
+      <a class="contact-link" href="mailto:emunye3@gatech.edu?subject=Tenant%20Choice%20Simulator%20validation">Contact emunye3@gatech.edu</a>
     </section>
 
   </div>

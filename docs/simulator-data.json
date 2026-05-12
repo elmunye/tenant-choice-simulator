@@ -1,0 +1,767 @@
+{
+  "ATTRIBUTES": {
+    "Size": {
+      "750 SF (compact 1BR)": 750,
+      "1,000 SF (large 1BR / compact 2BR)": 1000,
+      "1,250 SF (standard 2BR)": 1250
+    },
+    "Price": {
+      "$1,650/mo": 1650,
+      "$1,950/mo": 1950,
+      "$2,250/mo": 2250,
+      "$2,550/mo": 2550
+    },
+    "MoveInSpecial": {
+      "None": null,
+      "1 month free (12-mo lease)": null,
+      "2 months free (13-mo lease)": null
+    },
+    "Location": {
+      "North Druid Hills / Briarcliff": null,
+      "Virginia-Highland / Morningside": null,
+      "Decatur / Emory Village": null,
+      "Buckhead / Lenox": null
+    },
+    "CommuteToWork": {
+      "Quick (under 15 min by car)": null,
+      "Average (15-30 min by car)": null,
+      "Long (over 30 min by car)": null
+    },
+    "Walkability": {
+      "Car-Required (drive for groceries, dining, errands from this building)": null,
+      "Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)": null,
+      "Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)": null
+    },
+    "Finishes": {
+      "Builder-grade (laminate counters, basic appliances, no smart features)": null,
+      "Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)": null,
+      "Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)": null
+    },
+    "Parking": {
+      "Surface lot, unassigned parking, no gate": null,
+      "Gated surface lot + reserved space option": null,
+      "Dedicated garage with assigned space + EV charging": null
+    },
+    "Security": {
+      "Tier 1: Open access, no controlled entry": null,
+      "Tier 2: Perimeter gate + controlled-access lobby + camera coverage": null,
+      "Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout": null
+    },
+    "Rooftop": {
+      "No rooftop space": null,
+      "Rooftop lounge with skyline views & outdoor seating": null
+    },
+    "Coworking": {
+      "No dedicated coworking space": null,
+      "Resident co-working lounge with private call rooms & wifi": null
+    },
+    "PetAmenities": {
+      "No pet amenities": null,
+      "Standard dog park only": null,
+      "Dog park + pet spa with grooming station": null
+    },
+    "PackageHandling": {
+      "Standard mailroom (sign for packages during office hours)": null,
+      "24/7 Amazon Hub lockers + refrigerated grocery locker": null
+    }
+  },
+  "PERSONA_COEFS_RAW": {
+    "emory_grad": [
+      {
+        "feature": "Size_num",
+        "coef": 0.0044087262796988205,
+        "p_value": 2.7578441003234548e-14
+      },
+      {
+        "feature": "Price_num",
+        "coef": -0.01099365080530812,
+        "p_value": 1.791842226575211e-76
+      },
+      {
+        "feature": "ASC_B",
+        "coef": 1.5144038137129534,
+        "p_value": 8.304802294216904e-30
+      },
+      {
+        "feature": "ASC_C",
+        "coef": 0.6091692640657297,
+        "p_value": 3.3188542323637795e-07
+      },
+      {
+        "feature": "MoveInSpecial__2 months free (13-mo lease)",
+        "coef": 0.07397420846132749,
+        "p_value": 0.7706286380241767
+      },
+      {
+        "feature": "MoveInSpecial__None",
+        "coef": -1.3139580840410232,
+        "p_value": 4.191392764686795e-07
+      },
+      {
+        "feature": "Location__Decatur / Emory Village",
+        "coef": 2.7148445256949687,
+        "p_value": 5.903547223626618e-31
+      },
+      {
+        "feature": "Location__North Druid Hills / Briarcliff",
+        "coef": 1.7120418416144216,
+        "p_value": 2.1027708969215908e-16
+      },
+      {
+        "feature": "Location__Virginia-Highland / Morningside",
+        "coef": 0.5194718329997556,
+        "p_value": 0.02106606279851785
+      },
+      {
+        "feature": "CommuteToWork__Long (over 30 min by car)",
+        "coef": -3.9748169918280682,
+        "p_value": 5.268373464358789e-36
+      },
+      {
+        "feature": "CommuteToWork__Quick (under 15 min by car)",
+        "coef": 2.9108982031962736,
+        "p_value": 3.4601824523729477e-33
+      },
+      {
+        "feature": "Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+        "coef": 3.487902405913773,
+        "p_value": 2.3395332877300885e-38
+      },
+      {
+        "feature": "Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+        "coef": 2.6724869249007237,
+        "p_value": 3.2906257581507424e-36
+      },
+      {
+        "feature": "Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+        "coef": 0.5516076977127152,
+        "p_value": 0.05097351272625015
+      },
+      {
+        "feature": "Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+        "coef": 0.061533538691623736,
+        "p_value": 0.7267540945193975
+      },
+      {
+        "feature": "Parking__Gated surface lot + reserved space option",
+        "coef": -0.2711829776660128,
+        "p_value": 0.32046373921574434
+      },
+      {
+        "feature": "Parking__Surface lot, unassigned parking, no gate",
+        "coef": -0.613397479352974,
+        "p_value": 0.0015554575296557605
+      },
+      {
+        "feature": "Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+        "coef": 0.14423146639876505,
+        "p_value": 0.6382152961116344
+      },
+      {
+        "feature": "Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+        "coef": 1.1605825807210883,
+        "p_value": 0.0009492483657663201
+      },
+      {
+        "feature": "Rooftop__Rooftop lounge with skyline views & outdoor seating",
+        "coef": -0.7132784924142631,
+        "p_value": 0.005416753898635346
+      },
+      {
+        "feature": "Coworking__Resident co-working lounge with private call rooms & wifi",
+        "coef": 1.1745454863323326,
+        "p_value": 9.367857166425234e-11
+      },
+      {
+        "feature": "PetAmenities__No pet amenities",
+        "coef": -0.8259802194372546,
+        "p_value": 0.00024814980649298413
+      },
+      {
+        "feature": "PetAmenities__Standard dog park only",
+        "coef": 0.3527482737102093,
+        "p_value": 0.09905155721826263
+      },
+      {
+        "feature": "PackageHandling__Standard mailroom (sign for packages during office hours)",
+        "coef": -0.04696707165092817,
+        "p_value": 0.7866312238328304
+      }
+    ],
+    "vahi_professional": [
+      {
+        "feature": "Size_num",
+        "coef": 0.00668239273281586,
+        "p_value": 6.515538732119451e-11
+      },
+      {
+        "feature": "Price_num",
+        "coef": -0.023288232176751203,
+        "p_value": 3.798138165682818e-28
+      },
+      {
+        "feature": "ASC_B",
+        "coef": 1.6619798002251867,
+        "p_value": 6.963348020671094e-33
+      },
+      {
+        "feature": "ASC_C",
+        "coef": 0.30437598863294185,
+        "p_value": 0.009379151725953437
+      },
+      {
+        "feature": "MoveInSpecial__2 months free (13-mo lease)",
+        "coef": 0.3502150554900642,
+        "p_value": 0.5207270944825815
+      },
+      {
+        "feature": "MoveInSpecial__None",
+        "coef": -3.836983355944028,
+        "p_value": 6.513451207191389e-10
+      },
+      {
+        "feature": "Location__Decatur / Emory Village",
+        "coef": 0.12617188240827149,
+        "p_value": 0.6791271659850731
+      },
+      {
+        "feature": "Location__North Druid Hills / Briarcliff",
+        "coef": 1.1681769904531683,
+        "p_value": 0.008535574915475217
+      },
+      {
+        "feature": "Location__Virginia-Highland / Morningside",
+        "coef": 1.8787851941321283,
+        "p_value": 3.1163846132320166e-06
+      },
+      {
+        "feature": "CommuteToWork__Long (over 30 min by car)",
+        "coef": -11.125331835373524,
+        "p_value": 4.90138976558609e-31
+      },
+      {
+        "feature": "CommuteToWork__Quick (under 15 min by car)",
+        "coef": 6.790021733737407,
+        "p_value": 4.740682070995557e-28
+      },
+      {
+        "feature": "Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+        "coef": 11.205456357986387,
+        "p_value": 1.5219652628048027e-26
+      },
+      {
+        "feature": "Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+        "coef": 7.365256102926551,
+        "p_value": 6.327048557533629e-32
+      },
+      {
+        "feature": "Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+        "coef": 5.450671619680357,
+        "p_value": 4.7179852175030415e-14
+      },
+      {
+        "feature": "Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+        "coef": 3.2582074674371055,
+        "p_value": 9.871762763591544e-12
+      },
+      {
+        "feature": "Parking__Gated surface lot + reserved space option",
+        "coef": -3.7549971762037044,
+        "p_value": 2.803792375623368e-09
+      },
+      {
+        "feature": "Parking__Surface lot, unassigned parking, no gate",
+        "coef": -5.072738158806931,
+        "p_value": 9.250335120507572e-19
+      },
+      {
+        "feature": "Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+        "coef": 1.9129525047264286,
+        "p_value": 0.0026558870884424747
+      },
+      {
+        "feature": "Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+        "coef": 4.394587730862353,
+        "p_value": 3.120335586877179e-08
+      },
+      {
+        "feature": "Rooftop__Rooftop lounge with skyline views & outdoor seating",
+        "coef": -3.8142233033456896,
+        "p_value": 8.059202223803024e-12
+      },
+      {
+        "feature": "Coworking__Resident co-working lounge with private call rooms & wifi",
+        "coef": 2.953959844273161,
+        "p_value": 3.019539656460903e-09
+      },
+      {
+        "feature": "PetAmenities__No pet amenities",
+        "coef": -3.276665661568949,
+        "p_value": 4.3598067646459105e-09
+      },
+      {
+        "feature": "PetAmenities__Standard dog park only",
+        "coef": -1.0414058182959014,
+        "p_value": 0.023506803985644104
+      },
+      {
+        "feature": "PackageHandling__Standard mailroom (sign for packages during office hours)",
+        "coef": -1.0618367046088673,
+        "p_value": 8.425936093055616e-05
+      }
+    ],
+    "empty_nester": [
+      {
+        "feature": "Size_num",
+        "coef": 0.008933524461392662,
+        "p_value": 2.4404823800450205e-31
+      },
+      {
+        "feature": "Price_num",
+        "coef": -0.007771220979671398,
+        "p_value": 4.863277732343123e-41
+      },
+      {
+        "feature": "ASC_B",
+        "coef": 2.524493861273771,
+        "p_value": 2.2772049061393112e-51
+      },
+      {
+        "feature": "ASC_C",
+        "coef": 1.4590599822739199,
+        "p_value": 2.081682942010081e-24
+      },
+      {
+        "feature": "MoveInSpecial__2 months free (13-mo lease)",
+        "coef": 1.5702935070873918,
+        "p_value": 6.960463114017216e-07
+      },
+      {
+        "feature": "MoveInSpecial__None",
+        "coef": 0.7072619102045222,
+        "p_value": 0.04053629916621559
+      },
+      {
+        "feature": "Location__Decatur / Emory Village",
+        "coef": 2.528018874899581,
+        "p_value": 8.186289897061854e-20
+      },
+      {
+        "feature": "Location__North Druid Hills / Briarcliff",
+        "coef": 1.4442695591258314,
+        "p_value": 8.199203894992095e-07
+      },
+      {
+        "feature": "Location__Virginia-Highland / Morningside",
+        "coef": 1.6854158537473605,
+        "p_value": 7.144053108676289e-13
+      },
+      {
+        "feature": "CommuteToWork__Long (over 30 min by car)",
+        "coef": -4.5425328025176785,
+        "p_value": 1.6977438956556256e-49
+      },
+      {
+        "feature": "CommuteToWork__Quick (under 15 min by car)",
+        "coef": 3.5412748299275987,
+        "p_value": 1.8337115796274938e-39
+      },
+      {
+        "feature": "Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+        "coef": 6.617759891260585,
+        "p_value": 1.899436082148443e-47
+      },
+      {
+        "feature": "Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+        "coef": 4.733690521049247,
+        "p_value": 1.7904059712391737e-56
+      },
+      {
+        "feature": "Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+        "coef": 2.264310387822625,
+        "p_value": 1.0697223470976356e-13
+      },
+      {
+        "feature": "Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+        "coef": 1.5575778773798614,
+        "p_value": 2.1010468047362427e-10
+      },
+      {
+        "feature": "Parking__Gated surface lot + reserved space option",
+        "coef": -1.7114518322856571,
+        "p_value": 1.9740535498940354e-07
+      },
+      {
+        "feature": "Parking__Surface lot, unassigned parking, no gate",
+        "coef": -2.4622836751388872,
+        "p_value": 1.1691272220083425e-26
+      },
+      {
+        "feature": "Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+        "coef": 2.3892553844568574,
+        "p_value": 8.165535388344116e-11
+      },
+      {
+        "feature": "Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+        "coef": 1.634060141560855,
+        "p_value": 0.00019846124649328052
+      },
+      {
+        "feature": "Rooftop__Rooftop lounge with skyline views & outdoor seating",
+        "coef": 0.2859641767265717,
+        "p_value": 0.33476102279695197
+      },
+      {
+        "feature": "Coworking__Resident co-working lounge with private call rooms & wifi",
+        "coef": 0.1013495016802317,
+        "p_value": 0.614357691561741
+      },
+      {
+        "feature": "PetAmenities__No pet amenities",
+        "coef": -0.9387057427640875,
+        "p_value": 0.0015934333847013333
+      },
+      {
+        "feature": "PetAmenities__Standard dog park only",
+        "coef": -0.7504160741346676,
+        "p_value": 0.0013166506231717535
+      },
+      {
+        "feature": "PackageHandling__Standard mailroom (sign for packages during office hours)",
+        "coef": -0.22583118787686624,
+        "p_value": 0.21032177607034477
+      }
+    ],
+    "skeptical_renter_control": [
+      {
+        "feature": "Size_num",
+        "coef": 0.0067499605636801895,
+        "p_value": 2.7010891109266934e-17
+      },
+      {
+        "feature": "Price_num",
+        "coef": -0.018940678142477334,
+        "p_value": 6.003293935248889e-26
+      },
+      {
+        "feature": "ASC_B",
+        "coef": 1.701749043859175,
+        "p_value": 1.6859010808127987e-37
+      },
+      {
+        "feature": "ASC_C",
+        "coef": 0.4132470595316151,
+        "p_value": 0.00026561733782893513
+      },
+      {
+        "feature": "MoveInSpecial__2 months free (13-mo lease)",
+        "coef": 1.8047366781778569,
+        "p_value": 3.145275055411097e-05
+      },
+      {
+        "feature": "MoveInSpecial__None",
+        "coef": -1.4105443891465932,
+        "p_value": 0.0019094881944904719
+      },
+      {
+        "feature": "Location__Decatur / Emory Village",
+        "coef": 2.0977582229679825,
+        "p_value": 4.808358430060341e-12
+      },
+      {
+        "feature": "Location__North Druid Hills / Briarcliff",
+        "coef": 1.0720756968218024,
+        "p_value": 0.0012559445280446622
+      },
+      {
+        "feature": "Location__Virginia-Highland / Morningside",
+        "coef": 1.8635923677246864,
+        "p_value": 3.1200544792018374e-10
+      },
+      {
+        "feature": "CommuteToWork__Long (over 30 min by car)",
+        "coef": -8.26609397938111,
+        "p_value": 3.403558118125102e-23
+      },
+      {
+        "feature": "CommuteToWork__Quick (under 15 min by car)",
+        "coef": 5.494230985176725,
+        "p_value": 5.707734966392941e-27
+      },
+      {
+        "feature": "Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+        "coef": 9.974267696713246,
+        "p_value": 7.931073466993862e-26
+      },
+      {
+        "feature": "Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+        "coef": 5.277110920056427,
+        "p_value": 7.866089368120505e-34
+      },
+      {
+        "feature": "Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+        "coef": 4.101375187277176,
+        "p_value": 1.2578859975278871e-14
+      },
+      {
+        "feature": "Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+        "coef": 1.5262871288163593,
+        "p_value": 1.0194539594910001e-06
+      },
+      {
+        "feature": "Parking__Gated surface lot + reserved space option",
+        "coef": -2.976859467340312,
+        "p_value": 6.884833403461805e-07
+      },
+      {
+        "feature": "Parking__Surface lot, unassigned parking, no gate",
+        "coef": -3.6854314378482638,
+        "p_value": 2.586016478970211e-14
+      },
+      {
+        "feature": "Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+        "coef": 2.656183136916843,
+        "p_value": 1.3863400478180867e-07
+      },
+      {
+        "feature": "Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+        "coef": 3.6541521910341275,
+        "p_value": 2.9635320215156425e-09
+      },
+      {
+        "feature": "Rooftop__Rooftop lounge with skyline views & outdoor seating",
+        "coef": -2.9967452851481586,
+        "p_value": 2.0961372537333665e-09
+      },
+      {
+        "feature": "Coworking__Resident co-working lounge with private call rooms & wifi",
+        "coef": 0.7514735215904741,
+        "p_value": 0.0017299082840013752
+      },
+      {
+        "feature": "PetAmenities__No pet amenities",
+        "coef": -2.4834067732227143,
+        "p_value": 9.134965739415869e-09
+      },
+      {
+        "feature": "PetAmenities__Standard dog park only",
+        "coef": 0.07548188952891148,
+        "p_value": 0.8209240048811319
+      },
+      {
+        "feature": "PackageHandling__Standard mailroom (sign for packages during office hours)",
+        "coef": -1.0737156341413514,
+        "p_value": 0.00012475066334039655
+      }
+    ]
+  },
+  "POOLED_ROWS": [
+    {
+      "feature": "Size_num",
+      "coef": 0.0052308088779324064
+    },
+    {
+      "feature": "Price_num",
+      "coef": -0.008567759750243611
+    },
+    {
+      "feature": "ASC_B",
+      "coef": 1.3401112812725542
+    },
+    {
+      "feature": "ASC_C",
+      "coef": 0.4741932165152219
+    },
+    {
+      "feature": "MoveInSpecial__2 months free (13-mo lease)",
+      "coef": 0.48691414693580537
+    },
+    {
+      "feature": "MoveInSpecial__None",
+      "coef": -0.6169147786986914
+    },
+    {
+      "feature": "Location__Decatur / Emory Village",
+      "coef": 1.8271523064873916
+    },
+    {
+      "feature": "Location__North Druid Hills / Briarcliff",
+      "coef": 1.2090979010866834
+    },
+    {
+      "feature": "Location__Virginia-Highland / Morningside",
+      "coef": 0.9764901663770694
+    },
+    {
+      "feature": "CommuteToWork__Long (over 30 min by car)",
+      "coef": -3.768127809288743
+    },
+    {
+      "feature": "CommuteToWork__Quick (under 15 min by car)",
+      "coef": 2.8360599362586405
+    },
+    {
+      "feature": "Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+      "coef": 4.384270296907701
+    },
+    {
+      "feature": "Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+      "coef": 2.8574252019163855
+    },
+    {
+      "feature": "Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+      "coef": 1.8950605743561664
+    },
+    {
+      "feature": "Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+      "coef": 0.47626307208193347
+    },
+    {
+      "feature": "Parking__Gated surface lot + reserved space option",
+      "coef": -0.43947288316842315
+    },
+    {
+      "feature": "Parking__Surface lot, unassigned parking, no gate",
+      "coef": -1.5294239202048143
+    },
+    {
+      "feature": "Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+      "coef": 1.6636285248400635
+    },
+    {
+      "feature": "Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+      "coef": 2.060215155893587
+    },
+    {
+      "feature": "Rooftop__Rooftop lounge with skyline views & outdoor seating",
+      "coef": -0.8789917926366181
+    },
+    {
+      "feature": "Coworking__Resident co-working lounge with private call rooms & wifi",
+      "coef": 0.6654520016136928
+    },
+    {
+      "feature": "PetAmenities__No pet amenities",
+      "coef": -1.2644323178157355
+    },
+    {
+      "feature": "PetAmenities__Standard dog park only",
+      "coef": -0.3269871203492233
+    },
+    {
+      "feature": "PackageHandling__Standard mailroom (sign for packages during office hours)",
+      "coef": -0.10302272153461585
+    }
+  ],
+  "PERSONA_DESCRIPTIONS": {
+    "emory_grad": {
+      "name": "Maya (Emory PhD Candidate)",
+      "age": 28,
+      "income": "$52,000/year (stipend + RA funding)",
+      "savings": "$4,200 liquid",
+      "debt": "$580/mo federal student loans",
+      "work_destination": "Emory main campus",
+      "lease_horizon": "18+ months (through dissertation)",
+      "segment": "Budget-constrained academic professional",
+      "narrative": "Maya is a third-year PhD candidate in epidemiology. Her monthly take-home is roughly $3,200, and she's loan-burdened. She's price-sensitive and values stability through her dissertation timeline. She doesn't have wealth buffers; she lives close to her budget every month."
+    },
+    "vahi_professional": {
+      "name": "David (Healthcare Consultant)",
+      "age": 34,
+      "income": "$135K base + $20K bonus = $155K",
+      "savings": "$42K HYSA + $185K 401(k)",
+      "debt": "$14K residual student loans",
+      "work_destination": "Midtown (W. Peachtree), 3 days/week",
+      "lease_horizon": "2-3 years",
+      "segment": "Mid-career hybrid professional",
+      "narrative": "David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters; he's home 2 days a week. Likely to upgrade if the value proposition is clear."
+    },
+    "empty_nester": {
+      "name": "Patricia (Recent Retiree)",
+      "age": 67,
+      "income": "$180K household (Tom still works as CPA)",
+      "savings": "~$1.4M retirement + $815K home-sale proceeds",
+      "debt": "None",
+      "work_destination": "Sandy Springs (Tom's office)",
+      "lease_horizon": "2-4 years (then condo TBD)",
+      "segment": "Wealthy empty-nester downsizer",
+      "narrative": "Patricia and Tom sold their suburban house and are renting for the first time in 30 years. They have substantial home-sale proceeds and retirement assets. Price is not a major constraint; they value quality, security, and the right neighborhood. Tom still commutes, so commute time matters for him."
+    },
+    "skeptical_renter_control": {
+      "name": "Alex (Software Engineer)",
+      "age": 31,
+      "income": "$115K",
+      "savings": "$35K HYSA + $95K 401(k)",
+      "debt": "None",
+      "work_destination": "Unspecified",
+      "lease_horizon": "1-2 years",
+      "segment": "Analytical comparison shopper",
+      "narrative": "Alex is an experienced renter in Atlanta who has lived in Midtown, West Midtown, and Decatur. Reads reviews carefully and will walk away from a bad deal. Anchors the analytical end of the renter spectrum."
+    }
+  },
+  "HIGHLAND": {
+    "Name": "Highland Square (current)",
+    "Size": "1,000 SF (large 1BR / compact 2BR)",
+    "Price": "$1,950/mo",
+    "MoveInSpecial": "1 month free (12-mo lease)",
+    "Location": "North Druid Hills / Briarcliff",
+    "CommuteToWork": "Average (15-30 min by car)",
+    "Walkability": "Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)",
+    "Finishes": "Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+    "Parking": "Gated surface lot + reserved space option",
+    "Security": "Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+    "Rooftop": "No rooftop space",
+    "Coworking": "No dedicated coworking space",
+    "PetAmenities": "Standard dog park only",
+    "PackageHandling": "Standard mailroom (sign for packages during office hours)"
+  },
+  "MODERA": {
+    "Name": "Modera Morningside (key comp)",
+    "Size": "1,000 SF (large 1BR / compact 2BR)",
+    "Price": "$2,250/mo",
+    "MoveInSpecial": "None",
+    "Location": "Virginia-Highland / Morningside",
+    "CommuteToWork": "Average (15-30 min by car)",
+    "Walkability": "Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)",
+    "Finishes": "Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+    "Parking": "Dedicated garage with assigned space + EV charging",
+    "Security": "Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+    "Rooftop": "Rooftop lounge with skyline views & outdoor seating",
+    "Coworking": "Resident co-working lounge with private call rooms & wifi",
+    "PetAmenities": "Dog park + pet spa with grooming station",
+    "PackageHandling": "24/7 Amazon Hub lockers + refrigerated grocery locker"
+  },
+  "DEFAULT_WEIGHTS": {
+    "emory_grad": 0.2,
+    "vahi_professional": 0.4,
+    "empty_nester": 0.2,
+    "skeptical_renter_control": 0.2
+  },
+  "BUNDLES": {
+    "Light renovation (mid-tier finishes + Tier 2 security)": {
+      "Finishes": "Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)",
+      "Security": "Tier 2: Perimeter gate + controlled-access lobby + camera coverage",
+      "price_bump": 100
+    },
+    "Premium repositioning (premium finishes + Tier 3 security + rooftop)": {
+      "Finishes": "Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)",
+      "Security": "Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout",
+      "Rooftop": "Rooftop lounge with skyline views & outdoor seating",
+      "price_bump": 300
+    },
+    "Lifestyle pack (coworking + pet spa + smart package)": {
+      "Coworking": "Resident co-working lounge with private call rooms & wifi",
+      "PetAmenities": "Dog park + pet spa with grooming station",
+      "PackageHandling": "24/7 Amazon Hub lockers + refrigerated grocery locker",
+      "price_bump": 150
+    },
+    "Parking upgrade only (gated garage + EV)": {
+      "Parking": "Dedicated garage with assigned space + EV charging",
+      "price_bump": 75
+    },
+    "Aggressive concession (no other change)": {
+      "MoveInSpecial": "2 months free (13-mo lease)",
+      "price_bump": 0
+    }
+  }
+}

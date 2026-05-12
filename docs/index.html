@@ -463,6 +463,47 @@
     padding-bottom: 1px;
   }
 
+  /* ============ CONTACT SECTION ============ */
+  .contact-section {
+    border-top: 1px solid var(--rule);
+    background: var(--accent-soft);
+  }
+  .contact-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+  .contact-eyebrow {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .contact-body {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 62ch;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  .contact-link::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+  .contact-link:hover::after { transform: translateX(3px); }
+
   /* ============ FOOTER ============ */
   footer {
     border-top: 1px solid var(--rule);
@@ -607,6 +648,16 @@
       </div>
       <a href="methodology.html" class="meth-link">Read the full methodology</a>
     </div>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-eyebrow">Tune this model to your market</div>
+    <div class="contact-body">
+      The simulator runs on synthetic tenants. For property-level decisions, we can tune the model to your submarket and target tenants using real-respondent survey data.
+    </div>
+    <a class="contact-link" href="mailto:emunye3@gatech.edu?subject=Tenant%20Choice%20Simulator%20validation">Contact emunye3@gatech.edu</a>
   </div>
 </section>
 
