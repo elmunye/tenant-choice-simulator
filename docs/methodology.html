@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Methodology · Tenant Choice Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --bg-elevated: #FFFFFF;
+    --ink: #1A2332;
+    --ink-soft: #4A5568;
+    --ink-muted: #8A95A5;
+    --rule: #E5E2DC;
+    --rule-strong: #D4D0C8;
+    --accent: #1E3A5F;
+    --accent-soft: #E8EDF3;
+    --warn-soft: #F5EFE3;
+    --warn-rule: #C9B584;
+    --max-w: 1180px;
+    --reading-w: 720px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-feature-settings: "ss01";
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ============ NAV (shared with landing) ============ */
+  nav {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    margin-right: 10px;
+    vertical-align: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.current { color: var(--ink); font-weight: 500; }
+
+  /* ============ PAGE HEADER ============ */
+  .page-header {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 56px 32px 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .breadcrumb {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  h1.page-title {
+    font-size: 40px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    max-width: 22ch;
+  }
+  .page-summary {
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  @media (max-width: 600px) {
+    h1.page-title { font-size: 30px; }
+    .page-header { padding: 36px 24px 24px; }
+  }
+
+  /* ============ BODY LAYOUT ============ */
+  .page-body {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 64px;
+  }
+  @media (max-width: 900px) {
+    .page-body { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px 56px; }
+    .toc { position: static; }
+  }
+
+  .toc {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    font-size: 13px;
+  }
+  .toc-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc;
+    padding: 0;
+  }
+  .toc li {
+    counter-increment: toc;
+    margin-bottom: 10px;
+    color: var(--ink-soft);
+    padding-left: 24px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    font-family: 'Fraunces', serif;
+    color: var(--ink-muted);
+    font-size: 12px;
+  }
+  .toc a:hover { color: var(--ink); }
+
+  /* ============ CONTENT ============ */
+  .content {
+    max-width: var(--reading-w);
+  }
+  .content section + section { margin-top: 56px; }
+
+  .section-number {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  h2.section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h3.sub-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .content p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+  .content p strong { color: var(--ink); font-weight: 500; }
+
+  /* Numbered step diagram */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin: 24px 0 8px;
+    border: 1px solid var(--rule);
+    background: var(--bg-elevated);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 18px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 500;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .step-title {
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .step-desc {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* Paper cards */
+  .papers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .paper {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 20px 22px;
+  }
+  .paper-meta {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .paper-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .paper-authors {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .paper-summary {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* Limitations callout */
+  .limitations {
+    background: var(--warn-soft);
+    border-left: 3px solid var(--warn-rule);
+    padding: 22px 26px;
+    margin: 20px 0 8px;
+  }
+  .limitations-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #8C6E2A;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .limitations ul {
+    list-style: none;
+    padding: 0;
+  }
+  .limitations li {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .limitations li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    color: #8C6E2A;
+    font-weight: 700;
+  }
+  .limitations li:last-child { margin-bottom: 0; }
+
+  /* Next step block */
+  .next-step {
+    background: var(--accent-soft);
+    border: 1px solid #C9D4E2;
+    padding: 24px 28px;
+    margin-top: 24px;
+  }
+  .next-step-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .next-step p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  /* Inline citations */
+  .cite {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    padding: 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+  footer .footnote {
+    max-width: 60ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><a href="index.html"><span class="brand-mark"></span>Tenant Choice Simulator</a></div>
+    <div class="nav-links">
+      <a href="simulator.html">Simulator</a>
+      <a href="methodology.html" class="current">Methodology</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="breadcrumb">Methodology</div>
+  <h1 class="display page-title">How the simulator estimates tenant choice.</h1>
+  <p class="page-summary">
+    A plain explanation of the model, the research it draws on, the limitations it inherits, and what a sophisticated user should do before relying on its outputs for a committee decision.
+  </p>
+</header>
+
+<div class="page-body">
+
+  <aside class="toc">
+    <div class="toc-label">On this page</div>
+    <ol>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#research">Research the model draws on</a></li>
+      <li><a href="#limitations">Known limitations</a></li>
+      <li><a href="#next-step">Validating the results</a></li>
+    </ol>
+  </aside>
+
+  <div class="content">
+
+    <section id="how-it-works">
+      <div class="section-number">01</div>
+      <h2 class="section-title">How it works</h2>
+
+      <p>The simulator answers questions of the form: <strong>given a target tenant segment and a comp set, what share of that segment will choose your property, and how does that share respond to changes in amenities or rent?</strong></p>
+
+      <p>It does this in four steps.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Construct synthetic tenant personas</div>
+            <div class="step-desc">Renter personas are generated to reflect realistic combinations of demographics, lifestyle, and budget. Each persona behaves as one synthetic respondent in a conjoint-style choice study.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Run a choice experiment</div>
+            <div class="step-desc">Personas are presented with many property configurations that vary on rent, unit size, and amenities. For each comparison, the persona picks a preferred configuration or opts out entirely.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Estimate utilities and willingness to pay</div>
+            <div class="step-desc">A standard multinomial logit model is fit to the choices. The output is a utility score for each amenity and rent level, which can be expressed in dollar terms as willingness to pay per amenity.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Simulate market share against a comp set</div>
+            <div class="step-desc">For any property and any set of comps you define, the model projects what share of each tenant segment would choose your property. Adjusting amenities, rent, or the persona mix updates the projection in real time.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-title">Why this approach</h3>
+      <p>Conjoint analysis is the standard method for recovering preferences from indirect choices. It is used widely in consumer goods, automotive, and pharma, and is more reliable than asking respondents to state willingness to pay directly. Using synthetic respondents instead of real ones is a more recent extension of the method, made possible by large language models that can simulate plausible choice behavior at low cost.</p>
+    </section>
+
+    <section id="research">
+      <div class="section-number">02</div>
+      <h2 class="section-title">Research the model draws on</h2>
+
+      <p>The approach used here is grounded in two recent studies that evaluated synthetic respondents against real human survey data at large scale. Both are openly available and both are explicit about what this method can and cannot do.</p>
+
+      <div class="papers">
+        <div class="paper">
+          <div class="paper-meta">Microsoft · Harvard Business School · 2026</div>
+          <div class="paper-title">Using LLMs for Market Research</div>
+          <div class="paper-authors">Brand, J., Israeli, A., Ngwe, D.</div>
+          <div class="paper-summary">
+            The authors ran parallel human and synthetic conjoint studies across toothpaste, laptops, and tablets. Out of the box, synthetic respondents produced willingness-to-pay estimates that were directionally correct for many attributes but unreliable for others, with wrong signs and 2 to 3 times magnitude errors in some cases. Fine-tuning the model on real survey data from the same product category substantially improved alignment, including for new product features not seen during training. The paper concludes that synthetic respondents are best used as a complement to human surveys, not a substitute.
+          </div>
+        </div>
+
+        <div class="paper">
+          <div class="paper-meta">Ipsos · 2024</div>
+          <div class="paper-title">The Viability of Large Language Models for Conjoint and MaxDiff Analysis</div>
+          <div class="paper-authors">Ipsos Data Science and Advanced Analytics</div>
+          <div class="paper-summary">
+            One of the largest studies in this area, with 250,000 synthetic responses across five commercial studies. The Ipsos team tested multiple LLMs and prompt strategies, benchmarked against a sample of 500 real respondents. Their findings align closely with the Brand et al. work: synthetic respondents can identify the most and least valued options reasonably well, but tend to overestimate magnitudes, struggle with non-ordered categorical attributes, and show limited differentiation across personas. Training the model on real responses from a separate sample produced meaningful improvements on every dimension they measured.
+          </div>
+        </div>
+      </div>
+
+      <p class="cite">Both papers are referenced in the citations on the landing page and are recommended reading for any user evaluating the model for a high-stakes decision.</p>
+    </section>
+
+    <section id="limitations">
+      <div class="section-number">03</div>
+      <h2 class="section-title">Known limitations</h2>
+
+      <p>The simulator inherits the limitations documented in the research. These are not hypothetical caveats; they are specific behaviors that have been observed and quantified.</p>
+
+      <div class="limitations">
+        <div class="limitations-label">Document this when presenting results</div>
+        <ul>
+          <li><strong>Wrong-signed estimates can occur.</strong> For some amenities, the model can predict positive willingness to pay where humans show negative, or vice versa. This is rare but possible and is most likely on amenities that are unusual or have little discussion in publicly available text.</li>
+          <li><strong>Magnitudes can be off by 2 to 3 times.</strong> Even when the direction is right, the dollar value of an amenity may be substantially overestimated or underestimated relative to what a real survey would produce.</li>
+          <li><strong>Demographic differentiation is weak.</strong> Differences in preferences across income brackets, age groups, or other segments are recovered less reliably than population-average preferences. Segment-level reads should be treated as directional, not precise.</li>
+          <li><strong>Results reflect a static snapshot.</strong> The underlying model was pre-trained on text from a fixed period. It does not reflect very recent shifts in tenant behavior, local market conditions, or features that have only emerged in the last year.</li>
+          <li><strong>This product has not been fine-tuned on real tenant data.</strong> The strongest result from both research papers is that fine-tuning on real human survey data substantially improves accuracy. We have not yet done this for multifamily; doing so is the most direct path to better results.</li>
+        </ul>
+      </div>
+
+      <p>The right way to use the simulator, given these limitations, is as a fast first pass: to narrow options, generate hypotheses, and pressure-test assumptions before committing capital or commissioning a full market study. It is not a replacement for real-respondent research on decisions where the dollar stakes warrant it.</p>
+    </section>
+
+    <section id="next-step">
+      <div class="section-number">04</div>
+      <h2 class="section-title">Validating the results</h2>
+
+      <p>The most direct way to improve the reliability of any specific simulation is to fine-tune or calibrate the model with real human responses from the target market. This is not a feature of the current product; it is the recommended next step for users whose decisions require defensible numbers.</p>
+
+      <p>There are two practical paths:</p>
+
+      <h3 class="sub-title">Validation survey</h3>
+      <p>A focused real-respondent conjoint study, typically 200 to 400 tenants in the target market, run through a panel provider or a market research firm. The results can be compared directly to the synthetic estimates to identify where the model is reliable and where it drifts. For high-stakes underwriting or lender review, this is the standard practice.</p>
+
+      <h3 class="sub-title">Fine-tuning</h3>
+      <p>The choices collected from a real-respondent survey can also be used to fine-tune the underlying model. Both research papers cited above show that this substantially improves alignment, including for amenities and configurations not directly tested in the survey. Once fine-tuned for a given market or segment, the model produces meaningfully more reliable estimates for that context.</p>
+
+      <div class="next-step">
+        <div class="next-step-title">Recommended next step</div>
+        <p>For any decision where the dollar stakes warrant it, plan a real-respondent validation survey before relying on the simulator's outputs in a committee setting. The synthetic estimates are useful for narrowing the question; the validation survey is what makes the answer defensible.</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footnote">
+    Results are directional estimates from a synthetic-data simulation. Not a substitute for real-respondent market research on high-stakes decisions.
+  </div>
+</footer>
+
+</body>
+</html>
