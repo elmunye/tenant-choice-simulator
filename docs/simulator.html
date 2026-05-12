@@ -1,279 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Highland Square · Market share simulator</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulator · Tenant Choice Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #FAF8F5;
+    --bg-elevated: #FFFFFF;
+    --ink: #1A2332;
+    --ink-soft: #4A5568;
+    --ink-muted: #8A95A5;
+    --rule: #E5E2DC;
+    --rule-strong: #D4D0C8;
+    --accent: #1E3A5F;
+    --accent-soft: #E8EDF3;
+    --your: #1E3A5F;
+    --your-soft: #E8EDF3;
+    --comp: #B5563A;
+    --comp-soft: #F5E8E2;
+    --positive: #2D5F3F;
+    --warn-soft: #F5EFE3;
+    --warn-rule: #C9B584;
+    --max-w: 1180px;
+  }
 
-:root {
-  --bg: #fafafa;
-  --surface: #fff;
-  --border: #e8e8e8;
-  --text: #171717;
-  --muted: #737373;
-  --accent: #1d4ed8;
-  --accent-soft: #eff6ff;
-  --comp: #b91c1c;
-  --comp-soft: #fef2f2;
-  --radius: 10px;
-  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  min-height: 100vh;
-}
-@media (max-width: 900px) {
-  body { grid-template-columns: 1fr; }
-}
-aside.nav {
-  position: sticky;
-  top: 0;
-  align-self: start;
-  height: 100vh;
-  padding: 1.5rem 1.25rem;
-  border-right: 1px solid var(--border);
-  background: var(--surface);
-}
-@media (max-width: 900px) {
-  aside.nav {
-    position: relative;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .display { font-family: 'Fraunces', Georgia, serif; font-weight: 500; letter-spacing: -0.02em; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ============ NAV (shared) ============ */
+  nav.top {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px 32px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    margin-right: 10px;
+    vertical-align: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.current { color: var(--ink); font-weight: 500; }
+
+  /* ============ STICKY SHARE BAR ============ */
+  .sticky-share {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 0;
+    position: sticky;
+    top: 60px;
+    z-index: 40;
+  }
+  .sticky-share-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 200px 1fr 90px;
+    gap: 18px;
     align-items: center;
   }
-}
-.nav-brand {
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.25rem;
-  color: var(--text);
-}
-@media (max-width: 900px) {
-  .nav-brand { margin-bottom: 0; flex: 1 1 100%; }
-}
-.nav ul { list-style: none; margin: 0; padding: 0; }
-.nav li { margin-bottom: 0.35rem; }
-.nav a {
-  display: block;
-  padding: 0.4rem 0.5rem;
-  border-radius: 6px;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.88rem;
-}
-.nav a:hover { color: var(--text); background: var(--bg); }
-.nav a.active { color: var(--accent); background: var(--accent-soft); font-weight: 500; }
-main { padding: 2rem 2.5rem 4rem; max-width: 1120px; }
-@media (max-width: 900px) {
-  main { padding: 1.25rem 1rem 3rem; }
-}
-section { margin-bottom: 3rem; scroll-margin-top: 1rem; }
-section h2 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin: 0 0 0.35rem;
-}
-section .lede {
-  color: var(--muted);
-  font-size: 0.92rem;
-  max-width: 52ch;
-  margin: 0 0 1.25rem;
-}
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.35rem;
-  margin-bottom: 1rem;
-}
-.panel--subject { border-color: #93c5fd; background: linear-gradient(180deg, #f8fbff 0%, #fff 12%); }
-.panel--comp { border-color: #fca5a5; background: linear-gradient(180deg, #fffafa 0%, #fff 12%); }
-.panel-head {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 1rem;
-  color: var(--muted);
-}
-.panel--subject .panel-head { color: var(--accent); }
-.panel--comp .panel-head { color: var(--comp); }
-.grid-two {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-@media (max-width: 800px) {
-  .grid-two { grid-template-columns: 1fr; }
-}
-.field {
-  display: grid;
-  grid-template-columns: minmax(120px, 160px) 1fr;
-  gap: 0.5rem 0.75rem;
-  align-items: center;
-  margin-bottom: 0.65rem;
-  font-size: 0.88rem;
-}
-.field-weight { grid-template-columns: 1fr 1fr auto; }
-.field-label { color: var(--muted); }
-input[type="text"], select {
-  width: 100%;
-  padding: 0.45rem 0.55rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font: inherit;
-  background: var(--surface);
-}
-input[type="range"] { width: 100%; }
-.weight-val { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.85rem; min-width: 2.5rem; text-align: right; }
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1.25rem;
-  font: inherit;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  cursor: pointer;
-}
-.btn:hover { filter: brightness(1.05); }
-.btn:active { transform: scale(0.98); }
-.muted { color: var(--muted); }
-.small { font-size: 0.85rem; }
-table.share-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.88rem;
-}
-table.share-table th, table.share-table td {
-  text-align: left;
-  padding: 0.5rem 0.65rem;
-  border-bottom: 1px solid var(--border);
-}
-table.share-table th { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
-.num { font-variant-numeric: tabular-nums; text-align: right !important; }
-.overall-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem;
-}
-#share-bars { margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
-.bar-group-title { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; }
-.bar-row { display: grid; grid-template-columns: 140px 1fr 48px; gap: 0.5rem; align-items: center; font-size: 0.82rem; }
-.bar-label { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; min-width: 2px; }
-.bar-fill--dark { background: #262626 !important; }
-.bar-c0 { background: #60a5fa; }
-.bar-c1 { background: #34d399; }
-.bar-c2 { background: #fbbf24; }
-.bar-c3 { background: #a78bfa; }
-.bar-val { font-variant-numeric: tabular-nums; text-align: right; color: var(--muted); }
-#sim-hint { margin-top: 0.75rem; font-size: 0.88rem; color: var(--muted); }
-.persona-dl { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1rem; font-size: 0.88rem; margin: 0.75rem 0; }
-.persona-dl dt { color: var(--muted); margin: 0; }
-.persona-dl dd { margin: 0; }
-.persona-narr { font-size: 0.9rem; margin: 0; }
-#persona-card h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
-#persona-wtp-top ul, #persona-wtp-bottom ul { margin: 0.35rem 0 0; padding-left: 1.1rem; font-size: 0.88rem; }
-#persona-wtp-top h4, #persona-wtp-bottom h4 { margin: 1rem 0 0; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.wtp-amt { font-variant-numeric: tabular-nums; font-weight: 600; margin-right: 0.35rem; }
-.wtp-lead { margin-top: 0; }
-.wtp-pooled { font-size: 1.05rem; }
-.wtp-list { list-style: none; padding: 0; margin: 0.75rem 0; font-size: 0.88rem; }
-.wtp-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
-.scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.75rem; }
-.scenario-grid h4 { margin: 0 0 0.25rem; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.num.big { font-size: 1.75rem; font-weight: 600; margin: 0; }
-.scenario-delta { font-size: 0.95rem; margin: 0.5rem 0; }
-.scenario-verdict { margin: 0.5rem 0 0; font-size: 0.92rem; }
-.bundle-list { font-size: 0.88rem; margin: 0.75rem 0 0; padding-left: 1.1rem; }
-.weight-foot { font-size: 0.85rem; margin-top: 0.75rem; }
-.intro-box { max-width: 62ch; font-size: 0.92rem; color: var(--muted); }
-.intro-box p { margin: 0 0 0.75rem; }
-footer.note {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.82rem;
-  color: var(--muted);
-  max-width: 62ch;
-}
+  @media (max-width: 700px) {
+    .sticky-share-inner { grid-template-columns: 1fr; gap: 10px; }
+  }
+  .sticky-share-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+  .sticky-share-label .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--positive);
+    margin-right: 6px;
+    vertical-align: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .share-track {
+    display: flex;
+    height: 32px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .share-seg {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .share-seg.your { background: var(--your); }
+  .share-seg.comp { background: var(--comp); }
+  .share-seg.outside { background: var(--ink-muted); }
+  .sticky-update {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn-update {
+    background: var(--accent);
+    color: white;
+    border: 1px solid var(--accent);
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-update:hover { background: #15293f; }
 
+  /* ============ PAGE LAYOUT ============ */
+  .page {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ============ INTRO ============ */
+  .intro {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .intro-eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  h1.page-title {
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 30ch;
+  }
+  .intro-sub {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .intro-sub p { margin-bottom: 8px; }
+
+  /* ============ SECTIONS ============ */
+  section.block {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--rule);
+    scroll-margin-top: 120px;
+  }
+  section.block:last-of-type { border-bottom: none; }
+
+  .section-number {
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  h2.section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .section-lede {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 60ch;
+    margin-bottom: 28px;
+  }
+
+  /* ============ PROPERTY PANELS ============ */
+  .props-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 800px) {
+    .props-grid { grid-template-columns: 1fr; }
+  }
+  .prop-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+  }
+  .prop-panel.your { border-left: 3px solid var(--your); }
+  .prop-panel.comp { border-left: 3px solid var(--comp); }
+  .prop-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .prop-panel.your .prop-head { color: var(--your); }
+  .prop-panel.comp .prop-head { color: var(--comp); }
+  .field {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .field-label { color: var(--ink-muted); font-size: 12px; }
+  input[type="text"], select {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--rule-strong);
+    background: var(--bg-elevated);
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  input[type="range"] { width: 100%; }
+
+  /* ============ WEIGHTS PANEL ============ */
+  .weights-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+    margin-bottom: 24px;
+  }
+  .weights-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .weights-helper {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    max-width: 60ch;
+  }
+  .weight-row {
+    display: grid;
+    grid-template-columns: 240px 1fr 50px;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .weight-label {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .weight-role {
+    color: var(--ink-muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 1px;
+  }
+  .weight-val {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-soft);
+    text-align: right;
+    font-size: 13px;
+  }
+  .weight-foot {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 14px;
+  }
+
+  /* ============ RESULTS ============ */
+  .results-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+  }
+  .results-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+  }
+  table.share-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  table.share-table th, table.share-table td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.share-table th {
+    color: var(--ink-muted);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .num { font-variant-numeric: tabular-nums; text-align: right !important; }
+  .overall-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .overall-row:last-child { border-bottom: none; }
+  #share-bars {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .bar-group-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 56px;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .bar-label {
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .bar-track {
+    height: 8px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; min-width: 2px; }
+  .bar-fill.your { background: var(--your); }
+  .bar-fill.comp { background: var(--comp); }
+  .bar-fill.weighted-your { background: #0d1c2f; }
+  .bar-fill.weighted-comp { background: #6b2e1c; }
+  .bar-val {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--ink-soft);
+  }
+  #sim-hint {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ PERSONAS SECTION ============ */
+  .persona-controls {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .persona-controls label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .persona-controls select {
+    max-width: 360px;
+    min-width: 240px;
+  }
+  .persona-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .persona-role {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .persona-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .persona-dl {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 6px 18px;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .persona-dl dt {
+    color: var(--ink-muted);
+    margin: 0;
+  }
+  .persona-dl dd {
+    color: var(--ink);
+    margin: 0;
+  }
+  .persona-narrative {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+
+  /* WTP bar charts in persona section */
+  .wtp-chart-block {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+    margin-bottom: 14px;
+  }
+  .wtp-chart-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .wtp-chart-head.top { color: var(--positive); }
+  .wtp-chart-head.bottom { color: var(--comp); }
+  .wtp-bar-row {
+    display: grid;
+    grid-template-columns: 1fr 70px;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .wtp-bar-row:last-child { margin-bottom: 0; }
+  .wtp-bar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .wtp-bar-label {
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .wtp-bar-track {
+    height: 6px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .wtp-bar-fill { height: 100%; }
+  .wtp-bar-fill.positive { background: var(--positive); }
+  .wtp-bar-fill.negative { background: var(--comp); }
+  .wtp-amt {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    text-align: right;
+    font-size: 14px;
+  }
+  .wtp-amt.positive { color: var(--positive); }
+  .wtp-amt.negative { color: var(--comp); }
+
+  /* ============ WTP SECTION ============ */
+  .wtp-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 24px 28px;
+  }
+  .wtp-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 22px;
+    max-width: 540px;
+  }
+  .wtp-field {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+  .wtp-field-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .wtp-headline {
+    background: var(--accent-soft);
+    border: 1px solid #C9D4E2;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .wtp-headline strong {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .wtp-persona-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+  .wtp-persona-list li {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: center;
+    font-size: 14px;
+  }
+  .wtp-persona-list li:last-child { border-bottom: none; }
+  .wtp-persona-name {
+    color: var(--ink);
+  }
+  .wtp-persona-role {
+    display: block;
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+  .wtp-persona-amt {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    text-align: right;
+    font-size: 14px;
+  }
+  .wtp-persona-amt.positive { color: var(--positive); }
+  .wtp-persona-amt.negative { color: var(--comp); }
+  .wtp-footnote {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 16px;
+  }
+
+  /* ============ SCENARIOS ============ */
+  .scenario-panel {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 24px 28px;
+  }
+  .scenario-controls {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 22px;
+    max-width: 720px;
+  }
+  .scenario-controls label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 700px) {
+    .scenario-grid { grid-template-columns: 1fr; }
+  }
+  .scenario-card {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: 18px 20px;
+  }
+  .scenario-card h4 {
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .scenario-big {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .scenario-big-sub {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+  .scenario-delta {
+    font-size: 14px;
+    margin: 14px 0 8px;
+    color: var(--ink);
+  }
+  .scenario-delta strong { font-weight: 600; }
+  .scenario-verdict {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background: var(--warn-soft);
+    border-left: 3px solid var(--warn-rule);
+  }
+  .bundle-list {
+    list-style: none;
+    padding: 0;
+    font-size: 13px;
+  }
+  .bundle-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+  .bundle-list li:last-child { border-bottom: none; }
+  .bundle-list strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ============ FOOTER ============ */
+  footer.note {
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    padding: 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+  footer .footnote {
+    max-width: 60ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
-<aside class="nav">
-  <div class="nav-brand">Market share simulator</div>
-  <ul>
-    <li><a href="#intro" data-section="intro" class="active">Overview</a></li>
-    <li><a href="#simulate" data-section="simulate">Simulate</a></li>
-    <li><a href="#personas" data-section="personas">Personas</a></li>
-    <li><a href="#wtp" data-section="wtp">Willingness to pay</a></li>
-    <li><a href="#scenarios" data-section="scenarios">Scenarios</a></li>
-  </ul>
-</aside>
-<main>
-  <section id="intro">
-    <h2>Overview</h2>
-    <div class="intro-box">
-      <p>Model shares for two properties using conjoint coefficients. Adjust the subject and competitor, set persona weights to match your trade area, then review weighted share, WTP, and repositioning bundles.</p>
-      <p>Outputs are conditional on choosing to lease. Calibrate weights with real demographics before committee-ready numbers.</p>
+
+<nav class="top">
+  <div class="nav-inner">
+    <div class="brand"><a href="index.html"><span class="brand-mark"></span>Tenant Choice Simulator</a></div>
+    <div class="nav-links">
+      <a href="simulator.html" class="current">Simulator</a>
+      <a href="methodology.html">Methodology</a>
+    </div>
+  </div>
+</nav>
+
+<div class="sticky-share">
+  <div class="sticky-share-inner">
+    <div>
+      <div class="sticky-share-label"><span class="live-dot"></span>Capture rate · weighted by target tenant mix</div>
+    </div>
+    <div class="share-track" id="sticky-track">
+      <div class="share-seg your" id="sticky-your" style="width: 0%">0%</div>
+      <div class="share-seg comp" id="sticky-comp" style="width: 0%">0%</div>
+    </div>
+    <div class="sticky-update">
+      <button type="button" class="btn-update" id="btn-simulate">Update</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <section class="intro">
+    <div class="intro-eyebrow">Simulator</div>
+    <h1 class="display page-title">Configure your property and a comp, see how target tenants choose.</h1>
+    <div class="intro-sub">
+      <p>Build your property and a comparable, set the mix of target tenant segments for your trade area, and see how each segment splits between the two. Adjust amenities, rent, or the segment mix to see how capture rate responds.</p>
+      <p>Results are conditional on a tenant choosing to lease. Calibrate the tenant mix against real demographic data before relying on these numbers for a committee decision.</p>
     </div>
   </section>
 
-  <section id="simulate">
-    <h2>Simulate</h2>
-    <p class="lede">Configure both properties. Weights below normalize to sum to 1. Run when you are ready to refresh results.</p>
-    <div class="grid-two">
-      <div class="panel panel--subject">
-        <div class="panel-head">Subject</div>
+  <section class="block" id="simulate">
+    <div class="section-number">01</div>
+    <h2 class="section-title">Configure your comp set</h2>
+    <p class="section-lede">Set up your property and one comparable. Adjust any feature on either property; results update when you click Update.</p>
+
+    <div class="props-grid">
+      <div class="prop-panel your">
+        <div class="prop-head">Your property</div>
         <div id="form-subject"></div>
       </div>
-      <div class="panel panel--comp">
-        <div class="panel-head">Competitor</div>
+      <div class="prop-panel comp">
+        <div class="prop-head">Comp</div>
         <div id="form-comp"></div>
       </div>
     </div>
-    <div class="panel">
-      <div class="panel-head">Persona weights</div>
-      <p class="muted small" style="margin-top:0">Relative size of each segment in your pool. Raw sliders need not sum to 1 — values are normalized.</p>
-      <div id="weights-fields"></div>
-      <p class="weight-foot muted">Raw sum: <span id="weight-sum">0</span> (used for normalization)</p>
-    </div>
-    <button type="button" class="btn" id="btn-simulate">Update results</button>
 
-    <div class="panel" style="margin-top:1.25rem">
-      <div class="panel-head">Results</div>
+    <div class="weights-panel">
+      <div class="weights-head">Target tenant segments</div>
+      <p class="weights-helper">Set the relative size of each segment in your target market. Raw values are normalized; they do not need to sum to one.</p>
+      <div id="weights-fields"></div>
+      <p class="weight-foot">Raw sum: <span id="weight-sum">0</span> (used for normalization)</p>
+    </div>
+
+    <div class="results-panel">
+      <div class="results-head">Results</div>
       <table class="share-table">
         <thead>
-          <tr><th>Persona</th><th class="num">Weight</th><th class="num" id="th-subj">Subject</th><th class="num" id="th-comp">Comp</th></tr>
+          <tr>
+            <th>Target tenant segment</th>
+            <th class="num">Weight</th>
+            <th class="num" id="th-subj">Your property</th>
+            <th class="num" id="th-comp">Comp</th>
+          </tr>
         </thead>
         <tbody id="share-table-body"></tbody>
       </table>
-      <div style="margin-top:1rem">
-        <div class="panel-head" style="margin-bottom:0.5rem">Population-weighted</div>
+      <div style="margin-top:8px">
+        <div class="results-head" style="margin-bottom:6px">Weighted across all target segments</div>
         <div id="overall-shares"></div>
       </div>
       <div id="share-bars"></div>
@@ -281,61 +791,79 @@ footer.note {
     </div>
   </section>
 
-  <section id="personas">
-    <h2>Personas</h2>
-    <p class="lede">Read segment context and implied preference strength from the model.</p>
-    <div class="panel">
-      <label class="field" style="grid-template-columns:120px 1fr;max-width:420px">
-        <span class="field-label">Persona</span>
-        <select id="persona-select"></select>
-      </label>
-      <div id="persona-card" class="panel" style="margin-top:1rem;border-style:dashed"></div>
+  <section class="block" id="personas">
+    <div class="section-number">02</div>
+    <h2 class="section-title">Discover your target tenant</h2>
+    <p class="section-lede">Review each tenant segment and what they value most. The bar charts show the amenities each segment is willing to pay the most for, and the features that lose them.</p>
+
+    <div class="persona-controls">
+      <label for="persona-select">Segment</label>
+      <select id="persona-select"></select>
+    </div>
+
+    <div class="persona-card" id="persona-card"></div>
+
+    <div class="wtp-chart-block">
+      <div class="wtp-chart-head top">Most valued · top 5 amenities</div>
       <div id="persona-wtp-top"></div>
+    </div>
+    <div class="wtp-chart-block">
+      <div class="wtp-chart-head bottom">Least valued · bottom 5 amenities</div>
       <div id="persona-wtp-bottom"></div>
     </div>
   </section>
 
-  <section id="wtp">
-    <h2>Willingness to pay</h2>
-    <p class="lede">Dollar-per-month equivalent for moving between two attribute levels. Pooled row uses the average renter; rows below are by persona.</p>
-    <div class="panel">
-      <label class="field" style="grid-template-columns:140px 1fr;max-width:100%">
-        <span class="field-label">Attribute</span>
-        <select id="wtp-attr"></select>
-      </label>
-      <label class="field" style="grid-template-columns:140px 1fr;max-width:100%;margin-top:0.5rem">
-        <span class="field-label">From</span>
-        <select id="wtp-from"></select>
-      </label>
-      <label class="field" style="grid-template-columns:140px 1fr;max-width:100%">
-        <span class="field-label">To</span>
-        <select id="wtp-to"></select>
-      </label>
-      <div id="wtp-out" style="margin-top:1rem"></div>
+  <section class="block" id="wtp">
+    <div class="section-number">03</div>
+    <h2 class="section-title">Willingness to pay for a feature</h2>
+    <p class="section-lede">Pick a feature and a baseline; the simulator tells you how much per month an average renter would pay to upgrade to the simulated change. Per-segment values appear below.</p>
+
+    <div class="wtp-panel">
+      <div class="wtp-controls">
+        <div class="wtp-field">
+          <span class="wtp-field-label">Feature</span>
+          <select id="wtp-attr"></select>
+        </div>
+        <div class="wtp-field">
+          <span class="wtp-field-label">Baseline offer</span>
+          <select id="wtp-from"></select>
+        </div>
+        <div class="wtp-field">
+          <span class="wtp-field-label">Simulated change</span>
+          <select id="wtp-to"></select>
+        </div>
+      </div>
+      <div id="wtp-out"></div>
     </div>
   </section>
 
-  <section id="scenarios">
-    <h2>Scenarios</h2>
-    <p class="lede">Apply a preset bundle to the subject, bump rent to the nearest price step, and compare weighted share before and after. The competitor stays as configured in Simulate.</p>
-    <div class="panel">
-      <label class="field" style="grid-template-columns:100px 1fr">
-        <span class="field-label">Bundle</span>
+  <section class="block" id="scenarios">
+    <div class="section-number">04</div>
+    <h2 class="section-title">Repositioning scenarios</h2>
+    <p class="section-lede">Apply a preset bundle to your property, bump rent to the nearest price step, and compare weighted capture rate before and after. The comp stays as configured above.</p>
+
+    <div class="scenario-panel">
+      <div class="scenario-controls">
+        <label for="scenario-bundle">Bundle</label>
         <select id="scenario-bundle"></select>
-      </label>
-      <div id="scenario-out" style="margin-top:1rem"></div>
+      </div>
+      <div id="scenario-out"></div>
     </div>
   </section>
 
-  <footer class="note">
-    Highland Square conjoint simulator · Static export. Rebuild this file with <code>python3 notebooks/build_simulator_html.py</code> after updating <code>notebooks/data/</code>.
-  </footer>
-</main>
-<script type="application/json" id="sim-data">
-{"ATTRIBUTES":{"Size":{"750 SF (compact 1BR)":750,"1,000 SF (large 1BR / compact 2BR)":1000,"1,250 SF (standard 2BR)":1250},"Price":{"$1,650/mo":1650,"$1,950/mo":1950,"$2,250/mo":2250,"$2,550/mo":2550},"MoveInSpecial":{"None":null,"1 month free (12-mo lease)":null,"2 months free (13-mo lease)":null},"Location":{"North Druid Hills / Briarcliff":null,"Virginia-Highland / Morningside":null,"Decatur / Emory Village":null,"Buckhead / Lenox":null},"CommuteToWork":{"Quick (under 15 min by car)":null,"Average (15-30 min by car)":null,"Long (over 30 min by car)":null},"Walkability":{"Car-Required (drive for groceries, dining, errands from this building)":null,"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)":null,"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)":null},"Finishes":{"Builder-grade (laminate counters, basic appliances, no smart features)":null,"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)":null,"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)":null},"Parking":{"Surface lot, unassigned parking, no gate":null,"Gated surface lot + reserved space option":null,"Dedicated garage with assigned space + EV charging":null},"Security":{"Tier 1: Open access, no controlled entry":null,"Tier 2: Perimeter gate + controlled-access lobby + camera coverage":null,"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout":null},"Rooftop":{"No rooftop space":null,"Rooftop lounge with skyline views & outdoor seating":null},"Coworking":{"No dedicated coworking space":null,"Resident co-working lounge with private call rooms & wifi":null},"PetAmenities":{"No pet amenities":null,"Standard dog park only":null,"Dog park + pet spa with grooming station":null},"PackageHandling":{"Standard mailroom (sign for packages during office hours)":null,"24/7 Amazon Hub lockers + refrigerated grocery locker":null}},"PERSONA_COEFS_RAW":{"emory_grad":[{"feature":"Size_num","coef":0.0044087262796988205,"p_value":2.7578441003234548e-14},{"feature":"Price_num","coef":-0.01099365080530812,"p_value":1.791842226575211e-76},{"feature":"ASC_B","coef":1.5144038137129534,"p_value":8.304802294216904e-30},{"feature":"ASC_C","coef":0.6091692640657297,"p_value":3.3188542323637795e-07},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.07397420846132749,"p_value":0.7706286380241767},{"feature":"MoveInSpecial__None","coef":-1.3139580840410232,"p_value":4.191392764686795e-07},{"feature":"Location__Decatur / Emory Village","coef":2.7148445256949687,"p_value":5.903547223626618e-31},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.7120418416144216,"p_value":2.1027708969215908e-16},{"feature":"Location__Virginia-Highland / Morningside","coef":0.5194718329997556,"p_value":0.02106606279851785},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.9748169918280682,"p_value":5.268373464358789e-36},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.9108982031962736,"p_value":3.4601824523729477e-33},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":3.487902405913773,"p_value":2.3395332877300885e-38},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.6724869249007237,"p_value":3.2906257581507424e-36},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":0.5516076977127152,"p_value":0.05097351272625015},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.061533538691623736,"p_value":0.7267540945193975},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.2711829776660128,"p_value":0.32046373921574434},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-0.613397479352974,"p_value":0.0015554575296557605},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":0.14423146639876505,"p_value":0.6382152961116344},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.1605825807210883,"p_value":0.0009492483657663201},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.7132784924142631,"p_value":0.005416753898635346},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":1.1745454863323326,"p_value":9.367857166425234e-11},{"feature":"PetAmenities__No pet amenities","coef":-0.8259802194372546,"p_value":0.00024814980649298413},{"feature":"PetAmenities__Standard dog park only","coef":0.3527482737102093,"p_value":0.09905155721826263},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.04696707165092817,"p_value":0.7866312238328304}],"vahi_professional":[{"feature":"Size_num","coef":0.00668239273281586,"p_value":6.515538732119451e-11},{"feature":"Price_num","coef":-0.023288232176751203,"p_value":3.798138165682818e-28},{"feature":"ASC_B","coef":1.6619798002251867,"p_value":6.963348020671094e-33},{"feature":"ASC_C","coef":0.30437598863294185,"p_value":0.009379151725953437},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.3502150554900642,"p_value":0.5207270944825815},{"feature":"MoveInSpecial__None","coef":-3.836983355944028,"p_value":6.513451207191389e-10},{"feature":"Location__Decatur / Emory Village","coef":0.12617188240827149,"p_value":0.6791271659850731},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.1681769904531683,"p_value":0.008535574915475217},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8787851941321283,"p_value":3.1163846132320166e-06},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-11.125331835373524,"p_value":4.90138976558609e-31},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":6.790021733737407,"p_value":4.740682070995557e-28},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":11.205456357986387,"p_value":1.5219652628048027e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":7.365256102926551,"p_value":6.327048557533629e-32},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":5.450671619680357,"p_value":4.7179852175030415e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":3.2582074674371055,"p_value":9.871762763591544e-12},{"feature":"Parking__Gated surface lot + reserved space option","coef":-3.7549971762037044,"p_value":2.803792375623368e-09},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-5.072738158806931,"p_value":9.250335120507572e-19},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.9129525047264286,"p_value":0.0026558870884424747},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":4.394587730862353,"p_value":3.120335586877179e-08},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-3.8142233033456896,"p_value":8.059202223803024e-12},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":2.953959844273161,"p_value":3.019539656460903e-09},{"feature":"PetAmenities__No pet amenities","coef":-3.276665661568949,"p_value":4.3598067646459105e-09},{"feature":"PetAmenities__Standard dog park only","coef":-1.0414058182959014,"p_value":0.023506803985644104},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0618367046088673,"p_value":8.425936093055616e-05}],"empty_nester":[{"feature":"Size_num","coef":0.008933524461392662,"p_value":2.4404823800450205e-31},{"feature":"Price_num","coef":-0.007771220979671398,"p_value":4.863277732343123e-41},{"feature":"ASC_B","coef":2.524493861273771,"p_value":2.2772049061393112e-51},{"feature":"ASC_C","coef":1.4590599822739199,"p_value":2.081682942010081e-24},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.5702935070873918,"p_value":6.960463114017216e-07},{"feature":"MoveInSpecial__None","coef":0.7072619102045222,"p_value":0.04053629916621559},{"feature":"Location__Decatur / Emory Village","coef":2.528018874899581,"p_value":8.186289897061854e-20},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.4442695591258314,"p_value":8.199203894992095e-07},{"feature":"Location__Virginia-Highland / Morningside","coef":1.6854158537473605,"p_value":7.144053108676289e-13},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-4.5425328025176785,"p_value":1.6977438956556256e-49},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":3.5412748299275987,"p_value":1.8337115796274938e-39},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":6.617759891260585,"p_value":1.899436082148443e-47},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":4.733690521049247,"p_value":1.7904059712391737e-56},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":2.264310387822625,"p_value":1.0697223470976356e-13},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5575778773798614,"p_value":2.1010468047362427e-10},{"feature":"Parking__Gated surface lot + reserved space option","coef":-1.7114518322856571,"p_value":1.9740535498940354e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-2.4622836751388872,"p_value":1.1691272220083425e-26},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.3892553844568574,"p_value":8.165535388344116e-11},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.634060141560855,"p_value":0.00019846124649328052},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":0.2859641767265717,"p_value":0.33476102279695197},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.1013495016802317,"p_value":0.614357691561741},{"feature":"PetAmenities__No pet amenities","coef":-0.9387057427640875,"p_value":0.0015934333847013333},{"feature":"PetAmenities__Standard dog park only","coef":-0.7504160741346676,"p_value":0.0013166506231717535},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.22583118787686624,"p_value":0.21032177607034477}],"skeptical_renter_control":[{"feature":"Size_num","coef":0.0067499605636801895,"p_value":2.7010891109266934e-17},{"feature":"Price_num","coef":-0.018940678142477334,"p_value":6.003293935248889e-26},{"feature":"ASC_B","coef":1.701749043859175,"p_value":1.6859010808127987e-37},{"feature":"ASC_C","coef":0.4132470595316151,"p_value":0.00026561733782893513},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.8047366781778569,"p_value":3.145275055411097e-05},{"feature":"MoveInSpecial__None","coef":-1.4105443891465932,"p_value":0.0019094881944904719},{"feature":"Location__Decatur / Emory Village","coef":2.0977582229679825,"p_value":4.808358430060341e-12},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.0720756968218024,"p_value":0.0012559445280446622},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8635923677246864,"p_value":3.1200544792018374e-10},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-8.26609397938111,"p_value":3.403558118125102e-23},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":5.494230985176725,"p_value":5.707734966392941e-27},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":9.974267696713246,"p_value":7.931073466993862e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":5.277110920056427,"p_value":7.866089368120505e-34},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":4.101375187277176,"p_value":1.2578859975278871e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5262871288163593,"p_value":1.0194539594910001e-06},{"feature":"Parking__Gated surface lot + reserved space option","coef":-2.976859467340312,"p_value":6.884833403461805e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-3.6854314378482638,"p_value":2.586016478970211e-14},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.656183136916843,"p_value":1.3863400478180867e-07},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":3.6541521910341275,"p_value":2.9635320215156425e-09},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-2.9967452851481586,"p_value":2.0961372537333665e-09},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.7514735215904741,"p_value":0.0017299082840013752},{"feature":"PetAmenities__No pet amenities","coef":-2.4834067732227143,"p_value":9.134965739415869e-09},{"feature":"PetAmenities__Standard dog park only","coef":0.07548188952891148,"p_value":0.8209240048811319},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0737156341413514,"p_value":0.00012475066334039655}]},"POOLED_ROWS":[{"feature":"Size_num","coef":0.0052308088779324064},{"feature":"Price_num","coef":-0.008567759750243611},{"feature":"ASC_B","coef":1.3401112812725542},{"feature":"ASC_C","coef":0.4741932165152219},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.48691414693580537},{"feature":"MoveInSpecial__None","coef":-0.6169147786986914},{"feature":"Location__Decatur / Emory Village","coef":1.8271523064873916},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.2090979010866834},{"feature":"Location__Virginia-Highland / Morningside","coef":0.9764901663770694},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.768127809288743},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.8360599362586405},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":4.384270296907701},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.8574252019163855},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":1.8950605743561664},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.47626307208193347},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.43947288316842315},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-1.5294239202048143},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.6636285248400635},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":2.060215155893587},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.8789917926366181},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.6654520016136928},{"feature":"PetAmenities__No pet amenities","coef":-1.2644323178157355},{"feature":"PetAmenities__Standard dog park only","coef":-0.3269871203492233},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.10302272153461585}],"PERSONA_DESCRIPTIONS":{"emory_grad":{"name":"Maya (Emory PhD Candidate)","age":28,"income":"$52,000/year (stipend + RA funding)","savings":"$4,200 liquid","debt":"$580/mo federal student loans","work_destination":"Emory main campus","lease_horizon":"18+ months (through dissertation)","segment":"Budget-constrained academic professional","narrative":"Maya is a third-year PhD candidate in epidemiology. Her monthly take-home is roughly $3,200, and she's loan-burdened. She's price-sensitive and values stability through her dissertation timeline. She doesn't have wealth buffers \u2014 she lives close to her budget every month."},"young_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters \u2014 he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"vahi_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters \u2014 he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"empty_nester":{"name":"Patricia (Recent Retiree)","age":58,"income":"$180K household (Tom still works as CPA)","savings":"~$1.4M retirement + $815K home-sale proceeds","debt":"None","work_destination":"Sandy Springs (Tom's office)","lease_horizon":"2-4 years (then condo TBD)","segment":"Wealthy empty-nester downsizer","narrative":"Patricia and Tom sold their suburban house and are renting for the first time in 30 years. They have substantial home-sale proceeds and retirement assets. Price is not a major constraint \u2014 they value quality, security, and the right neighborhood. Tom still commutes, so commute time matters for him."},"skeptical_renter_control":{"name":"Alex (Software Engineer)","age":31,"income":"$115K","savings":"$35K HYSA + $95K 401(k)","debt":"None","work_destination":"Unspecified","lease_horizon":"1-2 years","segment":"Analytical comparison shopper","narrative":"Alex is an experienced renter in Atlanta \u2014 has lived in Midtown, West Midtown, and Decatur. Reads reviews carefully and would walk away from a bad deal. Serves as a control persona to anchor the analytical end of the renter spectrum."}},"HIGHLAND":{"Name":"Highland Square (current)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$1,950/mo","MoveInSpecial":"1 month free (12-mo lease)","Location":"North Druid Hills / Briarcliff","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Parking":"Gated surface lot + reserved space option","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","Rooftop":"No rooftop space","Coworking":"No dedicated coworking space","PetAmenities":"Standard dog park only","PackageHandling":"Standard mailroom (sign for packages during office hours)"},"MODERA":{"Name":"Modera Morningside (key comp)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$2,250/mo","MoveInSpecial":"None","Location":"Virginia-Highland / Morningside","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Parking":"Dedicated garage with assigned space + EV charging","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker"},"DEFAULT_WEIGHTS":{"emory_grad":0.2,"young_professional":0.4,"vahi_professional":0.4,"empty_nester":0.2,"skeptical_renter_control":0.2},"BUNDLES":{"Light renovation (mid-tier finishes + Tier 2 security)":{"Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","price_bump":100},"Premium repositioning (premium finishes + Tier 3 security + rooftop)":{"Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","price_bump":300},"Lifestyle pack (coworking + pet spa + smart package)":{"Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker","price_bump":150},"Parking upgrade only (gated garage + EV)":{"Parking":"Dedicated garage with assigned space + EV charging","price_bump":75},"Aggressive concession (no other change)":{"MoveInSpecial":"2 months free (13-mo lease)","price_bump":0}}}
-</script>
-<script>
+</div>
 
+<footer class="note">
+  <div class="footnote">
+    Results are directional estimates from a synthetic-data simulation. Not a substitute for real-respondent market research on high-stakes decisions.
+  </div>
+</footer>
+
+<script type="application/json" id="sim-data">
+{"ATTRIBUTES":{"Size":{"750 SF (compact 1BR)":750,"1,000 SF (large 1BR / compact 2BR)":1000,"1,250 SF (standard 2BR)":1250},"Price":{"$1,650/mo":1650,"$1,950/mo":1950,"$2,250/mo":2250,"$2,550/mo":2550},"MoveInSpecial":{"None":null,"1 month free (12-mo lease)":null,"2 months free (13-mo lease)":null},"Location":{"North Druid Hills / Briarcliff":null,"Virginia-Highland / Morningside":null,"Decatur / Emory Village":null,"Buckhead / Lenox":null},"CommuteToWork":{"Quick (under 15 min by car)":null,"Average (15-30 min by car)":null,"Long (over 30 min by car)":null},"Walkability":{"Car-Required (drive for groceries, dining, errands from this building)":null,"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)":null,"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)":null},"Finishes":{"Builder-grade (laminate counters, basic appliances, no smart features)":null,"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)":null,"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)":null},"Parking":{"Surface lot, unassigned parking, no gate":null,"Gated surface lot + reserved space option":null,"Dedicated garage with assigned space + EV charging":null},"Security":{"Tier 1: Open access, no controlled entry":null,"Tier 2: Perimeter gate + controlled-access lobby + camera coverage":null,"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout":null},"Rooftop":{"No rooftop space":null,"Rooftop lounge with skyline views & outdoor seating":null},"Coworking":{"No dedicated coworking space":null,"Resident co-working lounge with private call rooms & wifi":null},"PetAmenities":{"No pet amenities":null,"Standard dog park only":null,"Dog park + pet spa with grooming station":null},"PackageHandling":{"Standard mailroom (sign for packages during office hours)":null,"24/7 Amazon Hub lockers + refrigerated grocery locker":null}},"PERSONA_COEFS_RAW":{"emory_grad":[{"feature":"Size_num","coef":0.0044087262796988205,"p_value":2.7578441003234548e-14},{"feature":"Price_num","coef":-0.01099365080530812,"p_value":1.791842226575211e-76},{"feature":"ASC_B","coef":1.5144038137129534,"p_value":8.304802294216904e-30},{"feature":"ASC_C","coef":0.6091692640657297,"p_value":3.3188542323637795e-07},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.07397420846132749,"p_value":0.7706286380241767},{"feature":"MoveInSpecial__None","coef":-1.3139580840410232,"p_value":4.191392764686795e-07},{"feature":"Location__Decatur / Emory Village","coef":2.7148445256949687,"p_value":5.903547223626618e-31},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.7120418416144216,"p_value":2.1027708969215908e-16},{"feature":"Location__Virginia-Highland / Morningside","coef":0.5194718329997556,"p_value":0.02106606279851785},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.9748169918280682,"p_value":5.268373464358789e-36},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.9108982031962736,"p_value":3.4601824523729477e-33},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":3.487902405913773,"p_value":2.3395332877300885e-38},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.6724869249007237,"p_value":3.2906257581507424e-36},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":0.5516076977127152,"p_value":0.05097351272625015},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.061533538691623736,"p_value":0.7267540945193975},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.2711829776660128,"p_value":0.32046373921574434},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-0.613397479352974,"p_value":0.0015554575296557605},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":0.14423146639876505,"p_value":0.6382152961116344},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.1605825807210883,"p_value":0.0009492483657663201},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.7132784924142631,"p_value":0.005416753898635346},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":1.1745454863323326,"p_value":9.367857166425234e-11},{"feature":"PetAmenities__No pet amenities","coef":-0.8259802194372546,"p_value":0.00024814980649298413},{"feature":"PetAmenities__Standard dog park only","coef":0.3527482737102093,"p_value":0.09905155721826263},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.04696707165092817,"p_value":0.7866312238328304}],"vahi_professional":[{"feature":"Size_num","coef":0.00668239273281586,"p_value":6.515538732119451e-11},{"feature":"Price_num","coef":-0.023288232176751203,"p_value":3.798138165682818e-28},{"feature":"ASC_B","coef":1.6619798002251867,"p_value":6.963348020671094e-33},{"feature":"ASC_C","coef":0.30437598863294185,"p_value":0.009379151725953437},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.3502150554900642,"p_value":0.5207270944825815},{"feature":"MoveInSpecial__None","coef":-3.836983355944028,"p_value":6.513451207191389e-10},{"feature":"Location__Decatur / Emory Village","coef":0.12617188240827149,"p_value":0.6791271659850731},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.1681769904531683,"p_value":0.008535574915475217},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8787851941321283,"p_value":3.1163846132320166e-06},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-11.125331835373524,"p_value":4.90138976558609e-31},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":6.790021733737407,"p_value":4.740682070995557e-28},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":11.205456357986387,"p_value":1.5219652628048027e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":7.365256102926551,"p_value":6.327048557533629e-32},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":5.450671619680357,"p_value":4.7179852175030415e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":3.2582074674371055,"p_value":9.871762763591544e-12},{"feature":"Parking__Gated surface lot + reserved space option","coef":-3.7549971762037044,"p_value":2.803792375623368e-09},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-5.072738158806931,"p_value":9.250335120507572e-19},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.9129525047264286,"p_value":0.0026558870884424747},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":4.394587730862353,"p_value":3.120335586877179e-08},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-3.8142233033456896,"p_value":8.059202223803024e-12},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":2.953959844273161,"p_value":3.019539656460903e-09},{"feature":"PetAmenities__No pet amenities","coef":-3.276665661568949,"p_value":4.3598067646459105e-09},{"feature":"PetAmenities__Standard dog park only","coef":-1.0414058182959014,"p_value":0.023506803985644104},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0618367046088673,"p_value":8.425936093055616e-05}],"empty_nester":[{"feature":"Size_num","coef":0.008933524461392662,"p_value":2.4404823800450205e-31},{"feature":"Price_num","coef":-0.007771220979671398,"p_value":4.863277732343123e-41},{"feature":"ASC_B","coef":2.524493861273771,"p_value":2.2772049061393112e-51},{"feature":"ASC_C","coef":1.4590599822739199,"p_value":2.081682942010081e-24},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.5702935070873918,"p_value":6.960463114017216e-07},{"feature":"MoveInSpecial__None","coef":0.7072619102045222,"p_value":0.04053629916621559},{"feature":"Location__Decatur / Emory Village","coef":2.528018874899581,"p_value":8.186289897061854e-20},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.4442695591258314,"p_value":8.199203894992095e-07},{"feature":"Location__Virginia-Highland / Morningside","coef":1.6854158537473605,"p_value":7.144053108676289e-13},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-4.5425328025176785,"p_value":1.6977438956556256e-49},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":3.5412748299275987,"p_value":1.8337115796274938e-39},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":6.617759891260585,"p_value":1.899436082148443e-47},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":4.733690521049247,"p_value":1.7904059712391737e-56},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":2.264310387822625,"p_value":1.0697223470976356e-13},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5575778773798614,"p_value":2.1010468047362427e-10},{"feature":"Parking__Gated surface lot + reserved space option","coef":-1.7114518322856571,"p_value":1.9740535498940354e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-2.4622836751388872,"p_value":1.1691272220083425e-26},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.3892553844568574,"p_value":8.165535388344116e-11},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":1.634060141560855,"p_value":0.00019846124649328052},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":0.2859641767265717,"p_value":0.33476102279695197},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.1013495016802317,"p_value":0.614357691561741},{"feature":"PetAmenities__No pet amenities","coef":-0.9387057427640875,"p_value":0.0015934333847013333},{"feature":"PetAmenities__Standard dog park only","coef":-0.7504160741346676,"p_value":0.0013166506231717535},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.22583118787686624,"p_value":0.21032177607034477}],"skeptical_renter_control":[{"feature":"Size_num","coef":0.0067499605636801895,"p_value":2.7010891109266934e-17},{"feature":"Price_num","coef":-0.018940678142477334,"p_value":6.003293935248889e-26},{"feature":"ASC_B","coef":1.701749043859175,"p_value":1.6859010808127987e-37},{"feature":"ASC_C","coef":0.4132470595316151,"p_value":0.00026561733782893513},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":1.8047366781778569,"p_value":3.145275055411097e-05},{"feature":"MoveInSpecial__None","coef":-1.4105443891465932,"p_value":0.0019094881944904719},{"feature":"Location__Decatur / Emory Village","coef":2.0977582229679825,"p_value":4.808358430060341e-12},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.0720756968218024,"p_value":0.0012559445280446622},{"feature":"Location__Virginia-Highland / Morningside","coef":1.8635923677246864,"p_value":3.1200544792018374e-10},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-8.26609397938111,"p_value":3.403558118125102e-23},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":5.494230985176725,"p_value":5.707734966392941e-27},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":9.974267696713246,"p_value":7.931073466993862e-26},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":5.277110920056427,"p_value":7.866089368120505e-34},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":4.101375187277176,"p_value":1.2578859975278871e-14},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":1.5262871288163593,"p_value":1.0194539594910001e-06},{"feature":"Parking__Gated surface lot + reserved space option","coef":-2.976859467340312,"p_value":6.884833403461805e-07},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-3.6854314378482638,"p_value":2.586016478970211e-14},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":2.656183136916843,"p_value":1.3863400478180867e-07},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":3.6541521910341275,"p_value":2.9635320215156425e-09},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-2.9967452851481586,"p_value":2.0961372537333665e-09},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.7514735215904741,"p_value":0.0017299082840013752},{"feature":"PetAmenities__No pet amenities","coef":-2.4834067732227143,"p_value":9.134965739415869e-09},{"feature":"PetAmenities__Standard dog park only","coef":0.07548188952891148,"p_value":0.8209240048811319},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-1.0737156341413514,"p_value":0.00012475066334039655}]},"POOLED_ROWS":[{"feature":"Size_num","coef":0.0052308088779324064},{"feature":"Price_num","coef":-0.008567759750243611},{"feature":"ASC_B","coef":1.3401112812725542},{"feature":"ASC_C","coef":0.4741932165152219},{"feature":"MoveInSpecial__2 months free (13-mo lease)","coef":0.48691414693580537},{"feature":"MoveInSpecial__None","coef":-0.6169147786986914},{"feature":"Location__Decatur / Emory Village","coef":1.8271523064873916},{"feature":"Location__North Druid Hills / Briarcliff","coef":1.2090979010866834},{"feature":"Location__Virginia-Highland / Morningside","coef":0.9764901663770694},{"feature":"CommuteToWork__Long (over 30 min by car)","coef":-3.768127809288743},{"feature":"CommuteToWork__Quick (under 15 min by car)","coef":2.8360599362586405},{"feature":"Walkability__Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","coef":4.384270296907701},{"feature":"Walkability__Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","coef":2.8574252019163855},{"feature":"Finishes__Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","coef":1.8950605743561664},{"feature":"Finishes__Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","coef":0.47626307208193347},{"feature":"Parking__Gated surface lot + reserved space option","coef":-0.43947288316842315},{"feature":"Parking__Surface lot, unassigned parking, no gate","coef":-1.5294239202048143},{"feature":"Security__Tier 2: Perimeter gate + controlled-access lobby + camera coverage","coef":1.6636285248400635},{"feature":"Security__Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","coef":2.060215155893587},{"feature":"Rooftop__Rooftop lounge with skyline views & outdoor seating","coef":-0.8789917926366181},{"feature":"Coworking__Resident co-working lounge with private call rooms & wifi","coef":0.6654520016136928},{"feature":"PetAmenities__No pet amenities","coef":-1.2644323178157355},{"feature":"PetAmenities__Standard dog park only","coef":-0.3269871203492233},{"feature":"PackageHandling__Standard mailroom (sign for packages during office hours)","coef":-0.10302272153461585}],"PERSONA_DESCRIPTIONS":{"emory_grad":{"name":"Maya (Emory PhD Candidate)","age":28,"income":"$52,000/year (stipend + RA funding)","savings":"$4,200 liquid","debt":"$580/mo federal student loans","work_destination":"Emory main campus","lease_horizon":"18+ months (through dissertation)","segment":"Budget-constrained academic professional","narrative":"Maya is a third-year PhD candidate in epidemiology. Her monthly take-home is roughly $3,200, and she's loan-burdened. She's price-sensitive and values stability through her dissertation timeline. She doesn't have wealth buffers . she lives close to her budget every month."},"young_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters . he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"vahi_professional":{"name":"David (Healthcare Consultant)","age":34,"income":"$135K base + $20K bonus = $155K","savings":"$42K HYSA + $185K 401(k)","debt":"$14K residual student loans","work_destination":"Midtown (W. Peachtree), 3 days/week","lease_horizon":"2-3 years","segment":"Mid-career hybrid professional","narrative":"David is a single, well-compensated consultant new to Atlanta. He's not budget-constrained but values getting his money's worth. Hybrid work means apartment quality matters . he's home 2 days a week. Likely to upgrade if the value proposition is clear."},"empty_nester":{"name":"Patricia (Recent Retiree)","age":67,"income":"$180K household (Tom still works as CPA)","savings":"~$1.4M retirement + $815K home-sale proceeds","debt":"None","work_destination":"Sandy Springs (Tom's office)","lease_horizon":"2-4 years (then condo TBD)","segment":"Wealthy empty-nester downsizer","narrative":"Patricia and Tom sold their suburban house and are renting for the first time in 30 years. They have substantial home-sale proceeds and retirement assets. Price is not a major constraint . they value quality, security, and the right neighborhood. Tom still commutes, so commute time matters for him."},"skeptical_renter_control":{"name":"Alex (Software Engineer)","age":31,"income":"$115K","savings":"$35K HYSA + $95K 401(k)","debt":"None","work_destination":"Unspecified","lease_horizon":"1-2 years","segment":"Analytical comparison shopper","narrative":"Alex is an experienced renter in Atlanta . has lived in Midtown, West Midtown, and Decatur. Reads reviews carefully and would walk away from a bad deal. Serves as a control persona to anchor the analytical end of the renter spectrum."}},"HIGHLAND":{"Name":"Highland Square (current)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$1,950/mo","MoveInSpecial":"1 month free (12-mo lease)","Location":"North Druid Hills / Briarcliff","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walkable Errands (groceries & a few restaurants within a 10-min walk of this building)","Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Parking":"Gated surface lot + reserved space option","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","Rooftop":"No rooftop space","Coworking":"No dedicated coworking space","PetAmenities":"Standard dog park only","PackageHandling":"Standard mailroom (sign for packages during office hours)"},"MODERA":{"Name":"Modera Morningside (key comp)","Size":"1,000 SF (large 1BR / compact 2BR)","Price":"$2,250/mo","MoveInSpecial":"None","Location":"Virginia-Highland / Morningside","CommuteToWork":"Average (15-30 min by car)","Walkability":"Walk Everywhere (daily errands, dining, transit within a 10-min walk of this building)","Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Parking":"Dedicated garage with assigned space + EV charging","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker"},"DEFAULT_WEIGHTS":{"emory_grad":0.2,"young_professional":0.4,"vahi_professional":0.4,"empty_nester":0.2,"skeptical_renter_control":0.2},"BUNDLES":{"Light renovation (mid-tier finishes + Tier 2 security)":{"Finishes":"Mid-tier (granite/quartz counters, stainless appliances, in-unit washer/dryer)","Security":"Tier 2: Perimeter gate + controlled-access lobby + camera coverage","price_bump":100},"Premium repositioning (premium finishes + Tier 3 security + rooftop)":{"Finishes":"Premium (quartz waterfall island, smart thermostat, keyless entry, video doorbell)","Security":"Tier 3: Tier 2 + 24/7 staff or virtual concierge + smart locks throughout","Rooftop":"Rooftop lounge with skyline views & outdoor seating","price_bump":300},"Lifestyle pack (coworking + pet spa + smart package)":{"Coworking":"Resident co-working lounge with private call rooms & wifi","PetAmenities":"Dog park + pet spa with grooming station","PackageHandling":"24/7 Amazon Hub lockers + refrigerated grocery locker","price_bump":150},"Parking upgrade only (gated garage + EV)":{"Parking":"Dedicated garage with assigned space + EV charging","price_bump":75},"Aggressive concession (no other change)":{"MoveInSpecial":"2 months free (13-mo lease)","price_bump":0}}}
+</script>
+
+<script>
 (function () {
   const DATA = JSON.parse(document.getElementById('sim-data').textContent);
   const ATTRIBUTES = DATA.ATTRIBUTES;
@@ -343,26 +871,39 @@ footer.note {
   const BUNDLES = DATA.BUNDLES;
   const attrNames = Object.keys(ATTRIBUTES);
 
-  function coefMapFromRows(rows) {
+  // Build coef maps per persona and pooled
+  const personaCoefMaps = {};
+  for (const [p, rows] of Object.entries(DATA.PERSONA_COEFS_RAW)) {
     const m = new Map();
     for (const r of rows) m.set(r.feature, r.coef);
-    return m;
+    personaCoefMaps[p] = m;
   }
+  const pooledCoefMap = new Map();
+  for (const r of DATA.POOLED_ROWS) pooledCoefMap.set(r.feature, r.coef);
 
-  const personaCoefMaps = {};
-  for (const [k, rows] of Object.entries(DATA.PERSONA_COEFS_RAW)) {
-    personaCoefMaps[k] = coefMapFromRows(rows);
+  // Helper to derive role from persona name (e.g. "Maya (Emory PhD Candidate)" -> "Emory PhD Candidate")
+  function personaRole(p) {
+    const d = PERSONA_DESCRIPTIONS[p];
+    if (!d) return p;
+    const m = /\(([^)]+)\)/.exec(d.name);
+    return m ? m[1] : d.segment || '';
   }
-  const pooledCoefMap = coefMapFromRows(DATA.POOLED_ROWS);
+  function personaFirstName(p) {
+    const d = PERSONA_DESCRIPTIONS[p];
+    if (!d) return p;
+    return d.name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  }
 
   function priceBeta(coefMap) {
-    return coefMap.get('Price_num') ?? NaN;
+    return coefMap.get('Price_num') || 0;
   }
 
   function propertyUtility(profile, coefMap) {
     let util = 0;
-    util += coefMap.get('Size_num') * ATTRIBUTES.Size[profile.Size];
-    util += coefMap.get('Price_num') * ATTRIBUTES.Price[profile.Price];
+    const size = ATTRIBUTES.Size[profile.Size];
+    util += (coefMap.get('Size_num') || 0) * (size || 0);
+    const price = ATTRIBUTES.Price[profile.Price];
+    util += (coefMap.get('Price_num') || 0) * (price || 0);
     for (const attr of attrNames) {
       if (attr === 'Size' || attr === 'Price') continue;
       const level = profile[attr];
@@ -469,8 +1010,9 @@ footer.note {
     document.getElementById('th-comp').textContent = truncate(names[1], 24);
 
     if (!normW) {
-      hintEl.textContent = 'Set at least one persona weight above zero.';
+      hintEl.textContent = 'Set at least one target tenant segment weight above zero.';
       overallEl.innerHTML = '';
+      updateStickyBar(0, 0);
       return;
     }
 
@@ -482,34 +1024,26 @@ footer.note {
       weighted[1] += normW[persona] * sh[1];
     }
 
+    updateStickyBar(weighted[0] * 100, weighted[1] * 100);
+
     for (const persona of keys) {
       const sh = personaShares[persona];
-      const label = PERSONA_DESCRIPTIONS[persona]?.name || persona;
+      const role = personaRole(persona);
+      const name = personaFirstName(persona);
       const tr = document.createElement('tr');
       tr.innerHTML =
-        '<td>' +
-        escapeHtml(label) +
-        '</td><td class="num">' +
-        (normW[persona] * 100).toFixed(0) +
-        '%</td><td class="num">' +
-        (sh[0] * 100).toFixed(1) +
-        '%</td><td class="num">' +
-        (sh[1] * 100).toFixed(1) +
-        '%</td>';
+        '<td><span class="wtp-persona-role">' + escapeHtml(role) + '</span>' + escapeHtml(name) + '</td>' +
+        '<td class="num">' + (normW[persona] * 100).toFixed(0) + '%</td>' +
+        '<td class="num">' + (sh[0] * 100).toFixed(1) + '%</td>' +
+        '<td class="num">' + (sh[1] * 100).toFixed(1) + '%</td>';
       tableBody.appendChild(tr);
     }
 
     overallEl.innerHTML =
-      '<div class="overall-row"><span>' +
-      escapeHtml(truncate(names[0], 42)) +
-      '</span><strong>' +
-      (weighted[0] * 100).toFixed(1) +
-      '%</strong></div>' +
-      '<div class="overall-row"><span>' +
-      escapeHtml(truncate(names[1], 42)) +
-      '</span><strong>' +
-      (weighted[1] * 100).toFixed(1) +
-      '%</strong></div>';
+      '<div class="overall-row"><span>' + escapeHtml(truncate(names[0], 42)) +
+      '</span><strong>' + (weighted[0] * 100).toFixed(1) + '%</strong></div>' +
+      '<div class="overall-row"><span>' + escapeHtml(truncate(names[1], 42)) +
+      '</span><strong>' + (weighted[1] * 100).toFixed(1) + '%</strong></div>';
 
     const maxPct = Math.max(
       ...keys.flatMap((p) => [personaShares[p][0] * 100, personaShares[p][1] * 100]),
@@ -518,25 +1052,42 @@ footer.note {
       1
     );
 
-    keys.forEach((persona, idx) => {
+    keys.forEach((persona) => {
       const sh = personaShares[persona];
-      const label = PERSONA_DESCRIPTIONS[persona]?.name || persona;
-      barsEl.appendChild(barGroup(label, sh, names, maxPct, idx));
+      const role = personaRole(persona);
+      barsEl.appendChild(barGroup(role, sh, names, maxPct, false));
     });
-    barsEl.appendChild(barGroup('Population-weighted', weighted, names, maxPct, keys.length, true));
+    barsEl.appendChild(barGroup('Weighted across all segments', weighted, names, maxPct, true));
 
     const s0 = weighted[0] * 100;
     const s1 = weighted[1] * 100;
     if (s0 > s1) {
       hintEl.textContent =
-        'Subject leads on weighted share. Pair with a renter-pool estimate for lease-up counts.';
+        'Your property leads on weighted capture rate. Pair with a tenant-pool estimate for lease-up counts.';
     } else {
       hintEl.textContent =
-        'Comp leads on weighted share. Try repositioning or rent scenarios to close the gap.';
+        'The comp leads on weighted capture rate. Try repositioning or rent scenarios below to close the gap.';
     }
   }
 
-  function barGroup(title, shares, names, maxPct, colorIdx, dark) {
+  function updateStickyBar(yourPct, compPct) {
+    const yEl = document.getElementById('sticky-your');
+    const cEl = document.getElementById('sticky-comp');
+    const yFill = Math.max(0, yourPct);
+    const cFill = Math.max(0, compPct);
+    const total = yFill + cFill;
+    if (total > 100) {
+      yEl.style.width = ((yFill / total) * 100).toFixed(1) + '%';
+      cEl.style.width = ((cFill / total) * 100).toFixed(1) + '%';
+    } else {
+      yEl.style.width = yFill.toFixed(1) + '%';
+      cEl.style.width = cFill.toFixed(1) + '%';
+    }
+    yEl.textContent = yFill.toFixed(1) + '%';
+    cEl.textContent = cFill.toFixed(1) + '%';
+  }
+
+  function barGroup(title, shares, names, maxPct, weighted) {
     const wrap = document.createElement('div');
     wrap.className = 'bar-group';
     const h = document.createElement('div');
@@ -548,11 +1099,14 @@ footer.note {
       row.className = 'bar-row';
       const lab = document.createElement('span');
       lab.className = 'bar-label';
-      lab.textContent = truncate(names[i], 28);
+      lab.textContent = truncate(names[i], 30);
       const track = document.createElement('div');
       track.className = 'bar-track';
       const fill = document.createElement('div');
-      fill.className = 'bar-fill' + (dark ? ' bar-fill--dark' : '') + ' bar-c' + (colorIdx % 4);
+      const colorClass = i === 0
+        ? (weighted ? 'weighted-your' : 'your')
+        : (weighted ? 'weighted-comp' : 'comp');
+      fill.className = 'bar-fill ' + colorClass;
       const pct = shares[i] * 100;
       fill.style.width = Math.min(100, (pct / maxPct) * 100) + '%';
       const val = document.createElement('span');
@@ -569,7 +1123,7 @@ footer.note {
 
   function truncate(s, n) {
     if (!s) return '';
-    return s.length <= n ? s : s.slice(0, n - 1) + '…';
+    return s.length <= n ? s : s.slice(0, n - 1) + '\u2026';
   }
 
   function escapeHtml(s) {
@@ -637,10 +1191,12 @@ footer.note {
     for (const p of personas) {
       const def = DATA.DEFAULT_WEIGHTS[p] != null ? DATA.DEFAULT_WEIGHTS[p] : 1 / n;
       const lab = document.createElement('label');
-      lab.className = 'field field-weight';
-      const span = document.createElement('span');
-      span.className = 'field-label';
-      span.textContent = PERSONA_DESCRIPTIONS[p]?.name || p;
+      lab.className = 'weight-row';
+      const labelBox = document.createElement('span');
+      labelBox.className = 'weight-label';
+      const role = personaRole(p);
+      const name = personaFirstName(p);
+      labelBox.innerHTML = '<span class="weight-role">' + escapeHtml(role) + '</span>' + escapeHtml(name);
       const input = document.createElement('input');
       input.type = 'range';
       input.min = '0';
@@ -655,7 +1211,7 @@ footer.note {
         val.textContent = (parseFloat(input.value) * 100).toFixed(0) + '%';
         updateWeightSum();
       });
-      lab.appendChild(span);
+      lab.appendChild(labelBox);
       lab.appendChild(input);
       lab.appendChild(val);
       box.appendChild(lab);
@@ -674,7 +1230,9 @@ footer.note {
     for (const p of Object.keys(personaCoefMaps)) {
       const o = document.createElement('option');
       o.value = p;
-      o.textContent = PERSONA_DESCRIPTIONS[p]?.name || p;
+      const role = personaRole(p);
+      const name = personaFirstName(p);
+      o.textContent = role + ' · ' + name;
       sel.appendChild(o);
     }
     sel.addEventListener('change', renderPersona);
@@ -690,15 +1248,16 @@ footer.note {
     const cmap = personaCoefMaps[k];
     const bp = priceBeta(cmap);
     if (!d) {
-      card.innerHTML = '<p class="muted">No narrative for this persona.</p>';
+      card.innerHTML = '<p class="muted">No narrative for this segment.</p>';
       top.innerHTML = bot.innerHTML = '';
       return;
     }
+    const role = personaRole(k);
+    const name = personaFirstName(k);
     const sens = Math.abs(bp) > 0.01 ? 'high' : Math.abs(bp) > 0.005 ? 'moderate' : 'low';
     card.innerHTML =
-      '<h3>' +
-      escapeHtml(d.name) +
-      '</h3>' +
+      '<div class="persona-role">' + escapeHtml(role) + '</div>' +
+      '<div class="persona-name">' + escapeHtml(name) + '</div>' +
       '<dl class="persona-dl">' +
       rowDl('Age', d.age) +
       rowDl('Income', d.income) +
@@ -706,12 +1265,9 @@ footer.note {
       rowDl('Debt', d.debt) +
       rowDl('Daily destination', d.work_destination) +
       rowDl('Lease horizon', d.lease_horizon) +
-      rowDl('Segment', d.segment) +
-      rowDl('Price sensitivity (β)', bp.toFixed(5) + ' (' + sens + ')') +
+      rowDl('Price sensitivity', sens + ' (β=' + bp.toFixed(4) + ')') +
       '</dl>' +
-      '<p class="persona-narr">' +
-      escapeHtml(d.narrative) +
-      '</p>';
+      '<p class="persona-narrative">' + escapeHtml(d.narrative) + '</p>';
 
     const wtpRows = [];
     for (const [feat, c] of cmap.entries()) {
@@ -721,16 +1277,49 @@ footer.note {
       wtpRows.push({ feat, wtp: (-c) / bp });
     }
     wtpRows.sort((a, b) => b.wtp - a.wtp);
-    top.innerHTML = '<h4>Highest implied WTP</h4><ul>' + wtpRows.slice(0, 5).map(liWtp).join('') + '</ul>';
-    bot.innerHTML = '<h4>Lowest implied WTP</h4><ul>' + wtpRows.slice(-5).reverse().map(liWtp).join('') + '</ul>';
+    const topFive = wtpRows.slice(0, 5);
+    const bottomFive = wtpRows.slice(-5).reverse();
+
+    const maxAbs = Math.max(
+      ...topFive.map(r => Math.abs(r.wtp)),
+      ...bottomFive.map(r => Math.abs(r.wtp)),
+      1
+    );
+
+    top.innerHTML = topFive.map(r => wtpBarRow(r, maxAbs)).join('');
+    bot.innerHTML = bottomFive.map(r => wtpBarRow(r, maxAbs)).join('');
+  }
+
+  function wtpBarRow(r, maxAbs) {
+    const label = prettyFeature(r.feat);
+    const pct = (Math.abs(r.wtp) / maxAbs) * 100;
+    const sign = r.wtp >= 0 ? 'positive' : 'negative';
+    const amtPrefix = r.wtp >= 0 ? '+' : '-';
+    return '<div class="wtp-bar-row">' +
+      '<div class="wtp-bar-content">' +
+        '<div class="wtp-bar-label">' + escapeHtml(label) + '</div>' +
+        '<div class="wtp-bar-track">' +
+          '<div class="wtp-bar-fill ' + sign + '" style="width:' + pct.toFixed(1) + '%"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="wtp-amt ' + sign + '">' + amtPrefix + '$' + Math.abs(Math.round(r.wtp)) + '/mo</div>' +
+      '</div>';
+  }
+
+  function prettyFeature(feat) {
+    // "Finishes__Mid-tier (granite/quartz counters...)" -> "Finishes: Mid-tier"
+    const parts = feat.split('__');
+    if (parts.length !== 2) return feat;
+    const attr = labelizeAttr(parts[0]);
+    let level = parts[1];
+    // Strip parenthetical context for brevity in chart
+    const parenIdx = level.indexOf('(');
+    if (parenIdx > 0) level = level.slice(0, parenIdx).trim();
+    return attr + ': ' + level;
   }
 
   function rowDl(k, v) {
     return '<dt>' + escapeHtml(k) + '</dt><dd>' + escapeHtml(String(v)) + '</dd>';
-  }
-
-  function liWtp(r) {
-    return '<li><span class="wtp-amt">$' + Math.round(r.wtp) + '/mo</span> ' + escapeHtml(truncate(r.feat, 70)) + '</li>';
   }
 
   function buildWtpControls() {
@@ -771,7 +1360,7 @@ footer.note {
     const toLv = document.getElementById('wtp-to').value;
     const out = document.getElementById('wtp-out');
     if (fromLv === toLv) {
-      out.innerHTML = '<p class="muted">Choose two different levels.</p>';
+      out.innerHTML = '<p class="wtp-footnote">Pick two different levels to see the willingness-to-pay delta.</p>';
       return;
     }
     let pooled;
@@ -780,20 +1369,17 @@ footer.note {
     } else {
       pooled = wtpForChange(attr, fromLv, toLv, pooledCoefMap);
     }
-    let html =
-      '<p class="wtp-lead">Change <strong>' +
-      escapeHtml(labelizeAttr(attr)) +
-      '</strong> from the first level to the second.</p>';
-    if (attr === 'Size') {
-      html +=
-        '<p class="muted small">Size delta: ' +
-        ATTRIBUTES.Size[fromLv] +
-        ' → ' +
-        ATTRIBUTES.Size[toLv] +
-        ' SF</p>';
-    }
-    html += '<p class="wtp-pooled">Pooled (average renter): <strong>$' + formatMoney(pooled) + '/mo</strong></p>';
-    html += '<ul class="wtp-list">';
+
+    const pooledFmt = formatMoney(pooled);
+    const direction = pooled >= 0 ? 'pay <strong>' + pooledFmt + '/mo more</strong>' : 'need <strong>' + pooledFmt.replace('-', '') + '/mo less</strong>';
+
+    let html = '<div class="wtp-headline">';
+    html += 'The average renter is willing to ' + direction;
+    html += ' to upgrade <strong>' + escapeHtml(labelizeAttr(attr)) + '</strong> from <em>' + escapeHtml(truncate(fromLv, 48)) + '</em> to <em>' + escapeHtml(truncate(toLv, 48)) + '</em>.';
+    html += '</div>';
+
+    html += '<div class="results-head" style="margin-bottom: 4px">By target tenant segment</div>';
+    html += '<ul class="wtp-persona-list">';
     for (const [persona, cmap] of Object.entries(personaCoefMaps)) {
       if (!(priceBeta(cmap) < 0)) continue;
       let w;
@@ -802,24 +1388,23 @@ footer.note {
       } else {
         w = wtpForChange(attr, fromLv, toLv, cmap);
       }
-      const name = PERSONA_DESCRIPTIONS[persona]?.name || persona;
-      html += '<li><span>' + escapeHtml(truncate(name, 34)) + '</span><strong>$' + formatMoney(w) + '/mo</strong></li>';
+      const role = personaRole(persona);
+      const name = personaFirstName(persona);
+      const sign = w >= 0 ? 'positive' : 'negative';
+      html += '<li>' +
+        '<div><span class="wtp-persona-role">' + escapeHtml(role) + '</span><span class="wtp-persona-name">' + escapeHtml(name) + '</span></div>' +
+        '<div class="wtp-persona-amt ' + sign + '">' + formatMoney(w) + '/mo</div>' +
+        '</li>';
     }
     html += '</ul>';
-    html += '<p class="muted small">';
-    if (pooled > 0) {
-      html += 'Positive values mean renters would pay more per month for the upgrade on average.';
-    } else {
-      html += 'Negative values mean the “from” level is preferred on average.';
-    }
-    html += '</p>';
+    html += '<p class="wtp-footnote">Positive values: renters in that segment would pay more for the simulated change. Negative values: the baseline is preferred.</p>';
     out.innerHTML = html;
   }
 
   function formatMoney(x) {
-    if (x == null || Number.isNaN(x)) return '—';
+    if (x == null || Number.isNaN(x)) return '$0';
     const n = Math.round(x);
-    return (n >= 0 ? '+' : '') + n;
+    return (n >= 0 ? '+$' : '-$') + Math.abs(n);
   }
 
   function buildScenario() {
@@ -848,7 +1433,7 @@ footer.note {
     const comp = readProfile('comp');
     const normW = normalizedWeights();
     if (!normW) {
-      out.innerHTML = '<p class="muted">Set persona weights first.</p>';
+      out.innerHTML = '<p class="wtp-footnote">Set tenant segment weights above first.</p>';
       return;
     }
 
@@ -868,10 +1453,10 @@ footer.note {
     const rentDelta = ATTRIBUTES.Price[after.Price] - ATTRIBUTES.Price[before.Price];
 
     let verdict = '';
-    if (delta >= 0 && rentDelta > 0) verdict = 'Share holds or grows with a higher rent.';
-    else if (delta >= 0 && rentDelta === 0) verdict = 'Share improves without a rent increase.';
-    else if (delta < 0 && rentDelta > 0) verdict = 'Share falls at this rent level — the bump may be too steep.';
-    else verdict = 'Share fell without a rent change — review the bundle.';
+    if (delta >= 0 && rentDelta > 0) verdict = 'Capture rate holds or grows with a higher rent.';
+    else if (delta >= 0 && rentDelta === 0) verdict = 'Capture rate improves without a rent increase.';
+    else if (delta < 0 && rentDelta > 0) verdict = 'Capture rate falls at this rent level. The bump may be too steep.';
+    else verdict = 'Capture rate fell without a rent change. Review the bundle.';
 
     const changes = Object.keys(bundle)
       .filter((k) => k !== 'price_bump')
@@ -880,54 +1465,19 @@ footer.note {
 
     out.innerHTML =
       '<div class="scenario-grid">' +
-      '<div><h4>Before</h4><p class="num big">' +
-      (bShare * 100).toFixed(1) +
-      '%</p><p class="muted small">Subject share (weighted)</p></div>' +
-      '<div><h4>After</h4><p class="num big">' +
-      (aShare * 100).toFixed(1) +
-      '%</p><p class="muted small">Subject share (weighted)</p></div>' +
+        '<div class="scenario-card"><h4>Before</h4>' +
+          '<div class="scenario-big">' + (bShare * 100).toFixed(1) + '%</div>' +
+          '<div class="scenario-big-sub">Your property, weighted capture rate</div></div>' +
+        '<div class="scenario-card"><h4>After</h4>' +
+          '<div class="scenario-big">' + (aShare * 100).toFixed(1) + '%</div>' +
+          '<div class="scenario-big-sub">Your property, weighted capture rate</div></div>' +
       '</div>' +
-      '<p class="scenario-delta">Share change: <strong>' +
-      (delta >= 0 ? '+' : '') +
-      delta.toFixed(1) +
-      ' pp</strong> · Rent change: <strong>$' +
-      (rentDelta >= 0 ? '+' : '') +
-      rentDelta +
-      '/mo</strong></p>' +
-      '<p class="scenario-verdict">' +
-      escapeHtml(verdict) +
-      '</p>' +
-      '<p class="muted small">Applied to the subject property from the Simulate tab. Competitor is unchanged.</p>' +
-      '<ul class="bundle-list">' +
-      changes +
-      '</ul>';
-  }
-
-  function navSetup() {
-    const links = Array.from(document.querySelectorAll('.nav a[data-section]'));
-    const idToLink = new Map(links.map((a) => [a.getAttribute('data-section'), a]));
-    links.forEach((a) => {
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = a.getAttribute('data-section');
-        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-        links.forEach((x) => x.classList.remove('active'));
-        a.classList.add('active');
-      });
-    });
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const vis = entries.filter((en) => en.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (!vis.length) return;
-        const id = vis[0].target.getAttribute('id');
-        const link = idToLink.get(id);
-        if (!link) return;
-        links.forEach((x) => x.classList.remove('active'));
-        link.classList.add('active');
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
-    );
-    document.querySelectorAll('main section[id]').forEach((sec) => obs.observe(sec));
+      '<p class="scenario-delta">Capture rate change: <strong>' +
+        (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' pp</strong> · Rent change: <strong>$' +
+        (rentDelta >= 0 ? '+' : '') + rentDelta + '/mo</strong></p>' +
+      '<div class="scenario-verdict">' + escapeHtml(verdict) + '</div>' +
+      '<div class="results-head" style="margin-top:18px;margin-bottom:6px">Bundle changes applied</div>' +
+      '<ul class="bundle-list">' + changes + '</ul>';
   }
 
   buildForms();
@@ -935,12 +1485,11 @@ footer.note {
   buildPersonaSelect();
   buildWtpControls();
   buildScenario();
-  navSetup();
 
   document.getElementById('btn-simulate').addEventListener('click', runSimulation);
   runSimulation();
 })();
-
 </script>
+
 </body>
 </html>
