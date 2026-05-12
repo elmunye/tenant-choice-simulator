@@ -210,7 +210,7 @@
   /* COMP STRIP (horizontal scroll) */
   .comp-strip-wrap {
     margin: 0 -32px 24px;
-    padding: 0 32px;
+    padding: 0;
     position: relative;
   }
   .comp-strip {
@@ -218,7 +218,7 @@
     gap: 16px;
     overflow-x: auto;
     overflow-y: visible;
-    padding: 4px 4px 16px;
+    padding: 4px 32px 16px;
     scroll-snap-type: x proximity;
     scrollbar-width: thin;
     scrollbar-color: var(--rule-strong) transparent;
@@ -241,7 +241,8 @@
     position: sticky;
     left: 32px;
     z-index: 10;
-    box-shadow: 8px 0 16px -8px rgba(0,0,0,0.06);
+    background: var(--bg-elevated);
+    box-shadow: 12px 0 24px -8px rgba(26, 35, 50, 0.12), 1px 0 0 var(--rule);
   }
   .prop-card.comp { border-left: 3px solid var(--comp1); }
   .prop-card-head {
@@ -817,24 +818,24 @@
       <div class="persona-card" id="persona-card"></div>
 
       <div class="wtp-chart-block">
-        <div class="wtp-chart-head top">Most valued, top 5 features</div>
+        <div class="wtp-chart-head top">Most valued, top 5 amenities</div>
         <div id="persona-wtp-top"></div>
       </div>
       <div class="wtp-chart-block">
-        <div class="wtp-chart-head bottom">Least valued, bottom 5 features</div>
+        <div class="wtp-chart-head bottom">Least valued, bottom 5 amenities</div>
         <div id="persona-wtp-bottom"></div>
       </div>
     </section>
 
     <section class="block" id="wtp">
       <div class="section-number">03</div>
-      <h2 class="section-title">Willingness to pay for a feature</h2>
-      <p class="section-lede">Pick a feature and a baseline; the simulator shows how much per month an average renter would pay to upgrade to the simulated change, plus per-segment values side by side.</p>
+      <h2 class="section-title">Willingness to pay for an amenity</h2>
+      <p class="section-lede">Pick an amenity and a baseline; the simulator shows how the average renter values the change in dollar terms, plus per-segment values side by side.</p>
 
       <div class="wtp-panel">
         <div class="wtp-controls">
           <div class="wtp-field">
-            <span class="wtp-field-label">Feature</span>
+            <span class="wtp-field-label">Amenity</span>
             <select id="wtp-attr"></select>
           </div>
           <div class="wtp-field">
@@ -1017,13 +1018,28 @@
     return a.replace(/([A-Z])/g, ' $1').replace(/^./, function (c) { return c.toUpperCase(); }).trim();
   }
 
+  // Reorder attribute fields for display: Location first (it's the single biggest
+  // driver in real underwriting and in the model's relative importance), then the
+  // rest in their original order. Name is excluded from the UI; it's set internally.
+  function orderedAttrs() {
+    const preferred = ['Location'];
+    const rest = attrNames.filter(function (a) { return preferred.indexOf(a) === -1; });
+    return preferred.filter(function (a) { return attrNames.indexOf(a) !== -1; }).concat(rest);
+  }
+
+  // Display name for a property based on its position in the list.
+  function displayNameFor(idx) {
+    return idx === 0 ? 'Your property' : ('Comp ' + idx);
+  }
+
   // -------------------- Property cards --------------------
 
   function initProperties() {
-    properties = [
-      Object.assign({ _id: 'p0' }, DATA.HIGHLAND),
-      Object.assign({ _id: 'p1' }, DATA.MODERA),
-    ];
+    const yours = Object.assign({ _id: 'p0' }, DATA.HIGHLAND);
+    const comp1 = Object.assign({ _id: 'p1' }, DATA.MODERA);
+    yours.Name = displayNameFor(0);
+    comp1.Name = displayNameFor(1);
+    properties = [yours, comp1];
     nextCompId = 2;
   }
 
@@ -1061,8 +1077,13 @@
       }
 
       card.appendChild(head);
-      card.appendChild(makeTextField(prop, 'Name'));
-      for (const attr of attrNames) {
+      // Render fields in a user-friendly order: Location first, then everything else.
+      // The Name field is hidden from the UI; properties get their display name
+      // from their position (Your property, Comp 1, Comp 2...). Name is still
+      // kept on the underlying object so the share bar legend and results table
+      // can use a stable label.
+      const ordered = orderedAttrs();
+      for (const attr of ordered) {
         card.appendChild(makeSelectField(prop, attr));
       }
       strip.appendChild(card);
@@ -1126,7 +1147,7 @@
       newComp[k] = yours[k];
     }
     newComp._id = 'p' + nextCompId;
-    newComp.Name = 'Comp ' + properties.length + ' (configure)';
+    newComp.Name = displayNameFor(properties.length);
     nextCompId += 1;
     properties.push(newComp);
     renderPropertyCards();
@@ -1140,6 +1161,10 @@
   function removeProperty(propId) {
     if (propId === 'p0') return;
     properties = properties.filter(function (p) { return p._id !== propId; });
+    // Re-label remaining comps so numbering stays contiguous (Comp 1, Comp 2, ...)
+    properties.forEach(function (p, idx) {
+      p.Name = displayNameFor(idx);
+    });
     renderPropertyCards();
     runSimulation();
   }
@@ -1456,17 +1481,25 @@
       pooled = wtpForChange(attr, fromLv, toLv, pooledCoefMap);
     }
 
-    const pooledFmt = formatMoney(pooled);
-    let direction;
-    if (pooled >= 0) {
-      direction = 'pay <strong>' + pooledFmt + '/mo more</strong>';
+    // Construct an accurate, direction-neutral headline. The change from
+    // "from" to "to" can be positive (renter pays more) or negative (renter
+    // values the from-level more and would need a rent reduction to accept
+    // the to-level). The headline must read correctly in both directions.
+    const n = Math.round(pooled);
+    let valuation;
+    if (n > 0) {
+      valuation = 'would pay <strong>+$' + n + '/mo</strong> for this change';
+    } else if (n < 0) {
+      valuation = 'values this change at <strong>-$' + Math.abs(n) + '/mo</strong>, meaning the baseline offer is preferred and rent would need to drop by that amount to leave them indifferent';
     } else {
-      direction = 'need <strong>' + pooledFmt.replace('-', '') + '/mo less</strong>';
+      valuation = 'is indifferent between these two options';
     }
 
     let html = '<div class="wtp-headline">';
-    html += 'The average renter is willing to ' + direction;
-    html += ' to upgrade <strong>' + escapeHtml(labelizeAttr(attr)) + '</strong> from <em>' + escapeHtml(truncate(fromLv, 56)) + '</em> to <em>' + escapeHtml(truncate(toLv, 56)) + '</em>.';
+    html += 'The average renter ' + valuation + '. ';
+    html += 'Amenity: <strong>' + escapeHtml(labelizeAttr(attr)) + '</strong>. ';
+    html += 'Baseline: <em>' + escapeHtml(truncate(fromLv, 56)) + '</em>. ';
+    html += 'Simulated change: <em>' + escapeHtml(truncate(toLv, 56)) + '</em>.';
     html += '</div>';
 
     html += '<div class="results-head" style="margin-bottom: 12px">By target tenant segment, side by side</div>';
@@ -1508,7 +1541,7 @@
     });
     html += '</div>';
 
-    html += '<p class="wtp-footnote">Positive values: that segment would pay more for the simulated change. Negative values: the baseline offer is preferred. ' +
+    html += '<p class="wtp-footnote">Positive values: that segment would pay more for the simulated change. Negative values: the baseline is preferred. ' +
       'Bars share a common scale, so visual length is directly comparable across segments.</p>';
 
     out.innerHTML = html;
