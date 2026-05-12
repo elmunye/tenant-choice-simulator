@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+
+# Notebook data outputs (keep these local for now)
+notebooks/data/
+*.csv
+*.parquet
+
+# Editor
+.vscode/
+.cursor/
+
+# Archive folder if you made one
+archive/

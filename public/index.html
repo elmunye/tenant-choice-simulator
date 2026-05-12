@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tenant Choice Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F5;
+    --bg-elevated: #FFFFFF;
+    --ink: #1A2332;
+    --ink-soft: #4A5568;
+    --ink-muted: #8A95A5;
+    --rule: #E5E2DC;
+    --rule-strong: #D4D0C8;
+    --accent: #1E3A5F;
+    --accent-soft: #E8EDF3;
+    --positive: #2D5F3F;
+    --comp: #B5563A;
+    --max-w: 1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-feature-settings: "ss01";
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ============ NAV ============ */
+  nav {
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .brand-mark {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    margin-right: 10px;
+    vertical-align: 1px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* ============ HERO ============ */
+  .hero {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 72px 32px 48px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero { padding: 48px 24px 32px; }
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  h1.hero-headline {
+    font-size: 44px;
+    line-height: 1.08;
+    margin-bottom: 20px;
+    max-width: 18ch;
+  }
+  @media (max-width: 600px) {
+    h1.hero-headline { font-size: 34px; }
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 52ch;
+    margin-bottom: 28px;
+  }
+  .hero-cta-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border: 1px solid var(--accent);
+    transition: background 0.15s, transform 0.15s;
+  }
+  .cta-primary::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+  .cta-primary:hover {
+    background: #15293f;
+  }
+  .cta-primary:hover::after {
+    transform: translateX(3px);
+  }
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 18px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .cta-secondary:hover {
+    color: var(--ink);
+    border-color: var(--ink-soft);
+  }
+  .hero-meta {
+    font-size: 13px;
+    color: var(--ink-muted);
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span::before {
+    content: "→";
+    margin-right: 8px;
+    color: var(--rule-strong);
+  }
+
+  /* ============ ANIMATION ============ */
+  .animation-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--rule);
+    padding: 24px;
+    position: relative;
+  }
+  .anim-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .anim-label .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--positive);
+    margin-right: 6px;
+    vertical-align: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Share bar */
+  .share-bar {
+    margin-bottom: 18px;
+  }
+  .share-bar-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .share-bar-track {
+    display: flex;
+    height: 28px;
+    background: var(--rule);
+    overflow: hidden;
+  }
+  .share-bar-seg {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .share-bar-seg.your { background: var(--accent); }
+  .share-bar-seg.comp { background: var(--comp); }
+  .share-bar-seg.noned { background: var(--ink-muted); }
+
+  /* Two-property comparison */
+  .anim-properties {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .prop-card {
+    border: 1px solid var(--rule);
+    padding: 14px;
+    background: var(--bg-elevated);
+  }
+  .prop-card.your { border-color: var(--accent); border-width: 1.5px; }
+  .prop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .prop-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .prop-rent {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    color: var(--ink);
+    transition: color 0.4s;
+  }
+  .prop-rent.rent-flash {
+    color: var(--positive);
+  }
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    transition: all 0.4s;
+  }
+  .feature .check {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--rule-strong);
+    margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: transparent;
+    transition: all 0.4s;
+    flex-shrink: 0;
+  }
+  .feature.on { color: var(--ink); }
+  .feature.on .check {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .feature.changing .check {
+    animation: pop 0.6s ease-out;
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+
+  /* Status caption beneath animation */
+  .anim-caption {
+    font-size: 12px;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    min-height: 32px;
+  }
+  .anim-caption strong {
+    color: var(--ink);
+    font-style: normal;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 500;
+  }
+
+  /* ============ USE CASE CARDS ============ */
+  .section-band {
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .use-cases {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+  .section-heading {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  .uc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 800px) {
+    .uc-grid { grid-template-columns: 1fr; }
+  }
+  .uc-card {
+    background: var(--bg-elevated);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: background 0.2s;
+    cursor: pointer;
+    min-height: 220px;
+  }
+  .uc-card:hover {
+    background: var(--accent-soft);
+  }
+  .uc-role {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .uc-question {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .uc-answer {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: auto;
+  }
+  .uc-cta {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .uc-cta::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+  .uc-card:hover .uc-cta::after {
+    transform: translateX(4px);
+  }
+
+  /* ============ TRUST STRIP ============ */
+  .trust {
+    border-top: 1px solid var(--rule);
+    background: var(--bg-elevated);
+  }
+  .trust-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 56px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 800px) {
+    .trust-inner { grid-template-columns: 1fr; gap: 24px; }
+  }
+  .trust-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .trust-body {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  .trust-body p { margin-bottom: 14px; }
+  .citations {
+    font-size: 13px;
+    color: var(--ink-muted);
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 14px;
+    margin-top: 18px;
+    line-height: 1.55;
+  }
+  .citations div { margin-bottom: 8px; }
+  .citations em {
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .meth-link {
+    display: inline-block;
+    margin-top: 16px;
+    color: var(--accent);
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    padding: 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: center;
+  }
+  footer .footnote {
+    max-width: 60ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-mark"></span>Tenant Choice Simulator</div>
+    <div class="nav-links">
+      <a href="simulator.html">Simulator</a>
+      <a href="methodology.html">Methodology</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">For multifamily underwriting</div>
+      <h1 class="display hero-headline">Simulate how target tenants choose between properties.</h1>
+      <p class="hero-sub">
+        Test how amenities, rent levels, and renovations change capture rate and willingness to pay, before committing development or acquisition budget. Built on published research on synthetic consumer choice modelling; designed to be validated with a real-respondent survey when the decision warrants it.
+      </p>
+      <div class="hero-cta-row">
+        <a href="simulator.html" class="cta-primary">Open the simulator</a>
+        <a href="methodology.html" class="cta-secondary">Read methodology</a>
+      </div>
+      <div class="hero-meta">
+        <span>Capture rate across a comp set</span>
+        <span>Willingness to pay per amenity</span>
+        <span>Target tenant segments</span>
+      </div>
+    </div>
+
+    <div class="animation-card" id="animCard">
+      <div class="anim-label">
+        <span><span class="live-dot"></span>Live preview</span>
+        <span id="animStep">Baseline</span>
+      </div>
+
+      <div class="share-bar">
+        <div class="share-bar-label">Capture rate · target segment</div>
+        <div class="share-bar-track">
+          <div class="share-bar-seg your" id="segYour" style="width: 38%">38%</div>
+          <div class="share-bar-seg comp" id="segComp" style="width: 42%">42%</div>
+          <div class="share-bar-seg noned" id="segNone" style="width: 20%">20%</div>
+        </div>
+      </div>
+
+      <div class="anim-properties">
+        <div class="prop-card your">
+          <div class="prop-header">
+            <div class="prop-title">Your property</div>
+            <div class="prop-rent" id="rentYour">$1,850</div>
+          </div>
+          <div class="features">
+            <div class="feature on" data-feat="your-wd"><span class="check">✓</span>In-unit W/D</div>
+            <div class="feature" data-feat="your-gym"><span class="check">✓</span>Fitness center</div>
+            <div class="feature" data-feat="your-park"><span class="check">✓</span>Covered parking</div>
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-header">
+            <div class="prop-title">Comp</div>
+            <div class="prop-rent" id="rentComp">$1,795</div>
+          </div>
+          <div class="features">
+            <div class="feature" data-feat="comp-wd"><span class="check">✓</span>In-unit W/D</div>
+            <div class="feature on" data-feat="comp-gym"><span class="check">✓</span>Fitness center</div>
+            <div class="feature" data-feat="comp-park"><span class="check">✓</span>Covered parking</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="anim-caption" id="animCaption">
+        Baseline: your property captures <strong>38%</strong> of the target segment.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-band">
+  <div class="use-cases">
+    <div class="section-heading">Three ways to use the simulator</div>
+    <div class="uc-grid">
+
+      <a href="simulator.html?stream=capture" class="uc-card">
+        <div class="uc-role">Developer-side underwriter</div>
+        <div class="uc-question">What capture rate can I expect, and which amenities justify the budget?</div>
+        <div class="uc-answer">Build a comp set, configure your property, and see capture rate respond as you adjust amenities and rent. Compare amenity premiums against development cost.</div>
+        <div class="uc-cta">Open capture rate</div>
+      </a>
+
+      <a href="simulator.html?stream=tenant" class="uc-card">
+        <div class="uc-role">Acquisition analyst, value-add</div>
+        <div class="uc-question">Which tenant segment should I target, and how does renovation shift their willingness to pay?</div>
+        <div class="uc-answer">See target tenant profiles and what they value most. Test how renovation scenarios change segment-level willingness to pay before underwriting the reposition.</div>
+        <div class="uc-cta">Open target tenant view</div>
+      </a>
+
+      <a href="methodology.html" class="uc-card">
+        <div class="uc-role">Lender, loan review</div>
+        <div class="uc-question">Are the borrower's pricing and demand assumptions defensible?</div>
+        <div class="uc-answer">Review the methodology and its documented limitations. Then stress-test the borrower's capture and rent assumptions against an independent simulation.</div>
+        <div class="uc-cta">Review methodology</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="trust-inner">
+    <div>
+      <div class="section-heading" style="margin-bottom:14px">Methodological basis</div>
+      <div class="trust-heading">Grounded in published research on synthetic consumer choice modelling.</div>
+    </div>
+    <div class="trust-body">
+      <p>
+        The simulator uses synthetic respondents constructed as renter personas, evaluated against property configurations using a conjoint-style choice modelling approach. Utilities are estimated per amenity and used to project capture rate across a defined comp set.
+      </p>
+      <p>
+        The methodology has documented limitations. Synthetic responses can produce directionally useful but imprecise estimates and weaker demographic differentiation than human surveys. For high-stakes decisions, results should be validated with a real-respondent survey on the target market.
+      </p>
+      <div class="citations">
+        <div>Brand, J., Israeli, A., &amp; Ngwe, D. (2026). <em>Using LLMs for Market Research.</em> Microsoft &amp; Harvard Business School.</div>
+        <div>Ipsos (2024). <em>The Viability of Large Language Models for Conjoint and MaxDiff Analysis.</em></div>
+      </div>
+      <a href="methodology.html" class="meth-link">Read the full methodology</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footnote">
+    Results are directional estimates from a synthetic-data simulation. Not a substitute for real-respondent market research on high-stakes decisions.
+  </div>
+</footer>
+
+<script>
+  /* ===================================================================
+     Animation loop. Narrates the aha in ~8 seconds, then repeats.
+     Each frame: feature toggle, share + rent recalc, caption update.
+     No real model; the numbers are illustrative.
+     =================================================================== */
+
+  const frames = [
+    {
+      step: "Baseline",
+      your: { wd:true,  gym:false, park:false, rent:"$1,850" },
+      comp: { wd:false, gym:true,  park:false, rent:"$1,795" },
+      share: { you:38, comp:42, none:20 },
+      caption: "Baseline: your property captures <strong>38%</strong> of the target segment.",
+      flash: null
+    },
+    {
+      step: "Add fitness center",
+      your: { wd:true,  gym:true,  park:false, rent:"$1,850" },
+      comp: { wd:false, gym:true,  park:false, rent:"$1,795" },
+      share: { you:44, comp:38, none:18 },
+      caption: "Adding a fitness center on your property: capture rate moves to <strong>44%</strong>.",
+      flash: "your-gym"
+    },
+    {
+      step: "Comp adds W/D",
+      your: { wd:true,  gym:true,  park:false, rent:"$1,850" },
+      comp: { wd:true,  gym:true,  park:false, rent:"$1,795" },
+      share: { you:39, comp:43, none:18 },
+      caption: "Comp adds in-unit W/D: your share drops to <strong>39%</strong>.",
+      flash: "comp-wd"
+    },
+    {
+      step: "Add covered parking",
+      your: { wd:true,  gym:true,  park:true,  rent:"$1,890" },
+      comp: { wd:true,  gym:true,  park:false, rent:"$1,795" },
+      share: { you:47, comp:37, none:16 },
+      caption: "Covered parking on your property: share <strong>47%</strong>, supported rent <strong>$1,890</strong>.",
+      flash: "your-park",
+      rentFlash: "your"
+    }
+  ];
+
+  let idx = 0;
+
+  function applyFrame(f) {
+    document.getElementById("animStep").textContent = f.step;
+
+    // Share bar
+    const segYour = document.getElementById("segYour");
+    const segComp = document.getElementById("segComp");
+    const segNone = document.getElementById("segNone");
+    segYour.style.width = f.share.you + "%";
+    segYour.textContent = f.share.you + "%";
+    segComp.style.width = f.share.comp + "%";
+    segComp.textContent = f.share.comp + "%";
+    segNone.style.width = f.share.none + "%";
+    segNone.textContent = f.share.none > 8 ? f.share.none + "%" : "";
+
+    // Features, Your property
+    setFeat("your-wd",  f.your.wd);
+    setFeat("your-gym", f.your.gym);
+    setFeat("your-park", f.your.park);
+    // Features, Comp
+    setFeat("comp-wd",  f.comp.wd);
+    setFeat("comp-gym", f.comp.gym);
+    setFeat("comp-park", f.comp.park);
+
+    // Rent
+    const rentYour = document.getElementById("rentYour");
+    const rentComp = document.getElementById("rentComp");
+    rentYour.textContent = f.your.rent;
+    rentComp.textContent = f.comp.rent;
+    if (f.rentFlash === "your") {
+      rentYour.classList.add("rent-flash");
+      setTimeout(() => rentYour.classList.remove("rent-flash"), 800);
+    }
+
+    // Flash the changing feature
+    if (f.flash) {
+      const el = document.querySelector(`[data-feat="${f.flash}"]`);
+      if (el) {
+        el.classList.add("changing");
+        setTimeout(() => el.classList.remove("changing"), 700);
+      }
+    }
+
+    // Caption
+    document.getElementById("animCaption").innerHTML = f.caption;
+  }
+
+  function setFeat(key, on) {
+    const el = document.querySelector(`[data-feat="${key}"]`);
+    if (!el) return;
+    if (on) el.classList.add("on");
+    else el.classList.remove("on");
+  }
+
+  function tick() {
+    applyFrame(frames[idx]);
+    idx = (idx + 1) % frames.length;
+  }
+
+  // Initial frame, then advance every 2 seconds
+  tick();
+  setInterval(tick, 2000);
+</script>
+
+</body>
+</html>
